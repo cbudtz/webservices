@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system"/>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/LameDuck/src/java/LameDuck/web/dk/wsdl/LameDuckWSDL.wsdl" uri="src/conf/xml-resources/web-services/LameDuckWebService/wsdl/LameDuckWSDL.wsdl"/>
+    <system systemId="file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/LameDuck/src/java/LameDuck/web/dk/elements/LameDuckElements.xsd" uri="src/conf/xml-resources/web-services/LameDuckWebService/elements/LameDuckElements.xsd"/>
+</catalog>
