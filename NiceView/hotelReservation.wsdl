@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="hotelReservation" targetNamespace="http://hotelReservation.ws"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://hotelReservation.ws">
+    <types>
+        <xsd:schema targetNamespace="http://hotelReservation.ws" xmlns:tns="http://hotelReservation.ws">
+            <xsd:complexType name="hotelType">
+                <xsd:sequence>
+                    <xsd:element name="hotelName" type="xsd:string"></xsd:element>
+                    <xsd:element name="hotelAddress" type="xsd:string"></xsd:element>
+                    <xsd:element name="bookNumber" type="xsd:int"></xsd:element>
+                    <xsd:element name="totalPrice" type="xsd:double"></xsd:element>
+                    <xsd:element name="creditReq" type="xsd:boolean"></xsd:element>
+                    <xsd:element name="hotelReservationName" type="xsd:string"></xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="request">
+                <xsd:complexType>
+                    <xsd:sequence/>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+</definitions>
