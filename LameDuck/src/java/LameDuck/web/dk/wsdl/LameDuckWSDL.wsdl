@@ -16,10 +16,41 @@
     <message name="getFlightsResponse">
         <part name="flightInfoList" element="ns0:FlightInfoListElement"/>
     </message>
+    <message name="bookFlightRequest">
+        <part name="bookingNumber" type="xsd:int"/>
+        <part name="creditcardInfo" element="ns0:CreditCardInfoElement"/>
+    </message>
+    <message name="bookFlightResponse">
+        <part name="success" type="xsd:boolean"/>
+    </message>
+    <message name="bookFlightFault">
+        <part name="status" type="xsd:string"/>
+    </message>
+    <message name="cancelFlightRequest">
+        <part name="bookingNumber" type="xsd:int"/>
+        <part name="price" type="xsd:int"/>
+        <part name="creditcardInformation" element="ns0:CreditCardInfoElement"/>
+    </message>
+    <message name="cancelFlightResponse">
+        <part name="status" type="xsd:string"/>
+    </message>
+    <message name="cancelFlightFault">
+        <part name="response" type="xsd:string"/>
+    </message>
     <portType name="LameDuckPortType">
         <operation name="getFlights">
             <input name="input1" message="tns:getFlightsRequest"/>
             <output name="output1" message="tns:getFlightsResponse"/>
+        </operation>
+        <operation name="bookFlight">
+            <input name="input2" message="tns:bookFlightRequest"/>
+            <output name="output2" message="tns:bookFlightResponse"/>
+            <fault name="fault1" message="tns:bookFlightFault"/>
+        </operation>
+        <operation name="cancelFlight">
+            <input name="input3" message="tns:cancelFlightRequest"/>
+            <output name="output3" message="tns:cancelFlightResponse"/>
+            <fault name="fault1" message="tns:cancelFlightFault"/>
         </operation>
     </portType>
     <plnk:partnerLinkType name="LameDuckWSDL">
