@@ -2,7 +2,7 @@
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             targetNamespace="http://xml.netbeans.org/schema/LameDuckElements"
-    xmlns:tns="http://xml.netbeans.org/schema/LameDuckElements"
+    xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements"
     elementFormDefault="qualified">
     <xsd:complexType name="FlightType">
         <xsd:sequence>
@@ -18,7 +18,7 @@
             <xsd:element name="bookingNumber" type="xsd:int"></xsd:element>
             <xsd:element name="flightPrice" type="xsd:int"></xsd:element>
             <xsd:element name="serviceName" type="xsd:string"></xsd:element>
-            <xsd:element name="flight" type="tns:FlightType"></xsd:element>
+            <xsd:element name="flight" type="ns0:FlightType"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="CreditcardInfoType">
@@ -28,13 +28,13 @@
             <xsd:element name="expirationDate" type="xsd:dateTime"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:element name="FlightElement" type="tns:FlightType"></xsd:element>
-    <xsd:element name="FlightInformationElement" type="tns:FlightInformationType"></xsd:element>
-    <xsd:element name="CreditCardInfoElement" type="tns:CreditcardInfoType"></xsd:element>
+    <xsd:element name="FlightElement" type="ns0:FlightType"></xsd:element>
+    <xsd:element name="FlightInformationElement" type="ns0:FlightInformationType"></xsd:element>
+    <xsd:element name="CreditCardInfoElement" type="ns0:CreditcardInfoType"></xsd:element>
     <xsd:complexType name="FlightInfoListType">
         <xsd:sequence>
-            <xsd:element name="flightInfo" type="tns:FlightInformationType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+            <xsd:element name="flightInfo" type="ns0:FlightInformationType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
-    <xsd:element name="FlightInfoListElement" type="tns:FlightInfoListType"></xsd:element>
+    <xsd:element name="FlightInfoListElement" type="ns0:FlightInfoListType"></xsd:element>
 </xsd:schema>
