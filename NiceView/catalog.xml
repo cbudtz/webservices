@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system"/>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/D:/ESB/Test2/webservices/NiceView/src/java/niceview.web.dk.wsdl/HotelReservation.wsdl" uri="src/conf/xml-resources/web-services/NewWebServiceFromWSDL/wsdl/HotelReservation.wsdl"/>
+</catalog>
