@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="file:/D:/ESB/Test2/webservices/NiceView/src/java/niceview.web.dk.wsdl/HotelReservation.wsdl" uri="src/conf/xml-resources/web-services/NewWebServiceFromWSDL/wsdl/HotelReservation.wsdl"/>
+    <system systemId="file:/C:/Users/Jeppe_000/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview.web.dk.wsdl/HotelReservation.wsdl" uri="src/conf/xml-resources/web-services/NiceViewWebService/wsdl/HotelReservation.wsdl"/>
+    <system systemId="file:/C:/Users/Jeppe_000/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview/web/dk/elements/NiceViewElements.xsd" uri="src/conf/xml-resources/web-services/NiceViewWebService/niceview/web/dk/elements/NiceViewElements.xsd"/>
 </catalog>
