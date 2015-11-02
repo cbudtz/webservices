@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
-    <service name="NiceViewWebService">
+    <service name="NiceViewWebService_new">
       <implementation-class>niceview.web.dk.ws.NiceViewWebService</implementation-class>
-      <wsdl-url>file:/C:/Users/Jeppe_000/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview.web.dk.wsdl/HotelReservation.wsdl</wsdl-url>
+      <wsdl-url>file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview.web.dk.wsdl/HotelReservation.wsdl</wsdl-url>
       <local-wsdl-file>HotelReservation.wsdl</local-wsdl-file>
       <service-name>HotelReservationService</service-name>
-      <port-name>HotelReservationBindingPort</port-name>
+      <port-name>HotelReservationPort</port-name>
       <package-name>ws.hotelreservation</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <use-provider>false</use-provider>

@@ -60,7 +60,9 @@ public class NiceViewWebService {
             return true;
         
         // If booking number doesn't exist throw exception
-        throw new UnsupportedOperationException("Not implemented yet.");
+        throw new CancelHotelFault(
+                String.format("Could not cancel hotel with request %d", 
+                        request), null);
     }
 
     public boolean bookHotel(niceview.niceviewelements.BookHotelRequest request) throws BookHotelFault {
@@ -73,7 +75,9 @@ public class NiceViewWebService {
         // If bookingnumber doesn't exist or, say that we actually did do a FastMoney-operation
         // and it was failing, this is where an exception should be thrown accomponied
         // by a appropiate failure message
-        throw new UnsupportedOperationException("Not implemented yet.");
+        throw new BookHotelFault(
+                String.format("Could not book hotel with booking number %d", 
+                        request.getBookingNumber()), null);
     }
     
 }
