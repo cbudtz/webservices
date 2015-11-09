@@ -2,7 +2,7 @@
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
     <service name="LameDuckWebservice">
-      <implementation-class>lameduck.web.dk.LameDuckWebservice</implementation-class>
+      <implementation-class>LameDuck.web.dk.LameDuckWebservice</implementation-class>
       <wsdl-url>file:/C:/Users/Jeppe_000/Documents/NetBeansProjects/webservices/LameDuck/src/java/lameduck/web/dk/LameDuckWSDL.wsdl</wsdl-url>
       <local-wsdl-file>LameDuckWSDL.wsdl</local-wsdl-file>
       <service-name>LameDuckWSDLService</service-name>
