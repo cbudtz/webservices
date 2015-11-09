@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="LameDuckWSDL" targetNamespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements">
+    <types>
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL">
+            <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="LameDuckElements.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="getFlightsRequest">
+        <part name="flightInfo" element="ns0:getFlightRequestElement"/>
+    </message>
+    <message name="getFlightsResponse">
+        <part name="flightInfoList" element="ns0:FlightInfoListElement"/>
+    </message>
+    <message name="bookFlightRequest">
+        <part name="flightInfo" element="ns0:BookFlightRequestElement"/>
+    </message>
+    <message name="bookFlightResponse">
+        <part name="success" element="ns0:booleanElement"/>
+    </message>
+    <message name="bookFlightFault">
+        <part name="status" element="ns0:StringElement"/>
+    </message>
+    <message name="cancelFlightRequest">
+        <part name="flightInfo" element="ns0:CancelFlightRequestElement"/>
+    </message>
+    <message name="cancelFlightResponse">
+        <part name="status" element="ns0:StringElement"/>
+    </message>
+    <message name="cancelFlightFault">
+        <part name="response" element="ns0:StringElement"/>
+    </message>
+    <portType name="LameDuckPortType">
+        <operation name="getFlights">
+            <input name="input1" message="tns:getFlightsRequest"/>
+            <output name="output1" message="tns:getFlightsResponse"/>
+        </operation>
+        <operation name="bookFlight">
+            <input name="input2" message="tns:bookFlightRequest"/>
+            <output name="output2" message="tns:bookFlightResponse"/>
+            <fault name="fault1" message="tns:bookFlightFault"/>
+        </operation>
+        <operation name="cancelFlight">
+            <input name="input3" message="tns:cancelFlightRequest"/>
+            <output name="output3" message="tns:cancelFlightResponse"/>
+            <fault name="fault1" message="tns:cancelFlightFault"/>
+        </operation>
+    </portType>
+    <binding name="LameDuckPortTypeBinding" type="tns:LameDuckPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getFlights">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal" namespace="http://lameduck.web.dk"/>
+            </input>
+            <output name="output1">
+                <soap:body use="literal" namespace="http://lameduck.web.dk"/>
+            </output>
+        </operation>
+        <operation name="bookFlight">
+            <soap:operation/>
+            <input name="input2">
+                <soap:body use="literal" namespace="http://lameduck.web.dk"/>
+            </input>
+            <output name="output2">
+                <soap:body use="literal" namespace="http://lameduck.web.dk"/>
+            </output>
+            <fault name="fault1">
+                <soap:fault name="fault1" use="literal" namespace="http://lameduck.web.dk"/>
+            </fault>
+        </operation>
+        <operation name="cancelFlight">
+            <soap:operation/>
+            <input name="input3">
+                <soap:body use="literal" namespace="http://lameduck.web.dk"/>
+            </input>
+            <output name="output3">
+                <soap:body use="literal" namespace="http://lameduck.web.dk"/>
+            </output>
+            <fault name="fault1">
+                <soap:fault name="fault1" use="literal" namespace="http://lameduck.web.dk"/>
+            </fault>
+        </operation>
+    </binding>
+    <service name="LameDuckWSDLService">
+        <port name="LameDuckPortTypeBindingPort" binding="tns:LameDuckPortTypeBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/service"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="LameDuckWSDL">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="LameDuckPortTypeRole" portType="tns:LameDuckPortType"/>
+    </plnk:partnerLinkType>
+</definitions>
