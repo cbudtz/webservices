@@ -51,4 +51,5 @@
     <xsd:element name="CreditCardInfoElement" type="tns:CreditcardInfoType"></xsd:element>
     <xsd:element name="BookHotelFault" type="xsd:string"></xsd:element>
     <xsd:element name="CancelHotelFault" type="xsd:string"></xsd:element>
+    <xsd:element name="HotelElement" type="tns:HotelType"></xsd:element>
 </xsd:schema>
