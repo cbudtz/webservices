@@ -36,18 +36,18 @@ import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.*;
             wsdlLocation = "WEB-INF/wsdl/LameDuckWebService/LameDuckWSDL.wsdl")
 public class LameDuckWebservice {
 
-    public static final int DEF_PRIZE = 995;
-    public static final int GROUP_NO = 16;
-    public static final String DEF_DESTINATION = "Mallorca";
-    public static final XMLGregorianCalendar DEF_ARRIVAL_DATE = getDate(2016, 6, 10, 12, 30);
-    public static final int DEF_FLIGHT_DURATION = 2;
-    private static int BOOKING_NO = 1000000;
-    private static final DatatypeFactory df = new DatatypeFactoryImpl();
-    private static BankPortType bank = null;
-    public static List<FlightInformationType> flightDatabase = new ArrayList<>();
-    public static List<FlightInformationType> bookedFlightsDatabase = new ArrayList<>();
-    private static final String lameDuckAccountName = "LameDuck";
-    private static final String LameDuckAccountNumber = "50208812";
+    public  final int DEF_PRIZE = 995;
+    public  final int GROUP_NO = 16;
+    public  final String DEF_DESTINATION = "Mallorca";
+    public  final XMLGregorianCalendar DEF_ARRIVAL_DATE = getDate(2016, 6, 10, 12, 30);
+    public  final int DEF_FLIGHT_DURATION = 2;
+    private  int BOOKING_NO = 1000000;
+    private  final DatatypeFactory df = new DatatypeFactoryImpl();
+    private  BankPortType bank = null;
+    public  List<FlightInformationType> flightDatabase = new ArrayList<>();
+    public  List<FlightInformationType> bookedFlightsDatabase = new ArrayList<>();
+    private  final String lameDuckAccountName = "LameDuck";
+    private  final String LameDuckAccountNumber = "50208812";
 
     
     
@@ -172,7 +172,7 @@ public class LameDuckWebservice {
         return "all ok";
     }
     
-    private static XMLGregorianCalendar getDate(int year, int month, int day, int hour, int minute ){
+    private  XMLGregorianCalendar getDate(int year, int month, int day, int hour, int minute ){
         return df.newXMLGregorianCalendar(new BigInteger(String.valueOf(year)), month, day, hour, minute, hour, BigDecimal.ZERO, minute);
     }
     
