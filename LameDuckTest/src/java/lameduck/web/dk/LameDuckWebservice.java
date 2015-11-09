@@ -36,18 +36,18 @@ import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.*;
             wsdlLocation = "WEB-INF/wsdl/LameDuckWebService/LameDuckWSDL.wsdl")
 public class LameDuckWebservice {
 
-    public  final int DEF_PRIZE = 995;
-    public  final int GROUP_NO = 16;
-    public  final String DEF_DESTINATION = "Mallorca";
-    public  final XMLGregorianCalendar DEF_ARRIVAL_DATE = getDate(2016, 6, 10, 12, 30);
-    public  final int DEF_FLIGHT_DURATION = 2;
-    private  int BOOKING_NO = 1000000;
-    private  final DatatypeFactory df = new DatatypeFactoryImpl();
-    private  BankPortType bank = null;
-    public  List<FlightInformationType> flightDatabase = new ArrayList<>();
-    public  List<FlightInformationType> bookedFlightsDatabase = new ArrayList<>();
-    private  final String lameDuckAccountName = "LameDuck";
-    private  final String LameDuckAccountNumber = "50208812";
+    public final int DEF_PRIZE = 995;
+    public final int GROUP_NO = 16;
+    public final String DEF_DESTINATION = "Mallorca";
+    public final XMLGregorianCalendar DEF_ARRIVAL_DATE = getDate(2016, 6, 10, 12, 30);
+    public final int DEF_FLIGHT_DURATION = 2;
+    private int BOOKING_NO = 1000000;
+    private final DatatypeFactory df = new DatatypeFactoryImpl();
+    private BankPortType bank = null;
+    public List<FlightInformationType> flightDatabase = new ArrayList<>();
+    public List<FlightInformationType> bookedFlightsDatabase = new ArrayList<>();
+    private final String lameDuckAccountName = "LameDuck";
+    private final String LameDuckAccountNumber = "50208812";
 
     
     
@@ -101,6 +101,9 @@ public class LameDuckWebservice {
 
     public boolean bookFlight(BookFlightRequestType flightInfo) throws BookFlightFault {
         boolean match = false;
+        if(flightInfo.getCreditcardInfo() == null) throw new BookFlightFault("credit card info is " + flightInfo.getCreditcardInfo(), "Creditcard info must be valid");
+        if(flightInfo.getCreditcardInfo().getExpirationDate() == null) throw new BookFlightFault("expiration date is " + flightInfo.getCreditcardInfo().getExpirationDate(), "expiration date must be a valid date");
+        if(flightInfo.getCreditcardInfo().getHolderName() == null) throw new BookFlightFault("holder name can not be null", "pull yourself together");
         for(FlightInformationType flight : flightDatabase){
             if(flight.getBookingNumber() == flightInfo.getBookingNumber()){
                 dk.dtu.imm.fastmoney.types.CreditCardInfoType creditCard = convert(flightInfo.getCreditcardInfo());
