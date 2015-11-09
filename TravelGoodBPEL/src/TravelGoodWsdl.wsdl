@@ -2,11 +2,12 @@
 <definitions name="TravelGoodWsdl" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements">
     <types>
-        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns2="http://xml.netbeans.org/schema/LameDuckElements">
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements">
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
             <xsd:import schemaLocation="referenced%20schemas/LameDuckElements.xsd" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
+            <xsd:import schemaLocation="referenced%20schemas/NiceViewElements.xsd" namespace="http://niceview/NiceViewElements"/>
         </xsd:schema>
     </types>
     <portType name="TravelGoodWsdlPortType"></portType>
