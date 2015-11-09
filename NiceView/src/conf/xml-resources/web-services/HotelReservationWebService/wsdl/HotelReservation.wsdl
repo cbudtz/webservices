@@ -2,10 +2,10 @@
 <definitions name="HotelReservation" targetNamespace="http://HotelReservation.ws"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://HotelReservation.ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns0="http://niceview/NiceViewElements">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://HotelReservation.ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns0="http://HotelReservation.ws">
     <types>
         <xsd:schema targetNamespace="http://HotelReservation.ws" xmlns:tns="http://HotelReservation.ws">
-            <xsd:import namespace="http://niceview/NiceViewElements" schemaLocation="../niceview/web/dk/elements/NiceViewElements.xsd"/>
+            <xsd:import namespace="http://HotelReservation.ws" schemaLocation="NiceViewElements.xsd"/>
         </xsd:schema>
     </types>
     <message name="getHotelsRequest">
@@ -53,19 +53,19 @@
         <operation name="getHotels">
             <soap:operation/>
             <input name="input1">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </input>
             <output name="output1">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </output>
         </operation>
         <operation name="cancelHotel">
             <soap:operation/>
             <input name="input2">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </input>
             <output name="output2">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </output>
             <fault name="canceHotelFault">
                 <soap:fault name="canceHotelFault" use="literal"/>
@@ -74,10 +74,10 @@
         <operation name="bookHotel">
             <soap:operation/>
             <input name="input3">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </input>
             <output name="output3">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </output>
             <fault name="bookHotelFault">
                 <soap:fault name="bookHotelFault" use="literal"/>

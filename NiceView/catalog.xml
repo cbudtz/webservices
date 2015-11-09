@@ -5,4 +5,6 @@
     <system systemId="file:/C:/Users/Jeppe_000/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview/web/dk/elements/NiceViewElements.xsd" uri="src/conf/xml-resources/web-services/NiceViewWebService/niceview/web/dk/elements/NiceViewElements.xsd"/>
     <system systemId="file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview.web.dk.wsdl/HotelReservation.wsdl" uri="src/conf/xml-resources/web-services/NiceViewWebService_new/wsdl/HotelReservation.wsdl"/>
     <system systemId="file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/NiceView/src/java/niceview/web/dk/elements/NiceViewElements.xsd" uri="src/conf/xml-resources/web-services/NiceViewWebService_new/niceview/web/dk/elements/NiceViewElements.xsd"/>
+    <system systemId="file:/C:/Programming/02267/webservices/NiceView/src/java/ws/niceview/HotelReservation.wsdl" uri="src/conf/xml-resources/web-services/HotelReservationWebService/wsdl/HotelReservation.wsdl"/>
+    <system systemId="file:/C:/Programming/02267/webservices/NiceView/src/java/ws/niceview/NiceViewElements.xsd" uri="src/conf/xml-resources/web-services/HotelReservationWebService/wsdl/NiceViewElements.xsd"/>
 </catalog>

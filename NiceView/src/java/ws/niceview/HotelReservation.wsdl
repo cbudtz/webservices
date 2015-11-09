@@ -2,35 +2,35 @@
 <definitions name="HotelReservation" targetNamespace="http://HotelReservation.ws"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://HotelReservation.ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns0="http://niceview/NiceViewElements">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://HotelReservation.ws" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns0="http://HotelReservation.ws">
     <types>
         <xsd:schema targetNamespace="http://HotelReservation.ws" xmlns:tns="http://HotelReservation.ws">
-            <xsd:import namespace="http://niceview/NiceViewElements" schemaLocation="../niceview/web/dk/elements/NiceViewElements.xsd"/>
+            <xsd:import namespace="http://HotelReservation.ws" schemaLocation="NiceViewElements.xsd"/>
         </xsd:schema>
     </types>
     <message name="getHotelsRequest">
-        <part name="request" element="ns0:getHotelsRequest"/>
+        <part name="request" element="ns0:GetHotelsRequest"/>
     </message>
     <message name="getHotelsResponse">
-        <part name="response" element="ns0:getHotelsResponse"/>
+        <part name="response" element="ns0:GetHotelsResponse"/>
     </message>
     <message name="cancelHotelRequest">
-        <part name="request" element="ns0:cancelHotelRequest"/>
+        <part name="request" element="ns0:CancelHotelRequest"/>
     </message>
     <message name="cancelHotelResponse">
-        <part name="request" element="ns0:cancelHotelResponse"/>
+        <part name="request" element="ns0:CancelHotelResponse"/>
     </message>
     <message name="bookHotelRequest">
-        <part name="request" element="ns0:bookHotelRequest"/>
+        <part name="request" element="ns0:BookHotelRequest"/>
     </message>
     <message name="bookHotelResponse">
-        <part name="response" element="ns0:bookHotelResponse"/>
+        <part name="response" element="ns0:BookHotelResponse"/>
     </message>
     <message name="cancelHotelFault">
-        <part name="faultInfo" element="ns0:cancelHotelFault"/>
+        <part name="faultInfo" element="ns0:CancelHotelFault"/>
     </message>
     <message name="bookHotelFault">
-        <part name="faultInfo" element="ns0:bookHotelFault"/>
+        <part name="faultInfo" element="ns0:BookHotelFault"/>
     </message>
     <portType name="HotelReservation">
         <operation name="getHotels">
@@ -53,33 +53,39 @@
         <operation name="getHotels">
             <soap:operation/>
             <input name="input1">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </input>
             <output name="output1">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </output>
         </operation>
         <operation name="cancelHotel">
             <soap:operation/>
             <input name="input2">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </input>
             <output name="output2">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </output>
+            <fault name="canceHotelFault">
+                <soap:fault name="canceHotelFault" use="literal"/>
+            </fault>
         </operation>
         <operation name="bookHotel">
             <soap:operation/>
             <input name="input3">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </input>
             <output name="output3">
-                <soap:body use="literal" namespace="http://niceview.web.dk"/>
+                <soap:body use="literal"/>
             </output>
+            <fault name="bookHotelFault">
+                <soap:fault name="bookHotelFault" use="literal"/>
+            </fault>
         </operation>
     </binding>
     <service name="HotelReservationService">
-        <port name="HotelReservationBindingPort" binding="tns:HotelReservationBinding">
+        <port name="HotelReservationPort" binding="tns:HotelReservationBinding">
             <soap:address location="http://localhost:${HttpDefaultPort}/service"/>
         </port>
     </service>
