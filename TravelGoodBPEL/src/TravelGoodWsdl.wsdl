@@ -2,15 +2,63 @@
 <definitions name="TravelGoodWsdl" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements" xmlns:ns="http://xml.netbeans.org/schema/TravelGoodElements">
     <types>
         <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements">
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
             <xsd:import schemaLocation="referenced%20schemas/LameDuckElements.xsd" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
             <xsd:import schemaLocation="referenced%20schemas/NiceViewElements.xsd" namespace="http://niceview/NiceViewElements"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="referenced schemas/LameDuckElements.xsd"/>
+            <xsd:import namespace="http://niceview/NiceViewElements" schemaLocation="referenced schemas/NiceViewElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="referenced schemas/TravelGoodElements.xsd"/>
         </xsd:schema>
     </types>
-    <portType name="TravelGoodWsdlPortType"></portType>
+    <message name="getFlightsRequest">
+        <part name="input" element="ns0:getFlightRequestElement"/>
+    </message>
+    <message name="getFlightsResponse">
+        <part name="output" element="ns0:FlightInfoListElement"/>
+    </message>
+    <message name="addFlightToItineraryRequest">
+        <part name="input" element="ns0:FlightInformationElement"/>
+    </message>
+    <message name="getHotelsRequest">
+        <part name="input" element="ns3:GetHotelsRequest"/>
+    </message>
+    <message name="getHotelsResponse">
+        <part name="output" element="ns3:GetHotelsResponse"/>
+    </message>
+    <message name="addHotelToItineraryRequest">
+        <part name="input" element="ns3:HotelElement"/>
+    </message>
+    <message name="bookItineraryRequest"/>
+    <message name="bookItineraryResponse">
+        <part name="output" element="ns:ItineraryElement"/>
+    </message>
+    <message name="bookItineraryFault">
+        <part name="fault" element="ns:bookItineraryFaultElement"/>
+    </message>
+    <portType name="TravelGoodWsdlPortType">
+        <operation name="getFlights">
+            <input name="input1" message="tns:getFlightsRequest"/>
+            <output name="output1" message="tns:getFlightsResponse"/>
+        </operation>
+        <operation name="addFlightToItinerary">
+            <input name="input2" message="tns:addFlightToItineraryRequest"/>
+        </operation>
+        <operation name="getHotels">
+            <input name="input3" message="tns:getHotelsRequest"/>
+            <output name="output2" message="tns:getHotelsResponse"/>
+        </operation>
+        <operation name="addHotelToItinerary">
+            <input name="input4" message="tns:addHotelToItineraryRequest"/>
+        </operation>
+        <operation name="bookItinerary">
+            <input name="input5" message="tns:bookItineraryRequest"/>
+            <output name="output3" message="tns:bookItineraryResponse"/>
+            <fault name="fault1" message="tns:bookItineraryFault"/>
+        </operation>
+    </portType>
     <plnk:partnerLinkType name="TravelGoodWsdl">
         <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
 In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.

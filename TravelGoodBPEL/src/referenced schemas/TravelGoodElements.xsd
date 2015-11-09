@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://xml.netbeans.org/schema/TravelGoodElements"
+    xmlns:tns="http://xml.netbeans.org/schema/TravelGoodElements"
+    elementFormDefault="qualified">
+    <xsd:complexType name="HotelInformationType">
+        <xsd:sequence>
+                <xsd:element name="hotelName" type="xsd:string"></xsd:element>
+                    <xsd:element name="hotelAddress" type="xsd:string"></xsd:element>
+                    <xsd:element name="bookingNumber" type="xsd:int"></xsd:element>
+                    <xsd:element name="totalPrice" type="xsd:double"></xsd:element>
+                    <xsd:element name="creditCardGuaranteeRequired" type="xsd:boolean"></xsd:element>
+                    <xsd:element name="serviceName" type="xsd:string"></xsd:element>
+            </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ItineraryType">
+        <xsd:sequence>
+            <xsd:element name="flights" type="tns:FlightInformationType" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+            <xsd:element name="hotels" type="tns:HotelInformationType" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+            <xsd:element name="state" type="tns:ItineraryStateType"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="FlightType">
+        <xsd:sequence>
+            <xsd:element name="originAirport" type="xsd:string"></xsd:element>
+            <xsd:element name="destAirport" type="xsd:string"></xsd:element>
+            <xsd:element name="takeOff" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="arrival" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="carrier" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="FlightInformationType">
+        <xsd:sequence>
+            <xsd:element name="flight" type="tns:FlightType"></xsd:element>
+            <xsd:element name="bookingNumber" type="xsd:int"></xsd:element>
+            <xsd:element name="flightPrice" type="xsd:int"></xsd:element>
+            <xsd:element name="serviceName" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ItineraryStateType">
+        <xsd:sequence>
+            <xsd:element name="state" type="xsd:int"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="ItineraryElement" type="tns:ItineraryType"></xsd:element>
+    <xsd:element name="bookItineraryFaultElement" type="xsd:string"></xsd:element>
+</xsd:schema>
