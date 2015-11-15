@@ -2,15 +2,13 @@
 <definitions name="TravelGoodWsdl" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements" xmlns:ns="http://xml.netbeans.org/schema/TravelGoodElements">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements">
     <types>
-        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements">
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements">
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
             <xsd:import schemaLocation="referenced%20schemas/LameDuckElements.xsd" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
             <xsd:import schemaLocation="referenced%20schemas/NiceViewElements.xsd" namespace="http://niceview/NiceViewElements"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="referenced schemas/LameDuckElements.xsd"/>
-            <xsd:import namespace="http://niceview/NiceViewElements" schemaLocation="referenced schemas/NiceViewElements.xsd"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="referenced schemas/TravelGoodElements.xsd"/>
+            <xsd:import schemaLocation="referenced%20schemas/TravelGoodElements.xsd" namespace="http://xml.netbeans.org/schema/TravelGoodElements"/>
         </xsd:schema>
     </types>
     <message name="getFlightsRequest">
@@ -33,32 +31,168 @@
     </message>
     <message name="bookItineraryRequest"/>
     <message name="bookItineraryResponse">
-        <part name="output" element="ns:ItineraryElement"/>
+        <part name="bookedItinerary" element="ns2:ItineraryElement"/>
     </message>
     <message name="bookItineraryFault">
-        <part name="fault" element="ns:bookItineraryFaultElement"/>
+        <part name="bookFault" element="ns2:bookItineraryFaultElement"/>
+    </message>
+    <message name="cancelItineraryRequest"/>
+    <message name="cancelItineraryResponse">
+        <part name="status" element="ns0:StringElement"/>
+    </message>
+    <message name="addFlightToItineraryResponse">
+        <part name="itinerary" element="ns2:ItineraryElement"/>
+    </message>
+    <message name="addHotelToItineraryResponse">
+        <part name="itinerary" element="ns2:ItineraryElement"/>
+    </message>
+    <message name="removeFlightRequest">
+        <part name="flightToRemove" element="ns0:FlightInformationElement"/>
+    </message>
+    <message name="removeFlightResponse">
+        <part name="itinerary" element="ns2:ItineraryElement"/>
+    </message>
+    <message name="removeHotelRequest">
+        <part name="hotelToRemove" element="ns3:HotelElement"/>
+    </message>
+    <message name="removeHotelResponse">
+        <part name="itinerary" element="ns2:ItineraryElement"/>
+    </message>
+    <message name="getItineraryRequest"/>
+    <message name="getItineraryResponse">
+        <part name="itinerary" element="ns2:ItineraryElement"/>
     </message>
     <portType name="TravelGoodWsdlPortType">
         <operation name="getFlights">
             <input name="input1" message="tns:getFlightsRequest"/>
             <output name="output1" message="tns:getFlightsResponse"/>
         </operation>
-        <operation name="addFlightToItinerary">
-            <input name="input2" message="tns:addFlightToItineraryRequest"/>
-        </operation>
         <operation name="getHotels">
             <input name="input3" message="tns:getHotelsRequest"/>
             <output name="output2" message="tns:getHotelsResponse"/>
-        </operation>
-        <operation name="addHotelToItinerary">
-            <input name="input4" message="tns:addHotelToItineraryRequest"/>
         </operation>
         <operation name="bookItinerary">
             <input name="input5" message="tns:bookItineraryRequest"/>
             <output name="output3" message="tns:bookItineraryResponse"/>
             <fault name="fault1" message="tns:bookItineraryFault"/>
         </operation>
+        <operation name="cancelItinerary">
+            <input name="input6" message="tns:cancelItineraryRequest"/>
+            <output name="output4" message="tns:cancelItineraryResponse"/>
+        </operation>
+        <operation name="addFlightToItinerary">
+            <input name="input2" message="tns:addFlightToItineraryRequest"/>
+            <output name="output5" message="tns:addFlightToItineraryResponse"/>
+        </operation>
+        <operation name="addHotelToItinerary">
+            <input name="input4" message="tns:addHotelToItineraryRequest"/>
+            <output name="output6" message="tns:addHotelToItineraryResponse"/>
+        </operation>
+        <operation name="removeFlight">
+            <input name="input7" message="tns:removeFlightRequest"/>
+            <output name="output7" message="tns:removeFlightResponse"/>
+        </operation>
+        <operation name="removeHotel">
+            <input name="input8" message="tns:removeHotelRequest"/>
+            <output name="output8" message="tns:removeHotelResponse"/>
+        </operation>
+        <operation name="getItinerary">
+            <input name="input9" message="tns:getItineraryRequest"/>
+            <output name="output9" message="tns:getItineraryResponse"/>
+        </operation>
     </portType>
+    <binding name="TravelGoodWsdlPortTypeBinding" type="tns:TravelGoodWsdlPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getFlights">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output1">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="getHotels">
+            <soap:operation/>
+            <input name="input3">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output2">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="bookItinerary">
+            <soap:operation/>
+            <input name="input5">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output3">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+            <fault name="fault1">
+                <soap:fault name="fault1" use="literal" namespace="http://travelgood.web.dk"/>
+            </fault>
+        </operation>
+        <operation name="cancelItinerary">
+            <soap:operation/>
+            <input name="input6">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output4">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="addFlightToItinerary">
+            <soap:operation/>
+            <input name="input2">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output5">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="addHotelToItinerary">
+            <soap:operation/>
+            <input name="input4">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output6">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="removeFlight">
+            <soap:operation/>
+            <input name="input7">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output7">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="removeHotel">
+            <soap:operation/>
+            <input name="input8">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output8">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+        <operation name="getItinerary">
+            <soap:operation/>
+            <input name="input9">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </input>
+            <output name="output9">
+                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="TravelGoodWsdlService">
+        <port name="TravelGoodWsdlPortTypeBindingPort" binding="tns:TravelGoodWsdlPortTypeBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/service"/>
+        </port>
+    </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">
         <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
 In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
