@@ -7,7 +7,6 @@ package unitTest;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl;
 import java.util.List;
-import java.util.jar.Pack200;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeFactory;
@@ -63,7 +62,14 @@ public class LameDuckTest {
         flightRequest.setDestination("Test Dest");
         FlightInfoListType flights = getFlights(flightRequest);
         List<FlightInformationType> flightInfos = flights.getFlightInfo();
-        assertEquals(0, flightInfos.size());
+        assertTrue(flightInfos.size()>0);
+        flightRequest.setFlightDate(df.newXMLGregorianCalendarDate(2016, 1, 1, 1));
+        flights = getFlights(flightRequest);
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getOriginAirport().equals("Copenhagen"));
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getCarrier().equals("FlameDuck"));
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getDestAirport().equals("Test Dest"));
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getTakeOff().toString().equals(flightRequest.getFlightDate().toString()));
+        
         
     }
     
@@ -134,10 +140,36 @@ public class LameDuckTest {
         }
         req.setPrice(1000000000);
         String succes="";
+        GetFlightRequestType flightRequest = new GetFlightRequestType();
+        flightRequest.setDestination("Mallorca");
+        flightRequest.setFlightDate(df.newXMLGregorianCalendarDate(2016,1, 1, 1));
+        FlightInfoListType flightlist = getFlights(flightRequest);
+        FlightInformationType flight = flightlist.getFlightInfo().get(0);
+        
+        BookFlightRequestType bookRequest = new BookFlightRequestType();
+        bookRequest.setBookingNumber(flight.getBookingNumber());
+        CreditCardInfoType creditCard = new CreditCardInfoType();
+        creditCard.setCardNumber(50408816);
+        creditCard.setExpirationDate(df.newXMLGregorianCalendarDate(2009, 5, 1, 1));
+        creditCard.setHolderName("Anne Strandberg");
+        bookRequest.setCreditcardInfo(creditCard);
+        boolean succes2=false;
+        try {
+            succes2 = bookFlight(bookRequest);
+        } catch (BookFlightFault ex) {            
+            Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("ARGH!");
+        }
+        assertTrue(succes2);
+        
+        req.setBookingNumber(flight.getBookingNumber());
+        req.setCreditCardInformation(creditCard);
+        req.setPrice(flight.getFlightPrice());
         try {
             succes = cancelFlight(req);
         } catch (CancelFlightFault ex) {
             Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Should have worked!");
         }
         assertEquals("succes", succes); 
         
