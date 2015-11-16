@@ -51,6 +51,8 @@ public class LameDuckWebservice {
     
     
     public FlightInfoListType getFlights(GetFlightRequestType flightInfo) {
+        if(flightInfo == null) return new FlightInfoListType();
+        
         FlightInfoListType l = new FlightInfoListType();
         ArrayList<FlightInformationType> matches = findFlights(flightInfo.getDestination(), flightInfo.getOrigin(), flightInfo.getFlightDate());
         if(matches.isEmpty()){
@@ -142,6 +144,10 @@ public class LameDuckWebservice {
     }
 
     public String cancelFlight(CancelFlightRequestType flightInfo) throws CancelFlightFault {
+        if(flightInfo == null) throw new CancelFlightFault("flightinfo is null", "you should not do this. ");
+        if(flightInfo.getCreditCardInformation() == null) throw new CancelFlightFault("creditcardinfo is null", "you will not get any money. hahahaha.");
+        if(flightInfo.getCreditCardInformation().getExpirationDate() == null) throw new CancelFlightFault("exp date is null. it is not valid. you cant get any money", "");
+        
         dk.dtu.imm.fastmoney.types.CreditCardInfoType creditcard = convert(flightInfo.getCreditCardInformation());
         
         try {
