@@ -6,6 +6,7 @@
 package unitTest;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl;
+import java.util.List;
 import java.util.jar.Pack200;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,9 @@ import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.CancelFlightFault;
 import org.netbeans.xml.schema.lameduckelements.BookFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.CancelFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
+import org.netbeans.xml.schema.lameduckelements.FlightInfoListType;
+import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
+import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
 
 /**
  *
@@ -53,7 +57,14 @@ public class LameDuckTest {
     //
     @Test
     public void getFlightsTest() {
-        fail("Not implemented yet");
+        getFlights(null);
+        GetFlightRequestType flightRequest = new GetFlightRequestType();
+        FlightInfoListType something = getFlights(flightRequest);
+        flightRequest.setDestination("Test Dest");
+        FlightInfoListType flights = getFlights(flightRequest);
+        List<FlightInformationType> flightInfos = flights.getFlightInfo();
+        assertEquals(0, flightInfos.size());
+        
     }
     
     @Test 
@@ -122,11 +133,13 @@ public class LameDuckTest {
             Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         req.setPrice(1000000000);
+        String succes="";
         try {
-            cancelFlight(req);
+            succes = cancelFlight(req);
         } catch (CancelFlightFault ex) {
             Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+        assertEquals("succes", succes); 
         
         
         
@@ -143,5 +156,11 @@ public class LameDuckTest {
         org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService service = new org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService();
         org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType port = service.getLameDuckPortTypeBindingPort();
         return port.cancelFlight(flightInfo);
+    }
+
+    private static FlightInfoListType getFlights(org.netbeans.xml.schema.lameduckelements.GetFlightRequestType flightInfo) {
+        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService service = new org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService();
+        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType port = service.getLameDuckPortTypeBindingPort();
+        return port.getFlights(flightInfo);
     }
 }
