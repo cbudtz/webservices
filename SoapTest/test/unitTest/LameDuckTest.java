@@ -140,10 +140,36 @@ public class LameDuckTest {
         }
         req.setPrice(1000000000);
         String succes="";
+        GetFlightRequestType flightRequest = new GetFlightRequestType();
+        flightRequest.setDestination("Mallorca");
+        flightRequest.setFlightDate(df.newXMLGregorianCalendarDate(2016,1, 1, 1));
+        FlightInfoListType flightlist = getFlights(flightRequest);
+        FlightInformationType flight = flightlist.getFlightInfo().get(0);
+        
+        BookFlightRequestType bookRequest = new BookFlightRequestType();
+        bookRequest.setBookingNumber(flight.getBookingNumber());
+        CreditCardInfoType creditCard = new CreditCardInfoType();
+        creditCard.setCardNumber(50408816);
+        creditCard.setExpirationDate(df.newXMLGregorianCalendarDate(2009, 5, 1, 1));
+        creditCard.setHolderName("Anne Strandberg");
+        bookRequest.setCreditcardInfo(creditCard);
+        boolean succes2=false;
+        try {
+            succes2 = bookFlight(bookRequest);
+        } catch (BookFlightFault ex) {            
+            Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("ARGH!");
+        }
+        assertTrue(succes2);
+        
+        req.setBookingNumber(flight.getBookingNumber());
+        req.setCreditCardInformation(creditCard);
+        req.setPrice(flight.getFlightPrice());
         try {
             succes = cancelFlight(req);
         } catch (CancelFlightFault ex) {
             Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Should have worked!");
         }
         assertEquals("succes", succes); 
         
