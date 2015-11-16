@@ -2,13 +2,13 @@
 <definitions name="TravelGoodWsdl" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns3="http://niceview/NiceViewElements" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns3="http://xml.netbeans.org/schema/NiceViewElements">
     <types>
-        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements">
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements">
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
-            <xsd:import schemaLocation="referenced%20schemas/LameDuckElements.xsd" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
-            <xsd:import schemaLocation="referenced%20schemas/NiceViewElements.xsd" namespace="http://niceview/NiceViewElements"/>
-            <xsd:import schemaLocation="referenced%20schemas/TravelGoodElements.xsd" namespace="http://xml.netbeans.org/schema/TravelGoodElements"/>
+            <xsd:import schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
+            <xsd:import schemaLocation="TravelGoodElements.xsd" namespace="http://xml.netbeans.org/schema/TravelGoodElements"/>
+            <xsd:import schemaLocation="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/NiceViewElements"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
                     <xsd:element name="flightRequest" type="ns0:getFlightRequestType"></xsd:element>
@@ -24,16 +24,16 @@
             </xsd:complexType>
             <xsd:complexType name="TGGetHotelsRequestType">
                 <xsd:sequence>
-                    <xsd:element ref="ns3:GetHotelsRequest"/>
                     <xsd:element name="itineraryId" type="tns:ItineraryType"></xsd:element>
+                    <xsd:element name="request" type="ns4:GetHotelsRequestType"></xsd:element>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="TGGetHotelsRequestElement" type="tns:TGGetHotelsRequestType"></xsd:element>
             <xsd:element name="TGAddFlightToItineraryElement" type="tns:TGAddFlightToItineraryType"></xsd:element>
             <xsd:complexType name="TGAddHotelToItineraryType">
                 <xsd:sequence>
-                    <xsd:element ref="ns3:HotelElement"/>
                     <xsd:element name="itineraryId" type="tns:ItineraryType"></xsd:element>
+                    <xsd:element name="hotel" type="ns4:HotelInformationType"></xsd:element>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="TGAddHotelToItineraryElement" type="tns:TGAddHotelToItineraryType"></xsd:element>
@@ -46,8 +46,8 @@
             <xsd:element name="TGRemoveFlightRequestElement" type="tns:TGRemoveFlightRequestType"></xsd:element>
             <xsd:complexType name="TGRemoveHotelRequestType">
                 <xsd:sequence>
-                    <xsd:element ref="ns3:HotelElement"/>
                     <xsd:element name="itineraryId" type="tns:ItineraryType"></xsd:element>
+                    <xsd:element name="hotelToRemove" type="ns4:HotelInformationType"></xsd:element>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="TGRemoveHotelRequestElement" type="tns:TGRemoveHotelRequestType"></xsd:element>
@@ -70,7 +70,7 @@
         <part name="input" element="tns:TGGetHotelsRequestElement"/>
     </message>
     <message name="getHotelsResponse">
-        <part name="output" element="ns3:GetHotelsResponse"/>
+        <part name="output" element="ns3:HotelInformationListElement"/>
     </message>
     <message name="addHotelToItineraryRequest">
         <part name="input" element="tns:TGAddHotelToItineraryElement"/>
@@ -115,7 +115,7 @@
         <part name="itinerary" element="ns2:ItineraryElement"/>
     </message>
     <message name="InitiateItineraryRequest">
-        <part name="part1" type="xsd:string"/>
+        <part name="itineraryId" type="tns:ItineraryType"/>
     </message>
     <message name="InitiateItineraryResponse">
         <part name="itineraryId" element="tns:ItineraryIdElement"/>
@@ -283,4 +283,5 @@ A partner link type characterizes the conversational relationship between two se
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:getItineraryRequest" part="itineraryId"/>
+    <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:InitiateItineraryRequest" part="itineraryId"/>
 </definitions>
