@@ -39,8 +39,10 @@ public class LameDuckWebservice {
     public final int DEF_PRIZE = 995;
     public final int GROUP_NO = 16;
     public final String DEF_DESTINATION = "Mallorca";
+    public final String DEF_ORIGIN = "Copenhagen";
     public final XMLGregorianCalendar DEF_ARRIVAL_DATE = getDate(2016, 6, 10, 12, 30);
     public final int DEF_FLIGHT_DURATION = 2;
+    public final String DEF_CARRIER = "FlameDuck";
     private int BOOKING_NO = 1000000;
     private BankPortType bank = null;
     public List<FlightInformationType> flightDatabase = new ArrayList<>();
@@ -52,7 +54,7 @@ public class LameDuckWebservice {
     
     public FlightInfoListType getFlights(GetFlightRequestType flightInfo) {
         if(flightInfo == null) return new FlightInfoListType();
-        
+       
         FlightInfoListType l = new FlightInfoListType();
         ArrayList<FlightInformationType> matches = findFlights(flightInfo.getDestination(), flightInfo.getOrigin(), flightInfo.getFlightDate());
         if(matches.isEmpty()){
@@ -64,13 +66,14 @@ public class LameDuckWebservice {
         
         // set flight type for flight info
         FlightType flightType = new FlightType();     
-        flightType.setTakeOff(flightInfo.getFlightDate());
-        flightType.setOriginAirport(flightInfo.getOrigin());
-        flightType.setDestAirport(flightInfo.getDestination());
+        flightType.setTakeOff(flightInfo.getFlightDate() == null ? DEF_ARRIVAL_DATE : flightInfo.getFlightDate());
+        flightType.setOriginAirport(flightInfo.getOrigin() == null ? DEF_ORIGIN : flightInfo.getOrigin());
+        flightType.setDestAirport(flightInfo.getDestination() == null ? DEF_DESTINATION : flightInfo.getDestination());
         // set arrival time to departure time + DEF_FLIGHT_DURATION
-        XMLGregorianCalendar arrival = flightInfo.getFlightDate();
+        XMLGregorianCalendar arrival = flightInfo.getFlightDate() == null ? DEF_ARRIVAL_DATE : (XMLGregorianCalendar) flightInfo.getFlightDate().clone();
         arrival.setHour(arrival.getHour() + DEF_FLIGHT_DURATION);
         flightType.setArrival(arrival);
+        flightType.setCarrier(DEF_CARRIER);
         flight.setFlight(flightType);     
         flightDatabase.add(flight);
         l.getFlightInfo().add(flight);
@@ -211,7 +214,7 @@ public class LameDuckWebservice {
         dk.dtu.imm.fastmoney.types.CreditCardInfoType newType = new CreditCardInfoType();
         ExpirationDate expDate = new ExpirationDate();
         expDate.setMonth(info.getExpirationDate().getMonth());
-        expDate.setYear(info.getExpirationDate().getYear());
+        expDate.setYear(Integer.valueOf(String.valueOf(info.getExpirationDate().getYear()).substring(2, 4)));
         newType.setExpirationDate(expDate);
         newType.setName(info.getHolderName());
         newType.setNumber(String.valueOf(info.getCardNumber()));
