@@ -7,7 +7,6 @@ package unitTest;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl;
 import java.util.List;
-import java.util.jar.Pack200;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeFactory;
@@ -63,7 +62,14 @@ public class LameDuckTest {
         flightRequest.setDestination("Test Dest");
         FlightInfoListType flights = getFlights(flightRequest);
         List<FlightInformationType> flightInfos = flights.getFlightInfo();
-        assertEquals(0, flightInfos.size());
+        assertTrue(flightInfos.size()>0);
+        flightRequest.setFlightDate(df.newXMLGregorianCalendarDate(2016, 1, 1, 1));
+        flights = getFlights(flightRequest);
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getOriginAirport().equals("Copenhagen"));
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getCarrier().equals("FlameDuck"));
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getDestAirport().equals("Test Dest"));
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getTakeOff().toString().equals(flightRequest.getFlightDate().toString()));
+        
         
     }
     
