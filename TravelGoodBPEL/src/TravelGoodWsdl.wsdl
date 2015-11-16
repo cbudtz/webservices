@@ -115,7 +115,7 @@
         <part name="itinerary" element="ns2:ItineraryElement"/>
     </message>
     <message name="InitiateItineraryRequest">
-        <part name="itineraryId" type="tns:ItineraryType"/>
+        <part name="part1" type="xsd:string"/>
     </message>
     <message name="InitiateItineraryResponse">
         <part name="itineraryId" element="tns:ItineraryIdElement"/>
@@ -283,5 +283,4 @@ A partner link type characterizes the conversational relationship between two se
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:getItineraryRequest" part="itineraryId"/>
-    <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:InitiateItineraryRequest" part="itineraryId"/>
 </definitions>
