@@ -9,17 +9,31 @@
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk" xmlns:ns3="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
     <import namespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" location="TravelGoodWsdl.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://enterprise.netbeans.org/bpel/HotelReservationWrapper" location="HotelReservationWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://HotelReservation.ws" location="NiceView/ws/niceview/HotelReservation.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" location="LameDuckTest/lameduck/web/dk/LameDuckWSDL.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://enterprise.netbeans.org/bpel/BankServiceWrapper" location="BankServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
-        <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/HotelReservationWrapper" partnerLinkType="tns:HotelReservationLinkType" partnerRole="HotelReservationRole"/>
-        <partnerLink name="PartnerLink3" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" partnerLinkType="tns:LameDuckWSDL" partnerRole="LameDuckPortTypeRole"/>
-        <partnerLink name="PartnerLink1" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" partnerLinkType="tns:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
+        <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
+    <variables>
+        <variable name="InitiateItineraryIn" messageType="ns3:InitiateItineraryRequest"/>
+        <variable name="InitiateItineraryOut" messageType="ns3:InitiateItineraryResponse"/>
+    </variables>
+    <correlationSets>
+        <correlationSet name="ItineraryCorrelationSet" properties="ns3:itineraryId"/>
+    </correlationSets>
     <sequence>
-   </sequence>
+        <receive name="InitiateProcess" createInstance="yes" partnerLink="PartnerLink1" operation="InitiateItinerary" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" portType="tns:TravelGoodWsdlPortType" variable="InitiateItineraryIn">
+            <documentation>Start the process. We added a call for this, this makes sure that the correlation set can be created</documentation>
+            <correlations>
+                <correlation set="ItineraryCorrelationSet" initiate="yes"/>
+            </correlations>
+        </receive>
+        <assign name="InitiateItineraryAssign">
+            <copy>
+                <from variable="InitiateItineraryIn" part="itineraryId"/>
+                <to variable="InitiateItineraryIn" part="itineraryId"/>
+            </copy>
+        </assign>
+        <reply name="InitiateReply" partnerLink="PartnerLink1" operation="InitiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="InitiateItineraryOut"/>
+    </sequence>
 </process>

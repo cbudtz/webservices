@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="NiceView/ws/niceview/HotelReservation.wsdl" uri="nb-uri:NiceView#src/java/ws/niceview/HotelReservation.wsdl"/>
-    <system systemId="LameDuckTest/lameduck/web/dk/LameDuckWSDL.wsdl" uri="nb-uri:LameDuckTest#src/java/lameduck/web/dk/LameDuckWSDL.wsdl"/>
     <nextCatalog catalog="nbproject/private/retriever/catalog.xml"/>
 </catalog>
