@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://HotelReservation.ws"
-    xmlns:tns="http://HotelReservation.ws"
+    targetNamespace="http://HotelReservation.xsd"
+    xmlns:tns="http://HotelReservation.xsd"
     elementFormDefault="qualified">
     <xsd:complexType name="HotelType">
                 <xsd:sequence>
