@@ -6,10 +6,15 @@
 package unitTest;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,6 +23,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.BookFlightFault;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.CancelFlightFault;
+import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType;
+import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService;
 import org.netbeans.xml.schema.lameduckelements.BookFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.CancelFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
@@ -31,6 +38,7 @@ import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
  */
 public class LameDuckTest {
     DatatypeFactory df = new DatatypeFactoryImpl();
+    LameDuckPortType lameDuck;
     
     public LameDuckTest() {
     }
@@ -45,6 +53,12 @@ public class LameDuckTest {
     
     @Before
     public void setUp() {
+        try {
+            LameDuckWSDLService wsdl = new LameDuckWSDLService(new URL("http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl"));
+            lameDuck = wsdl.getLameDuckPortTypeBindingPort();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @After
@@ -63,12 +77,13 @@ public class LameDuckTest {
         FlightInfoListType flights = getFlights(flightRequest);
         List<FlightInformationType> flightInfos = flights.getFlightInfo();
         assertTrue(flightInfos.size()>0);
-        flightRequest.setFlightDate(df.newXMLGregorianCalendarDate(2016, 1, 1, 1));
+        flightRequest.setFlightDate(df.newXMLGregorianCalendar(new BigInteger(String.valueOf(2016)), 1, 1, 1, 1, 1, BigDecimal.ZERO, 1));
         flights = getFlights(flightRequest);
         assertTrue(flights.getFlightInfo().get(0).getFlight().getOriginAirport().equals("Copenhagen"));
         assertTrue(flights.getFlightInfo().get(0).getFlight().getCarrier().equals("FlameDuck"));
         assertTrue(flights.getFlightInfo().get(0).getFlight().getDestAirport().equals("Test Dest"));
-        assertTrue(flights.getFlightInfo().get(0).getFlight().getTakeOff().toString().equals(flightRequest.getFlightDate().toString()));
+        assertEquals(flights.getFlightInfo().get(0).getFlight().getTakeOff(), flightRequest.getFlightDate());
+        assertTrue(flights.getFlightInfo().get(0).getFlight().getTakeOff().equals(flightRequest.getFlightDate()));
         
         
     }
@@ -149,16 +164,19 @@ public class LameDuckTest {
         BookFlightRequestType bookRequest = new BookFlightRequestType();
         bookRequest.setBookingNumber(flight.getBookingNumber());
         CreditCardInfoType creditCard = new CreditCardInfoType();
-        creditCard.setCardNumber(50408816);
-        creditCard.setExpirationDate(df.newXMLGregorianCalendarDate(2009, 5, 1, 1));
-        creditCard.setHolderName("Anne Strandberg");
-        bookRequest.setCreditcardInfo(creditCard);
-        boolean succes2=false;
+        creditCard.setCardNumber(50408823);
+//        XMLGregorianCalendar date = df.newXMLGregorianCalendar(new BigInteger(String.valueOf(2010)), 9, 1, 1, 1,1, BigDecimal.ZERO, 1);
+//        int value = Integer.valueOf(String.valueOf(date.getYear()).substring(2, 4));
+//        assertEquals("value fuckup", value, 10);
+        creditCard.setExpirationDate(df.newXMLGregorianCalendar(new BigInteger(String.valueOf(2010)), 9, 1, 1, 1,1, BigDecimal.ZERO, 1));
+        creditCard.setHolderName("Tobiasen Inge");
+        bookRequest.setCreditcardInfo(creditCard); 
+       boolean succes2=false;
         try {
             succes2 = bookFlight(bookRequest);
         } catch (BookFlightFault ex) {            
             Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
-            fail("ARGH!");
+            fail("ARGH! fault: " + ex.getMessage() + "\n" + ex.getFaultInfo());
         }
         assertTrue(succes2);
         
@@ -171,28 +189,18 @@ public class LameDuckTest {
             Logger.getLogger(LameDuckTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Should have worked!");
         }
-        assertEquals("succes", succes); 
-        
-        
-        
-        
+        assertEquals("all ok", succes);     
     }
 
-    private static boolean bookFlight(org.netbeans.xml.schema.lameduckelements.BookFlightRequestType flightInfo) throws BookFlightFault {
-        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService service = new org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService();
-        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType port = service.getLameDuckPortTypeBindingPort();
-        return port.bookFlight(flightInfo);
+    private boolean bookFlight(org.netbeans.xml.schema.lameduckelements.BookFlightRequestType flightInfo) throws BookFlightFault {
+        return lameDuck.bookFlight(flightInfo);
     }
 
-    private static String cancelFlight(org.netbeans.xml.schema.lameduckelements.CancelFlightRequestType flightInfo) throws CancelFlightFault {
-        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService service = new org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService();
-        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType port = service.getLameDuckPortTypeBindingPort();
-        return port.cancelFlight(flightInfo);
+    private String cancelFlight(org.netbeans.xml.schema.lameduckelements.CancelFlightRequestType flightInfo) throws CancelFlightFault {
+        return lameDuck.cancelFlight(flightInfo);
     }
 
-    private static FlightInfoListType getFlights(org.netbeans.xml.schema.lameduckelements.GetFlightRequestType flightInfo) {
-        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService service = new org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService();
-        org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType port = service.getLameDuckPortTypeBindingPort();
-        return port.getFlights(flightInfo);
+    private FlightInfoListType getFlights(org.netbeans.xml.schema.lameduckelements.GetFlightRequestType flightInfo) {
+        return lameDuck.getFlights(flightInfo);
     }
 }
