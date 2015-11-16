@@ -7,6 +7,16 @@
         </identification>
         <service-unit>
             <identification>
+                <name>TravelGood-TravelGoodBPEL</name>
+                <description>Represents this Service Unit</description>
+            </identification>
+            <target>
+                <artifacts-zip>TravelGoodBPEL.jar</artifacts-zip>
+                <component-name>sun-bpel-engine</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
                 <name>TravelGood-sun-database-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
