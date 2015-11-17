@@ -2,4 +2,12 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://desktop-0ahhu0k:8080/LameDuckTest/LameDuckWSDLService?wsdl" uri="wsdl/desktop-0ahhu0k_8080/LameDuckTest/LameDuckWSDLService.wsdl"/>
     <system systemId="http://desktop-0ahhu0k:8080/LameDuckTest/LameDuckWSDLService?xsd=1" uri="wsdl/desktop-0ahhu0k_8080/LameDuckTest/LameDuckWSDLService.xsd_1.xsd"/>
+    <system systemId="file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/TravelGoodBPEL/src/TravelGoodWsdl.wsdl" uri="wsdl/TravelGoodWsdl.wsdl"/>
+    <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" uri="wsdl/fastmoney.compute.dtu.dk_8080/BankService.xsd_2.xsd"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" uri="wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.xsd_1.xsd"/>
+    <system systemId="file:/C:/Users/SharkGaming/Documents/NetBeansProjects/webservices/TravelGoodBPEL/src/TravelGoodElements.xsd" uri="wsdl/TravelGoodElements.xsd"/>
+    <system systemId="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" uri="wsdl/localhost_8080/NiceViewTest/NiceViewWSDLService.xsd_1.xsd"/>
+    <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=1" uri="wsdl/fastmoney.compute.dtu.dk_8080/BankService.xsd_1.xsd"/>
+    <system systemId="http://localhost:9080/service?wsdl" uri="wsdl/localhost_9080/service.wsdl"/>
+    <system systemId="http://82.211.221.163:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="wsdl/82.211.221.163_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
 </catalog>
