@@ -19,61 +19,91 @@
         <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="TravelGoodGetFlightsOut" messageType="ns3:getFlightsResponse"/>
         <variable name="LameDuckGetFlightsOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" messageType="tns:getFlightsResponse"/>
         <variable name="LameDuckGetFlightsIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" messageType="tns:getFlights"/>
-        <variable name="TravelGoodGetFlightsOut" messageType="ns3:getFlightsResponse"/>
         <variable name="TravelGoodGetFlightsIn" messageType="ns3:getFlightsRequest"/>
+        <variable name="CancelledState" type="xs:int"/>
+        <variable name="ConfirmedState" type="xs:int"/>
+        <variable name="PaidState" type="xs:int"/>
+        <variable name="PlanningState" type="xs:int"/>
         <variable name="ItineraryOnServer" element="ns0:ItineraryElement"/>
-        <variable name="InitiateItineraryIn" messageType="ns3:InitiateItineraryRequest"/>
-        <variable name="InitiateItineraryOut" messageType="ns3:InitiateItineraryResponse"/>
+        <variable name="TravelGoodInitiateItineraryOut" messageType="ns3:InitiateItineraryResponse"/>
+        <variable name="TravelGoodInitiateItineraryIn" messageType="ns3:InitiateItineraryRequest"/>
     </variables>
     <correlationSets>
         <correlationSet name="ItineraryCorrelationSet" properties="ns3:itineraryId"/>
     </correlationSets>
-    <sequence>
-        <receive name="InitiateProcess" createInstance="yes" partnerLink="PartnerLink1" operation="InitiateItinerary" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" portType="tns:TravelGoodWsdlPortType" variable="InitiateItineraryIn">
-            <documentation>Start the process. We added a call for this, this makes sure that the correlation set can be created</documentation>
+    <sequence name="Sequence1">
+        <receive name="initiateRecieve" createInstance="yes" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryIn">
             <correlations>
                 <correlation set="ItineraryCorrelationSet" initiate="yes"/>
             </correlations>
         </receive>
-        <assign name="InitiateItineraryAssign">
+        <assign name="initiateAssign">
             <copy>
-                <from variable="InitiateItineraryIn" part="itineraryId"/>
-                <to variable="InitiateItineraryIn" part="itineraryId"/>
+                <from variable="TravelGoodInitiateItineraryIn" part="itineraryId4"/>
+                <to variable="TravelGoodInitiateItineraryOut" part="itineraryId5"/>
+            </copy>
+            <copy>
+                <from variable="TravelGoodInitiateItineraryIn" part="itineraryId4"/>
+                <to>$ItineraryOnServer/ns0:id</to>
+            </copy>
+            <copy>
+                <from>0</from>
+                <to>$ItineraryOnServer/ns0:state/ns0:state</to>
+            </copy>
+            <copy>
+                <from>2</from>
+                <to variable="ConfirmedState"/>
+            </copy>
+            <copy>
+                <from>0</from>
+                <to variable="PlanningState"/>
+            </copy>
+            <copy>
+                <from>1</from>
+                <to variable="PaidState"/>
+            </copy>
+            <copy>
+                <from>3</from>
+                <to variable="CancelledState"/>
             </copy>
         </assign>
-        <reply name="InitiateReply" partnerLink="PartnerLink1" operation="InitiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="InitiateItineraryOut"/>
-        <pick name="Pick1">
-            <onMessage partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsIn">
-                <correlations>
-                    <correlation set="ItineraryCorrelationSet" initiate="no"/>
-                </correlations>
-                <sequence name="Sequence1">
-                    <assign name="GetFlightsAssign1">
-                        <copy>
-                            <from>$TravelGoodGetFlightsIn.input/flightRequest/ns4:origin</from>
-                            <to>$LameDuckGetFlightsIn.flightInfo/ns4:origin</to>
-                        </copy>
-                        <copy>
-                            <from>$TravelGoodGetFlightsIn.input/flightRequest/ns4:destination</from>
-                            <to>$LameDuckGetFlightsIn.flightInfo/ns4:destination</to>
-                        </copy>
-                        <copy>
-                            <from>$TravelGoodGetFlightsIn.input/flightRequest/ns4:flightDate</from>
-                            <to>$LameDuckGetFlightsIn.flightInfo/ns4:flightDate</to>
-                        </copy>
-                    </assign>
-                    <invoke name="InvokeLameDuckGetFlights" partnerLink="PartnerLink2" operation="getFlights" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckGetFlightsIn" outputVariable="LameDuckGetFlightsOut"/>
-                    <assign name="GetFlightsAssign2">
-                        <copy>
-                            <from>$LameDuckGetFlightsOut.flightInfoList/ns4:flightInfo</from>
-                            <to>$TravelGoodGetFlightsOut.output/ns4:flightInfo</to>
-                        </copy>
-                    </assign>
-                    <reply name="ReplyGetFlights" partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsOut"/>
-                </sequence>
-            </onMessage>
-        </pick>
+        <reply name="initiateReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut"/>
+        <while name="PlanningPhase">
+            <condition>$ItineraryOnServer/ns0:state/ns0:state = $PlanningState</condition>
+            <pick name="Pick1">
+                <onMessage partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence2">
+                        <assign name="getFlightsAssign">
+                            <copy>
+                                <from>$TravelGoodGetFlightsIn.input1/flightRequest/ns4:origin</from>
+                                <to>$LameDuckGetFlightsIn.flightInfo/ns4:origin</to>
+                            </copy>
+                            <copy>
+                                <from>$TravelGoodGetFlightsIn.input1/flightRequest/ns4:destination</from>
+                                <to>$LameDuckGetFlightsIn.flightInfo/ns4:destination</to>
+                            </copy>
+                            <copy>
+                                <from>$TravelGoodGetFlightsIn.input1/flightRequest/ns4:flightDate</from>
+                                <to>$LameDuckGetFlightsIn.flightInfo/ns4:flightDate</to>
+                            </copy>
+                        </assign>
+                        <invoke name="InvokeGetFlights" partnerLink="PartnerLink2" operation="getFlights" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckGetFlightsIn" outputVariable="LameDuckGetFlightsOut"/>
+                        <assign name="GetFlightsAssign2">
+                            <copy>
+                                <from>$LameDuckGetFlightsOut.flightInfoList/ns4:flightInfo</from>
+                                <to>$TravelGoodGetFlightsOut.output1/ns4:flightInfo</to>
+                            </copy>
+                        </assign>
+                        <reply name="ReplyGetFlights" partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsOut"/>
+                    </sequence>
+                </onMessage>
+            </pick>
+        </while>
     </sequence>
 </process>

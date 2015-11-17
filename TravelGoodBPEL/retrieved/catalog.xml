@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" uri="src/fastmoney.compute.dtu.dk_8080/BankService.xsd_2.xsd"/>
+    <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=1" uri="src/fastmoney.compute.dtu.dk_8080/BankService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" uri="src/localhost_8080/NiceViewTest/NiceViewWSDLService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" uri="src/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" uri="src/localhost_8080/LameDuckTest/LameDuckWSDLService.xsd_1.xsd"/>
+</catalog>
