@@ -26,6 +26,21 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="FlightInfoListType">
+<xs:sequence>
+<xs:element name="flightInfo" type="tns:FlightInformationType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="FlightInformationType">
+<xs:sequence>
+<xs:element name="bookingNumber" type="xs:int"/>
+<xs:element name="flightPrice" type="xs:int"/>
+<xs:element name="serviceName" type="xs:string"/>
+<xs:element name="flight" type="tns:FlightType"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="FlightType">
 <xs:sequence>
 <xs:element name="originAirport" type="xs:string"/>
@@ -33,14 +48,6 @@
 <xs:element name="takeOff" type="xs:dateTime"/>
 <xs:element name="arrival" type="xs:dateTime"/>
 <xs:element name="carrier" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="getFlightRequestType">
-<xs:sequence>
-<xs:element name="origin" type="xs:string"/>
-<xs:element name="destination" type="xs:string"/>
-<xs:element name="flightDate" type="xs:dateTime"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -59,18 +66,11 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="FlightInformationType">
+<xs:complexType name="getFlightRequestType">
 <xs:sequence>
-<xs:element name="bookingNumber" type="xs:int"/>
-<xs:element name="flightPrice" type="xs:int"/>
-<xs:element name="serviceName" type="xs:string"/>
-<xs:element name="flight" type="tns:FlightType"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="FlightInfoListType">
-<xs:sequence>
-<xs:element name="flightInfo" type="tns:FlightInformationType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="origin" type="xs:string"/>
+<xs:element name="destination" type="xs:string"/>
+<xs:element name="flightDate" type="xs:dateTime"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>

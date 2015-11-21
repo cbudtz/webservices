@@ -56,11 +56,20 @@
             <xsd:element name="bookItineraryElement" type="tns:ItineraryType"/>
             <xsd:complexType name="InitiateItineraryType">
                 <xsd:sequence>
-                    <xsd:element name="itinerary" type="ns2:ItineraryType"/>
+                    <xsd:element name="itinerary" type="tns:TGItineraryType"/>
                     <xsd:element name="itineraryId" type="tns:ItineraryType"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="InitiateItineraryElement" type="tns:InitiateItineraryType"/>
+            <xsd:complexType name="TGItineraryType">
+                <xsd:sequence>
+                    <xsd:element name="flights" type="ns0:FlightInfoListType"/>
+                    <xsd:element name="hotels" type="ns4:HotelInformationListType"/>
+                    <xsd:element name="state" type="ns2:ItineraryStateType"/>
+                    <xsd:element name="id" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="TGItineraryElement" type="tns:TGItineraryType"/>
         </xsd:schema>
   </types>
   <message name="getFlightsResponse">
@@ -108,7 +117,7 @@
     </part>
   </message>
   <message name="addFlightToItineraryResponse">
-    <part element="ns2:ItineraryElement" name="itinerary1">
+    <part element="tns:TGItineraryElement" name="itinerary1">
     </part>
   </message>
   <message name="InitiateItineraryRequest">
@@ -116,7 +125,7 @@
     </part>
   </message>
   <message name="addHotelToItineraryResponse">
-    <part element="ns2:ItineraryElement" name="itinerary2">
+    <part element="tns:TGItineraryElement" name="itinerary2">
     </part>
   </message>
   <message name="removeHotelRequest">
@@ -132,7 +141,7 @@
     </part>
   </message>
   <message name="getItineraryResponse">
-    <part element="ns2:ItineraryElement" name="itinerary5">
+    <part element="tns:TGItineraryElement" name="itinerary5">
     </part>
   </message>
   <message name="removeFlightResponse">
