@@ -40,17 +40,19 @@
         <connection consumer="endpoint2" provider="endpoint4" state="unchanged"/>
     </connections>
     <porttypes>
-        <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/fastmoney.compute.dtu.dk_8080/BankService.wsdl_1.wsdl#xpointer(/definitions/portType[@name='BankPortType'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/dickow_8080/NiceView/HotelReservationService.wsdl#xpointer(/definitions/portType[@name='HotelReservation'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl#xpointer(/definitions/portType[@name='LameDuckPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/NiceViewTest/NiceViewWSDLService.wsdl#xpointer(/definitions/portType[@name='NiceViewWSDLPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBPEL/TravelGoodWsdl.wsdl#xpointer(/definitions/portType[@name='TravelGoodWsdlPortType'])" xlink:type="simple"/>
     </porttypes>
     <bindings>
+        <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/dickow_8080/NiceView/HotelReservationService.wsdl#xpointer(/definitions/binding[@name='HotelReservationBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl#xpointer(/definitions/binding[@name='LameDuckPortTypeBindingPortBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/NiceViewTest/NiceViewWSDLService.wsdl#xpointer(/definitions/binding[@name='NiceViewWSDLPortTypeBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBPEL/TravelGoodWsdl.wsdl#xpointer(/definitions/binding[@name='TravelGoodWsdlPortTypeBinding'])" xlink:type="simple"/>
     </bindings>
     <services>
+        <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/dickow_8080/NiceView/HotelReservationService.wsdl#xpointer(/definitions/service[@name='HotelReservationService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl#xpointer(/definitions/service[@name='LameDuckWSDLService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/NiceViewTest/NiceViewWSDLService.wsdl#xpointer(/definitions/service[@name='NiceViewWSDLService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBPEL/TravelGoodWsdl.wsdl#xpointer(/definitions/service[@name='TravelGoodWsdlService'])" xlink:type="simple"/>
