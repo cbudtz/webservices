@@ -9,16 +9,24 @@
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk" xmlns:ns3="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk" xmlns:ns3="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns5="http://xml.netbeans.org/schema/NiceViewElements">
     <import namespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" location="TravelGoodWsdl.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" location="LameDuckWSDLServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" location="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://xml.netbeans.org/schema/TravelGoodElements" location="TravelGoodElements.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" location="http://localhost:8080/NiceViewTest/NiceViewWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" partnerLinkType="tns:LameDuckLinkType" partnerRole="LameDuckRole"/>
+        <partnerLink name="PartnerLink3" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" partnerLinkType="tns:NiceViewWSDL" partnerRole="NiceViewWSDLPortTypeRole"/>
         <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="TravelGoodGetItineraryOut" messageType="ns3:getItineraryResponse"/>
+        <variable name="TravelGoodGetItineraryIn" messageType="ns3:getItineraryRequest"/>
+        <variable name="TravelGoodGetHotelsOut" messageType="ns3:getHotelsResponse"/>
+        <variable name="NiceViewGetHotelsOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" messageType="tns:getHotelsResponse"/>
+        <variable name="NiceViewGetHotelsIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" messageType="tns:getHotelsRequest"/>
+        <variable name="TravelGoodGetHotelsIn" messageType="ns3:getHotelsRequest"/>
         <variable name="TravelGoodGetFlightsOut" messageType="ns3:getFlightsResponse"/>
         <variable name="LameDuckGetFlightsOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" messageType="tns:getFlightsResponse"/>
         <variable name="LameDuckGetFlightsIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" messageType="tns:getFlights"/>
@@ -73,13 +81,13 @@
         <reply name="initiateReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut"/>
         <while name="PlanningPhase">
             <condition>$ItineraryOnServer/ns0:state/ns0:state = $PlanningState</condition>
-            <pick name="Pick1">
+            <pick name="Pick1" createInstance="no">
                 <onMessage partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsIn">
                     <correlations>
                         <correlation set="ItineraryCorrelationSet" initiate="no"/>
                     </correlations>
                     <sequence name="Sequence2">
-                        <assign name="getFlightsAssign">
+                        <assign name="GetFlightsAssign">
                             <copy>
                                 <from>$TravelGoodGetFlightsIn.input1/flightRequest/ns4:origin</from>
                                 <to>$LameDuckGetFlightsIn.flightInfo/ns4:origin</to>
@@ -101,6 +109,61 @@
                             </copy>
                         </assign>
                         <reply name="ReplyGetFlights" partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsOut"/>
+                    </sequence>
+                </onMessage>
+                <onMessage partnerLink="PartnerLink1" operation="getHotels" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetHotelsIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence3">
+                        <assign name="GetHoteslAssign1">
+                            <copy>
+                                <from>$TravelGoodGetHotelsIn.input2/request/ns5:city</from>
+                                <to>$NiceViewGetHotelsIn.input/ns5:city</to>
+                            </copy>
+                            <copy>
+                                <from>$TravelGoodGetHotelsIn.input2/request/ns5:arrivalDate</from>
+                                <to>$NiceViewGetHotelsIn.input/ns5:arrivalDate</to>
+                            </copy>
+                            <copy>
+                                <from>$TravelGoodGetHotelsIn.input2/request/ns5:departureDate</from>
+                                <to>$NiceViewGetHotelsIn.input/ns5:departureDate</to>
+                            </copy>
+                        </assign>
+                        <invoke name="InvokeGetHotels" partnerLink="PartnerLink3" operation="getHotels" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewGetHotelsIn" outputVariable="NiceViewGetHotelsOut"/>
+                        <assign name="GetHotelsAssign2">
+                            <copy>
+                                <from>$NiceViewGetHotelsOut.hotels/ns5:hotelInformations</from>
+                                <to>$TravelGoodGetHotelsOut.output2/ns5:hotelInformations</to>
+                            </copy>
+                        </assign>
+                        <reply name="ReplyGetHotels" partnerLink="PartnerLink1" operation="getHotels" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetHotelsOut"/>
+                    </sequence>
+                </onMessage>
+                <onMessage partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetItineraryIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence4">
+                        <assign name="GetItineraryAssign">
+                            <copy>
+                                <from>$ItineraryOnServer/ns0:flights</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:flights</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/ns0:hotels</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:hotels</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/ns0:state</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:state</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/ns0:id</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:id</to>
+                            </copy>
+                        </assign>
+                        <reply name="GetItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetItineraryOut"/>
                     </sequence>
                 </onMessage>
             </pick>
