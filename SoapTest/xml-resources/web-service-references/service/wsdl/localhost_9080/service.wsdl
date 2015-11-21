@@ -4,7 +4,7 @@
     <xsd:schema xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
             <xsd:import namespace="http://fastmoney.imm.dtu.dk" schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://82.211.221.163:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://82.211.209.179:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
@@ -52,9 +52,15 @@
                 <xsd:restriction base="xsd:int"/>
             </xsd:simpleType>
             <xsd:element name="ItineraryIdElement" type="tns:ItineraryType"/>
-            <xsd:element name="initiateItineraryElement" type="tns:ItineraryType"/>
             <xsd:element name="cancelItineraryElement" type="tns:ItineraryType"/>
             <xsd:element name="bookItineraryElement" type="tns:ItineraryType"/>
+            <xsd:complexType name="InitiateItineraryType">
+                <xsd:sequence>
+                    <xsd:element name="itinerary" type="ns2:ItineraryType"/>
+                    <xsd:element name="itineraryId" type="tns:ItineraryType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="InitiateItineraryElement" type="tns:InitiateItineraryType"/>
         </xsd:schema>
   </types>
   <message name="getFlightsResponse">
@@ -106,7 +112,7 @@
     </part>
   </message>
   <message name="InitiateItineraryRequest">
-    <part element="tns:initiateItineraryElement" name="itineraryId4">
+    <part element="tns:InitiateItineraryElement" name="init1">
     </part>
   </message>
   <message name="addHotelToItineraryResponse">
@@ -303,7 +309,7 @@
   </binding>
   <service name="TravelGoodWsdlService">
     <port binding="tns:TravelGoodWsdlPortTypeBinding" name="TravelGoodWsdlPortTypeBindingPort">
-      <soap:address location="http://82.211.221.163:9080/service"/>
+      <soap:address location="http://82.211.209.179:9080/service"/>
     </port>
   </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">
@@ -334,5 +340,7 @@ A partner link type characterizes the conversational relationship between two se
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
     <vprop:propertyAlias messageType="tns:getItineraryRequest" part="itineraryId3" propertyName="tns:itineraryId"/>
-    <vprop:propertyAlias messageType="tns:InitiateItineraryRequest" part="itineraryId4" propertyName="tns:itineraryId"/>
+    <vprop:propertyAlias messageType="tns:InitiateItineraryRequest" part="init1" propertyName="tns:itineraryId"> 
+        <vprop:query>itineraryId</vprop:query>
+    </vprop:propertyAlias>
 </definitions>
