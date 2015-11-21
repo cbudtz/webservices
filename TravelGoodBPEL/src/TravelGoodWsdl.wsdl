@@ -2,7 +2,7 @@
 <definitions name="TravelGoodWsdl" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns3="http://xml.netbeans.org/schema/NiceViewElements" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns1="http://fastmoney.imm.dtu.dk" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns3="http://xml.netbeans.org/schema/NiceViewElements">
     <types>
         <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns2="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements">
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
@@ -55,9 +55,15 @@
                 <xsd:restriction base="xsd:int"/>
             </xsd:simpleType>
             <xsd:element name="ItineraryIdElement" type="tns:ItineraryType"></xsd:element>
-            <xsd:element name="initiateItineraryElement" type="tns:ItineraryType"></xsd:element>
             <xsd:element name="cancelItineraryElement" type="tns:ItineraryType"></xsd:element>
             <xsd:element name="bookItineraryElement" type="tns:ItineraryType"></xsd:element>
+            <xsd:complexType name="InitiateItineraryType">
+                <xsd:sequence>
+                    <xsd:element name="itinerary" type="ns2:ItineraryType"></xsd:element>
+                    <xsd:element name="itineraryId" type="tns:ItineraryType"></xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="InitiateItineraryElement" type="tns:InitiateItineraryType"></xsd:element>
         </xsd:schema>
     </types>
     <message name="getFlightsRequest">
@@ -118,7 +124,7 @@
         <part name="itinerary5" element="ns2:ItineraryElement"/>
     </message>
     <message name="InitiateItineraryRequest">
-        <part name="itineraryId4" element="tns:initiateItineraryElement"/>
+        <part name="init1" element="tns:InitiateItineraryElement"/>
     </message>
     <message name="InitiateItineraryResponse">
         <part name="itineraryId5" element="tns:ItineraryIdElement"/>
@@ -295,5 +301,7 @@ A partner link type characterizes the conversational relationship between two se
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:getItineraryRequest" part="itineraryId3"/>
-    <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:InitiateItineraryRequest" part="itineraryId4"/>
+    <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:InitiateItineraryRequest" part="init1"> 
+        <vprop:query>itineraryId</vprop:query>
+    </vprop:propertyAlias>
 </definitions>
