@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" xmlns:ns2="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns3="http://enterprise.netbeans.org/bpel/TravelGoodBPEL/travelGoodBPEL" xmlns:xlink="http://www.w3.org/2000/xlink">
+<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" xmlns:ns2="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns3="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" xmlns:ns4="http://enterprise.netbeans.org/bpel/TravelGoodBPEL/travelGoodBPEL" xmlns:xlink="http://www.w3.org/2000/xlink">
     <endpoints>
         <endpoint endpoint-name="LameDuckPortTypeBindingPort" interface-name="ns1:LameDuckPortType" name="endpoint1" service-name="ns1:LameDuckWSDLService"/>
         <endpoint endpoint-name="TravelGoodWsdlPortTypeBindingPort" interface-name="ns2:TravelGoodWsdlPortType" name="endpoint2" service-name="ns2:TravelGoodWsdlService"/>
-        <endpoint display-name="PartnerLink1" endpoint-name="TravelGoodWsdlPortTypeRole_myRole" file-path="travelGoodBPEL.bpel" interface-name="ns2:TravelGoodWsdlPortType" name="endpoint3" process-name="travelGoodBPEL" service-name="ns3:PartnerLink1"/>
-        <endpoint display-name="PartnerLink2" endpoint-name="LameDuckRole_partnerRole" file-path="travelGoodBPEL.bpel" interface-name="ns1:LameDuckPortType" name="endpoint4" process-name="travelGoodBPEL" service-name="ns3:PartnerLink2"/>
+        <endpoint endpoint-name="NiceViewWSDLPortTypeBindingPort" interface-name="ns3:NiceViewWSDLPortType" name="endpoint3" service-name="ns3:NiceViewWSDLService"/>
+        <endpoint display-name="PartnerLink1" endpoint-name="TravelGoodWsdlPortTypeRole_myRole" file-path="travelGoodBPEL.bpel" interface-name="ns2:TravelGoodWsdlPortType" name="endpoint4" process-name="travelGoodBPEL" service-name="ns4:PartnerLink1"/>
+        <endpoint display-name="PartnerLink2" endpoint-name="LameDuckRole_partnerRole" file-path="travelGoodBPEL.bpel" interface-name="ns1:LameDuckPortType" name="endpoint5" process-name="travelGoodBPEL" service-name="ns4:PartnerLink2"/>
+        <endpoint display-name="PartnerLink3" endpoint-name="NiceViewWSDLPortTypeRole_partnerRole" file-path="travelGoodBPEL.bpel" interface-name="ns3:NiceViewWSDLPortType" name="endpoint6" process-name="travelGoodBPEL" service-name="ns4:PartnerLink3"/>
     </endpoints>
     <service-units>
         <service-engine-service-unit artifacts-zip="TravelGoodBPEL.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="TravelGood-TravelGoodBPEL" unit-name="TravelGoodBPEL" unknown="false" x="144" y="99">
-            <provides endpoint="endpoint3"/>
-            <consumes endpoint="endpoint4"/>
+            <provides endpoint="endpoint4"/>
+            <consumes endpoint="endpoint5"/>
+            <consumes endpoint="endpoint6"/>
         </service-engine-service-unit>
         <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="TravelGood-sun-http-binding" unit-name="sun-http-binding">
             <ports>
@@ -17,6 +20,11 @@
                     <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl#xpointer(/definitions/service[@name='LameDuckWSDLService']/port[@name='LameDuckPortTypeBindingPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint1"/>
                     <provides endpoint="endpoint1"/>
+                </port>
+                <port x="67" y="39">
+                    <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/localhost_8080/NiceViewTest/NiceViewWSDLService.wsdl#xpointer(/definitions/service[@name='NiceViewWSDLService']/port[@name='NiceViewWSDLPortTypeBindingPort'])" xlink:type="simple"/>
+                    <consumes endpoint="endpoint3"/>
+                    <provides endpoint="endpoint3"/>
                 </port>
                 <port state="deleted" x="67" y="39">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBPEL/TravelGoodWsdl.wsdl#xpointer(/definitions/service[@name='TravelGoodWsdlService']/port[@name='TravelGoodWsdlPortTypeBindingPort'])" xlink:type="simple"/>
@@ -27,8 +35,9 @@
         </binding-component-service-unit>
     </service-units>
     <connections>
-        <connection consumer="endpoint4" provider="endpoint1" state="unchanged"/>
-        <connection consumer="endpoint2" provider="endpoint3" state="unchanged"/>
+        <connection consumer="endpoint6" provider="endpoint3" state="unchanged"/>
+        <connection consumer="endpoint5" provider="endpoint1" state="unchanged"/>
+        <connection consumer="endpoint2" provider="endpoint4" state="unchanged"/>
     </connections>
     <porttypes>
         <link xlink:href="../jbiServiceUnits/META-INF/TravelGoodBPEL/src/_references/_relative/nbproject/private/retriever/fastmoney.compute.dtu.dk_8080/BankService.wsdl_1.wsdl#xpointer(/definitions/portType[@name='BankPortType'])" xlink:type="simple"/>
