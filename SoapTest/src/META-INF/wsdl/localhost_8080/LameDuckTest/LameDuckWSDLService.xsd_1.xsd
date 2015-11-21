@@ -18,6 +18,14 @@
 
 <xs:element name="getFlightRequestElement" type="tns:getFlightRequestType"/>
 
+<xs:complexType name="CancelFlightRequestType">
+<xs:sequence>
+<xs:element name="bookingNumber" type="xs:int"/>
+<xs:element name="price" type="xs:int"/>
+<xs:element name="creditCardInformation" type="tns:CreditCardInfoType"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="CreditCardInfoType">
 <xs:sequence>
 <xs:element name="cardNumber" type="xs:int"/>
@@ -26,9 +34,18 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="FlightInfoListType">
+<xs:complexType name="getFlightRequestType">
 <xs:sequence>
-<xs:element name="flightInfo" type="tns:FlightInformationType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="origin" type="xs:string"/>
+<xs:element name="destination" type="xs:string"/>
+<xs:element name="flightDate" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="BookFlightRequestType">
+<xs:sequence>
+<xs:element name="bookingNumber" type="xs:int"/>
+<xs:element name="creditcardInfo" type="tns:CreditCardInfoType"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -51,26 +68,9 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="getFlightRequestType">
+<xs:complexType name="FlightInfoListType">
 <xs:sequence>
-<xs:element name="origin" type="xs:string"/>
-<xs:element name="destination" type="xs:string"/>
-<xs:element name="flightDate" type="xs:dateTime"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="CancelFlightRequestType">
-<xs:sequence>
-<xs:element name="bookingNumber" type="xs:int"/>
-<xs:element name="price" type="xs:int"/>
-<xs:element name="creditCardInformation" type="tns:CreditCardInfoType"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="BookFlightRequestType">
-<xs:sequence>
-<xs:element name="bookingNumber" type="xs:int"/>
-<xs:element name="creditcardInfo" type="tns:CreditCardInfoType"/>
+<xs:element name="flightInfo" type="tns:FlightInformationType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>
