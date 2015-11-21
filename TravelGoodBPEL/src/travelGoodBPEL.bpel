@@ -9,6 +9,7 @@
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
+    xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
     xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk" xmlns:ns3="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns5="http://xml.netbeans.org/schema/NiceViewElements">
     <import namespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" location="TravelGoodWsdl.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" location="LameDuckWSDLServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -23,6 +24,9 @@
         <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="NumberOfFlights" type="xs:int"/>
+        <variable name="TravelGoodAddFlightToItineraryOut" messageType="ns3:addFlightToItineraryResponse"/>
+        <variable name="TravelGoodAddFlightToItineraryIn" messageType="ns3:addFlightToItineraryRequest"/>
         <variable name="TravelGoodGetItineraryOut" messageType="ns3:getItineraryResponse"/>
         <variable name="TravelGoodGetItineraryIn" messageType="ns3:getItineraryRequest"/>
         <variable name="TravelGoodGetHotelsOut" messageType="ns3:getHotelsResponse"/>
@@ -37,7 +41,7 @@
         <variable name="ConfirmedState" type="xs:int"/>
         <variable name="PaidState" type="xs:int"/>
         <variable name="PlanningState" type="xs:int"/>
-        <variable name="ItineraryOnServer" element="ns0:ItineraryElement"/>
+        <variable name="ItineraryOnServer" element="ns3:TGItineraryElement"/>
         <variable name="TravelGoodInitiateItineraryOut" messageType="ns3:InitiateItineraryResponse"/>
         <variable name="TravelGoodInitiateItineraryIn" messageType="ns3:InitiateItineraryRequest"/>
     </variables>
@@ -51,10 +55,6 @@
             </correlations>
         </receive>
         <assign name="initiateAssign">
-            <copy>
-                <from>0</from>
-                <to>$ItineraryOnServer/ns0:state/ns0:state</to>
-            </copy>
             <copy>
                 <from>2</from>
                 <to variable="ConfirmedState"/>
@@ -76,21 +76,25 @@
                 <to variable="TravelGoodInitiateItineraryOut" part="itineraryId5"/>
             </copy>
             <copy>
-                <from>$TravelGoodInitiateItineraryIn.init1/itinerary/ns0:flights</from>
-                <to>$ItineraryOnServer/ns0:flights</to>
+                <from>$TravelGoodInitiateItineraryIn.init1/itinerary/flights</from>
+                <to>$ItineraryOnServer/flights</to>
             </copy>
             <copy>
-                <from>$TravelGoodInitiateItineraryIn.init1/itinerary/ns0:hotels</from>
-                <to>$ItineraryOnServer/ns0:hotels</to>
+                <from>$TravelGoodInitiateItineraryIn.init1/itinerary/hotels</from>
+                <to>$ItineraryOnServer/hotels</to>
             </copy>
             <copy>
                 <from>$TravelGoodInitiateItineraryIn.init1/itineraryId</from>
-                <to>$ItineraryOnServer/ns0:id</to>
+                <to>$ItineraryOnServer/id</to>
+            </copy>
+            <copy>
+                <from variable="PlanningState"/>
+                <to>$ItineraryOnServer/state/ns0:state</to>
             </copy>
         </assign>
         <reply name="initiateReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut"/>
         <while name="PlanningPhase">
-            <condition>$ItineraryOnServer/ns0:state/ns0:state = $PlanningState</condition>
+            <condition>$PlanningState = $ItineraryOnServer/state/ns0:state</condition>
             <pick name="Pick1" createInstance="no">
                 <onMessage partnerLink="PartnerLink1" operation="getFlights" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetFlightsIn">
                     <correlations>
@@ -157,23 +161,57 @@
                     <sequence name="Sequence4">
                         <assign name="GetItineraryAssign">
                             <copy>
-                                <from>$ItineraryOnServer/ns0:flights</from>
-                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:flights</to>
+                                <from>$ItineraryOnServer/flights</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/flights</to>
                             </copy>
                             <copy>
-                                <from>$ItineraryOnServer/ns0:hotels</from>
-                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:hotels</to>
+                                <from>$ItineraryOnServer/hotels</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/hotels</to>
                             </copy>
                             <copy>
-                                <from>$ItineraryOnServer/ns0:state</from>
-                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:state</to>
+                                <from>$ItineraryOnServer/state</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/state</to>
                             </copy>
                             <copy>
-                                <from>$ItineraryOnServer/ns0:id</from>
-                                <to>$TravelGoodGetItineraryOut.itinerary5/ns0:id</to>
+                                <from>$ItineraryOnServer/id</from>
+                                <to>$TravelGoodGetItineraryOut.itinerary5/id</to>
                             </copy>
                         </assign>
                         <reply name="GetItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodGetItineraryOut"/>
+                    </sequence>
+                </onMessage>
+                <onMessage partnerLink="PartnerLink1" operation="addFlightToItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodAddFlightToItineraryIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence5">
+                        <assign name="AddFlightToItineraryAssign">
+                            <copy>
+                                <from>count($ItineraryOnServer/flights/ns4:flightInfo)</from>
+                                <to variable="NumberOfFlights"/>
+                            </copy>
+                            <copy>
+                                <from>$TravelGoodAddFlightToItineraryIn.input3/flightInfo</from>
+                                <to>$ItineraryOnServer/flights/ns4:flightInfo[$NumberOfFlights + 1]</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/id</from>
+                                <to>$TravelGoodAddFlightToItineraryOut.itinerary1/id</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/state</from>
+                                <to>$TravelGoodAddFlightToItineraryOut.itinerary1/state</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/hotels</from>
+                                <to>$TravelGoodAddFlightToItineraryOut.itinerary1/hotels</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/flights</from>
+                                <to>$TravelGoodAddFlightToItineraryOut.itinerary1/flights</to>
+                            </copy>
+                        </assign>
+                        <reply name="AddFlightToItineraryReply" partnerLink="PartnerLink1" operation="addFlightToItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodAddFlightToItineraryOut"/>
                     </sequence>
                 </onMessage>
             </pick>

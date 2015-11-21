@@ -59,11 +59,20 @@
             <xsd:element name="bookItineraryElement" type="tns:ItineraryType"></xsd:element>
             <xsd:complexType name="InitiateItineraryType">
                 <xsd:sequence>
-                    <xsd:element name="itinerary" type="ns2:ItineraryType"></xsd:element>
+                    <xsd:element name="itinerary" type="tns:TGItineraryType"></xsd:element>
                     <xsd:element name="itineraryId" type="tns:ItineraryType"></xsd:element>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="InitiateItineraryElement" type="tns:InitiateItineraryType"></xsd:element>
+            <xsd:complexType name="TGItineraryType">
+                <xsd:sequence>
+                    <xsd:element name="flights" type="ns0:FlightInfoListType"></xsd:element>
+                    <xsd:element name="hotels" type="ns4:HotelInformationListType"></xsd:element>
+                    <xsd:element name="state" type="ns2:ItineraryStateType"></xsd:element>
+                    <xsd:element name="id" type="xsd:int"></xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="TGItineraryElement" type="tns:TGItineraryType"></xsd:element>
         </xsd:schema>
     </types>
     <message name="getFlightsRequest">
@@ -100,10 +109,10 @@
         <part name="status1" element="ns0:StringElement"/>
     </message>
     <message name="addFlightToItineraryResponse">
-        <part name="itinerary1" element="ns2:ItineraryElement"/>
+        <part name="itinerary1" element="tns:TGItineraryElement"/>
     </message>
     <message name="addHotelToItineraryResponse">
-        <part name="itinerary2" element="ns2:ItineraryElement"/>
+        <part name="itinerary2" element="tns:TGItineraryElement"/>
     </message>
     <message name="removeFlightRequest">
         <part name="flightToRemove1" element="tns:TGRemoveFlightRequestElement"/>
@@ -121,7 +130,7 @@
         <part name="itineraryId3" element="tns:ItineraryIdElement"/>
     </message>
     <message name="getItineraryResponse">
-        <part name="itinerary5" element="ns2:ItineraryElement"/>
+        <part name="itinerary5" element="tns:TGItineraryElement"/>
     </message>
     <message name="InitiateItineraryRequest">
         <part name="init1" element="tns:InitiateItineraryElement"/>
