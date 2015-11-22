@@ -10,25 +10,33 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
-
 /**
  *
  * @author Christian
  */
 @Path("flights")
 public class FlightsResource {
-   /* 
-   @GET
-    public String test(){
-        return "Test";
-    } 
-    */
+    
+ //  @GET
+ //  @Produces(MediaType.APPLICATION_XML)
+   // public Wrapper test(){
+  //      return new Wrapper();
+  //  } 
+    
     @GET
-  //  @Produces("application/xml")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<FlightInformation> getFlights(){
         List<FlightInformation> l = new ArrayList<>();
-        l.add(new FlightInformation());
+        FlightInformation f = new FlightInformation();
+        f.bookingNumber=1223;
+        Flight ff = new Flight();
+        ff.setCarrier("TestCarrier");
+        f.flight = ff;
+        l.add(f);
+        l.add(f);
         return l;
     } 
  
