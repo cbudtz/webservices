@@ -18,18 +18,18 @@ import ws.group15.dto.FlightInformation;
  */
 @Path("flights")
 public class FlightsResource {
-    
+   /* 
    @GET
     public String test(){
         return "Test";
     } 
-    
-   /* @GET
-    @Produces("application/xml")
+    */
+    @GET
+  //  @Produces("application/xml")
     public List<FlightInformation> getFlights(){
         List<FlightInformation> l = new ArrayList<>();
         l.add(new FlightInformation());
         return l;
     } 
- */
+ 
 }
