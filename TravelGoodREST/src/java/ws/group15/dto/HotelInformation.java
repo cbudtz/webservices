@@ -5,10 +5,13 @@
  */
 package ws.group15.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Christian
  */
+@XmlRootElement(name="hotelinformation")
 public class HotelInformation {
     public String hotelName;
     public String hotelAddress;

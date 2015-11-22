@@ -31,6 +31,8 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.group15.FlightsResource.class);
         resources.add(ws.group15.GenericResource.class);
+        resources.add(ws.group15.HotelsResource.class);
+        resources.add(ws.group15.ItineraryResource.class);
     }
     
 }
