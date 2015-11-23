@@ -26,16 +26,28 @@ import ws.group15.dto.Itinerary;
  *
  * @author Christian
  */
-@Path("{UserId}/itineraries")
+@Path("itineraries")
 public class ItineraryResource {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Itinerary> getItineraries(){
-        List<Itinerary> l = new ArrayList<>();
-        Itinerary i = new Itinerary();
-        return l;
-    } 
+        return DataSingleton.getInstance().getItineraries();
+    }
+    
+    @POST
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public String createItinerary(){
+        return DataSingleton.getInstance().createItinerary();
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("{itId}")
+    public Itinerary getItineraryByID(@PathParam("itId") String itID){
+        return DataSingleton.getInstance().getItineraryById(itID);
+    }
+    
     
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
