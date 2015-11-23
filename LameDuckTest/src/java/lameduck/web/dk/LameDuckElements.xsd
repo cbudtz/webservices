@@ -20,6 +20,7 @@
             <xsd:element name="flightPrice" type="xsd:int"></xsd:element>
             <xsd:element name="serviceName" type="xsd:string"></xsd:element>
             <xsd:element name="flight" type="ns0:FlightType"></xsd:element>
+            <xsd:element name="state" type="xsd:int"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="CreditCardInfoType">
