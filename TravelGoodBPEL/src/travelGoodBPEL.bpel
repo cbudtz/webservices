@@ -24,6 +24,10 @@
         <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="TravelGoodCancelledGetItineraryOut" messageType="ns3:getItineraryResponse"/>
+        <variable name="TravelGoodCancelledGetItineraryIn" messageType="ns3:getItineraryRequest"/>
+        <variable name="TravelGoodPlanningPhaseCancelItineraryOut" messageType="ns3:cancelItineraryResponse"/>
+        <variable name="TravelGoodPlanningPhaseCancelItineraryIn" messageType="ns3:cancelItineraryRequest"/>
         <variable name="NumberOfHotels" type="xs:int"/>
         <variable name="TravelGoodAddHotelToItineraryOut" messageType="ns3:addHotelToItineraryResponse"/>
         <variable name="TravelGoodAddHotelToItineraryIn" messageType="ns3:addHotelToItineraryRequest"/>
@@ -251,7 +255,57 @@
                         <reply name="AddHotelToItineraryReply" partnerLink="PartnerLink1" operation="addHotelToItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodAddHotelToItineraryOut"/>
                     </sequence>
                 </onMessage>
+                <onMessage partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPlanningPhaseCancelItineraryIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence7">
+                        <assign name="PlanningPhaseCancelAssign">
+                            <copy>
+                                <from variable="CancelledState"/>
+                                <to>$ItineraryOnServer/state/ns0:state</to>
+                            </copy>
+                            <copy>
+                                <from>'Successfully cancelled'</from>
+                                <to variable="TravelGoodPlanningPhaseCancelItineraryOut" part="status1"/>
+                            </copy>
+                        </assign>
+                        <reply name="CancelPlanningPhase" partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPlanningPhaseCancelItineraryOut"/>
+                    </sequence>
+                </onMessage>
             </pick>
         </while>
+        <if name="If1">
+            <condition>$CancelledState and $ItineraryOnServer/state/ns0:state</condition>
+            <while name="While1">
+                <condition>$CancelledState and $ItineraryOnServer/state/ns0:state</condition>
+                <sequence name="Sequence8">
+                    <receive name="CancelledGetItinerary" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" createInstance="no" variable="TravelGoodCancelledGetItineraryIn">
+                        <correlations>
+                            <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                        </correlations>
+                    </receive>
+                    <assign name="CancelledItineraryAssign">
+                        <copy>
+                            <from>$ItineraryOnServer/flights</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/flights</to>
+                        </copy>
+                        <copy>
+                            <from>$ItineraryOnServer/hotels</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/hotels</to>
+                        </copy>
+                        <copy>
+                            <from>$ItineraryOnServer/state</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/state</to>
+                        </copy>
+                        <copy>
+                            <from>$ItineraryOnServer/id</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/id</to>
+                        </copy>
+                    </assign>
+                    <reply name="CancelledItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryOut"/>
+                </sequence>
+            </while>
+        </if>
     </sequence>
 </process>
