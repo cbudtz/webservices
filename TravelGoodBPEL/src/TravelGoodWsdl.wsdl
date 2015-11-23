@@ -103,7 +103,7 @@
         <part name="request10" element="tns:bookItineraryElement"/>
     </message>
     <message name="bookItineraryResponse">
-        <part name="bookedItinerary1" element="ns2:ItineraryElement"/>
+        <part name="bookedItinerary1" element="tns:TGItineraryElement"/>
     </message>
     <message name="bookItineraryFault">
         <part name="bookFault1" element="ns2:bookItineraryFaultElement"/>
