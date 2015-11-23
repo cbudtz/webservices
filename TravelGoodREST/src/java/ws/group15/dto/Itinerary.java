@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="itinerary")
 public class Itinerary {
+    public String id;
     public List<FlightInformation> flights;
     public List<HotelInformation> hotels;
     public enum ItineraryState {PLANNING,PAID,CANCELLED,CONFIRMED};
