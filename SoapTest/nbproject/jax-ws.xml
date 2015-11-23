@@ -35,8 +35,8 @@
       </wsimport-options>
     </client>
     <client name="NiceViewWSDLService">
-      <wsdl-url>http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?wsdl</wsdl-url>
-      <local-wsdl-file>runi-laptop_8080/NiceViewTemp/NiceViewWSDLService.wsdl</local-wsdl-file>
+      <wsdl-url>http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl</wsdl-url>
+      <local-wsdl-file>localhost_8080/NiceViewTemp/NiceViewWSDLService.wsdl</local-wsdl-file>
       <package-name>org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>

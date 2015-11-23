@@ -48,7 +48,7 @@ Book the itinerary and ask again for the itinerary. Check that each booking stat
 public class C2 {
     DatatypeFactory df = new DatatypeFactoryImpl();
     TravelGoodWsdlPortType port;
-    private static int id = 5;
+    private static int id = 3;
     private static final int STATE_UNCONFIRMED = 0;
     private static final int STATE_CONFIRMED = 2;
     
