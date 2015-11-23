@@ -38,22 +38,30 @@ public class ItineraryResource {
     @Context
     UriInfo uriInfo;
     
+    //Base request 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Itinerary> getItineraries(){
-        return DataSingleton.getInstance().getItineraries();
+    public Response getItineraries(){
+        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        String url = ub.build().toString();
+        Response r = Response.ok(DataSingleton.getInstance().getItineraries())
+                .link(url, POST) //Only allowed next action is to obtain some ID by creating an itinerary
+                .build();
+        return r;
     }
     
     @POST
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response createItinerary(){
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-        String itId = DataSingleton.getInstance().createItinerary();
-        URI uri = ub.path(itId).build();
+        Itinerary it = DataSingleton.getInstance().createItinerary();
+        URI uri = ub.path(it.id).build();
         Response r = Response.created(uri)
                 .link(uri, "itineraty resource") //TODO: Figure out what to put in rel...
                 .link(uri.toString()+ "/status/cancel", "status")
-                .entity(DataSingleton.getInstance().getItineraryById(itId))
+                .link(ub.clone().path("flights").build(), "Flights resource")
+                .link(ub.clone().path("hotels").build(), "Hotel resource")
+                .entity(it)
                 .build();
         return r;
     }
