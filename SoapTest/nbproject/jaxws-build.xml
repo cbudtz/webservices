@@ -33,6 +33,23 @@
         <delete dir="${build.generated.dir}/jax-wsCache/LameDuckWSDLService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/org/netbeans/j2ee/wsdl/lameduck/wsdl/lameduckwsdl"/>
     </target>
+    <target name="wsimport-client-NiceViewWSDLService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/NiceViewWSDLService"/>
+        <property name="wsdl-NiceViewWSDLService" location="xml-resources/web-service-references/NiceViewWSDLService/wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/NiceViewWSDLService" destdir="${build.generated.dir}/jax-wsCache/NiceViewWSDLService" wsdl="${wsdl-NiceViewWSDLService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-NiceViewWSDLService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/NiceViewWSDLService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/NiceViewWSDLService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-NiceViewWSDLService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/NiceViewWSDLService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/org/netbeans/j2ee/wsdl/niceviewtest/dk/niceviewwsdl"/>
+    </target>
     <target name="wsimport-client-service" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/service"/>
         <property name="wsdl-service" location="xml-resources/web-service-references/service/wsdl/localhost_9080/service.wsdl"/>
@@ -50,5 +67,5 @@
         <delete dir="${build.generated.dir}/jax-wsCache/service"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/org/netbeans/j2ee/wsdl/travelgoodbpel/src/travelgoodwsdl"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-LameDuckWSDLService, wsimport-client-service"/>
+    <target name="wsimport-client-generate" depends="wsimport-client-LameDuckWSDLService, wsimport-client-NiceViewWSDLService, wsimport-client-service"/>
 </project>

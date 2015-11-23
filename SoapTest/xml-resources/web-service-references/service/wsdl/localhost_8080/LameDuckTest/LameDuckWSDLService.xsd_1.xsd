@@ -18,11 +18,13 @@
 
 <xs:element name="getFlightRequestElement" type="tns:getFlightRequestType"/>
 
-<xs:complexType name="CreditCardInfoType">
+<xs:complexType name="FlightType">
 <xs:sequence>
-<xs:element name="cardNumber" type="xs:int"/>
-<xs:element name="holderName" type="xs:string"/>
-<xs:element name="expirationDate" type="xs:dateTime"/>
+<xs:element name="originAirport" type="xs:string"/>
+<xs:element name="destAirport" type="xs:string"/>
+<xs:element name="takeOff" type="xs:dateTime"/>
+<xs:element name="arrival" type="xs:dateTime"/>
+<xs:element name="carrier" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -41,28 +43,18 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="FlightType">
-<xs:sequence>
-<xs:element name="originAirport" type="xs:string"/>
-<xs:element name="destAirport" type="xs:string"/>
-<xs:element name="takeOff" type="xs:dateTime"/>
-<xs:element name="arrival" type="xs:dateTime"/>
-<xs:element name="carrier" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="CancelFlightRequestType">
-<xs:sequence>
-<xs:element name="bookingNumber" type="xs:int"/>
-<xs:element name="price" type="xs:int"/>
-<xs:element name="creditCardInformation" type="tns:CreditCardInfoType"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="BookFlightRequestType">
 <xs:sequence>
 <xs:element name="bookingNumber" type="xs:int"/>
 <xs:element name="creditcardInfo" type="tns:CreditCardInfoType"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CreditCardInfoType">
+<xs:sequence>
+<xs:element name="cardNumber" type="xs:int"/>
+<xs:element name="holderName" type="xs:string"/>
+<xs:element name="expirationDate" type="xs:dateTime"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -71,6 +63,14 @@
 <xs:element name="origin" type="xs:string"/>
 <xs:element name="destination" type="xs:string"/>
 <xs:element name="flightDate" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CancelFlightRequestType">
+<xs:sequence>
+<xs:element name="bookingNumber" type="xs:int"/>
+<xs:element name="price" type="xs:int"/>
+<xs:element name="creditCardInformation" type="tns:CreditCardInfoType"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>

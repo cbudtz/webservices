@@ -11,4 +11,9 @@
     <system systemId="http://localhost:9080/service?wsdl" uri="wsdl/localhost_9080/service.wsdl"/>
     <system systemId="http://82.211.221.163:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="wsdl/82.211.221.163_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
     <system systemId="http://82.211.209.179:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="wsdl/82.211.209.179_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+    <system systemId="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?wsdl" uri="wsdl/runi-laptop_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
+    <system systemId="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" uri="wsdl/runi-laptop_8080/NiceViewTemp/NiceViewWSDLService.xsd_1.xsd"/>
+    <system systemId="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="wsdl/Runi-Laptop_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+    <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" uri="wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" uri="wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
 </catalog>
