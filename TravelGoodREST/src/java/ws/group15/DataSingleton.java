@@ -57,7 +57,7 @@ public class DataSingleton {
     }
     
     public List<Itinerary> getItineraries(String userID){
-        
+        return null;
     }
     
 }
