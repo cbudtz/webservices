@@ -19,6 +19,7 @@
             <xsd:element name="stayPrice" type="xsd:int"></xsd:element>
             <xsd:element name="creditCardGuaranteeRequired" type="xsd:boolean"></xsd:element>
             <xsd:element name="serviceName" type="xsd:string"></xsd:element>
+            <xsd:element name="state" type="xsd:int"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="GetHotelsRequestType">
