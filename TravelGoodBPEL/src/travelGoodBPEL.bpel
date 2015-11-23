@@ -15,15 +15,22 @@
     <import namespace="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" location="LameDuckWSDLServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" location="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://xml.netbeans.org/schema/TravelGoodElements" location="TravelGoodElements.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
-    <import namespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" location="http://localhost:8080/NiceViewTest/NiceViewWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://xml.netbeans.org/schema/LameDuckElements" location="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" importType="http://www.w3.org/2001/XMLSchema"/>
-    <import namespace="http://xml.netbeans.org/schema/NiceViewElements" location="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://xml.netbeans.org/schema/NiceViewElements" location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" partnerLinkType="tns:LameDuckLinkType" partnerRole="LameDuckRole"/>
         <partnerLink name="PartnerLink3" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" partnerLinkType="tns:NiceViewWSDL" partnerRole="NiceViewWSDLPortTypeRole"/>
         <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="TravelGoodCancelledGetItineraryOut" messageType="ns3:getItineraryResponse"/>
+        <variable name="TravelGoodCancelledGetItineraryIn" messageType="ns3:getItineraryRequest"/>
+        <variable name="TravelGoodPlanningPhaseCancelItineraryOut" messageType="ns3:cancelItineraryResponse"/>
+        <variable name="TravelGoodPlanningPhaseCancelItineraryIn" messageType="ns3:cancelItineraryRequest"/>
+        <variable name="NumberOfHotels" type="xs:int"/>
+        <variable name="TravelGoodAddHotelToItineraryOut" messageType="ns3:addHotelToItineraryResponse"/>
+        <variable name="TravelGoodAddHotelToItineraryIn" messageType="ns3:addHotelToItineraryRequest"/>
         <variable name="NumberOfFlights" type="xs:int"/>
         <variable name="TravelGoodAddFlightToItineraryOut" messageType="ns3:addFlightToItineraryResponse"/>
         <variable name="TravelGoodAddFlightToItineraryIn" messageType="ns3:addFlightToItineraryRequest"/>
@@ -214,7 +221,91 @@
                         <reply name="AddFlightToItineraryReply" partnerLink="PartnerLink1" operation="addFlightToItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodAddFlightToItineraryOut"/>
                     </sequence>
                 </onMessage>
+                <onMessage partnerLink="PartnerLink1" operation="addHotelToItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodAddHotelToItineraryIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence6">
+                        <assign name="AddHotelToItineraryAssign">
+                            <copy>
+                                <from>count($ItineraryOnServer/hotels/ns5:hotelInformations)</from>
+                                <to variable="NumberOfHotels"/>
+                            </copy>
+                            <copy>
+                                <from>$TravelGoodAddHotelToItineraryIn.input4/hotel</from>
+                                <to>$ItineraryOnServer/hotels/ns5:hotelInformations[$NumberOfHotels + 1]</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/flights</from>
+                                <to>$TravelGoodAddHotelToItineraryOut.itinerary2/flights</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/hotels</from>
+                                <to>$TravelGoodAddHotelToItineraryOut.itinerary2/hotels</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/state</from>
+                                <to>$TravelGoodAddHotelToItineraryOut.itinerary2/state</to>
+                            </copy>
+                            <copy>
+                                <from>$ItineraryOnServer/id</from>
+                                <to>$TravelGoodAddHotelToItineraryOut.itinerary2/id</to>
+                            </copy>
+                        </assign>
+                        <reply name="AddHotelToItineraryReply" partnerLink="PartnerLink1" operation="addHotelToItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodAddHotelToItineraryOut"/>
+                    </sequence>
+                </onMessage>
+                <onMessage partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPlanningPhaseCancelItineraryIn">
+                    <correlations>
+                        <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                    </correlations>
+                    <sequence name="Sequence7">
+                        <assign name="PlanningPhaseCancelAssign">
+                            <copy>
+                                <from variable="CancelledState"/>
+                                <to>$ItineraryOnServer/state/ns0:state</to>
+                            </copy>
+                            <copy>
+                                <from>'Successfully cancelled'</from>
+                                <to variable="TravelGoodPlanningPhaseCancelItineraryOut" part="status1"/>
+                            </copy>
+                        </assign>
+                        <reply name="CancelPlanningPhase" partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPlanningPhaseCancelItineraryOut"/>
+                    </sequence>
+                </onMessage>
             </pick>
         </while>
+        <if name="If1">
+            <condition>$CancelledState and $ItineraryOnServer/state/ns0:state</condition>
+            <while name="While1">
+                <condition>$CancelledState and $ItineraryOnServer/state/ns0:state</condition>
+                <sequence name="Sequence8">
+                    <receive name="CancelledGetItinerary" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" createInstance="no" variable="TravelGoodCancelledGetItineraryIn">
+                        <correlations>
+                            <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                        </correlations>
+                    </receive>
+                    <assign name="CancelledItineraryAssign">
+                        <copy>
+                            <from>$ItineraryOnServer/flights</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/flights</to>
+                        </copy>
+                        <copy>
+                            <from>$ItineraryOnServer/hotels</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/hotels</to>
+                        </copy>
+                        <copy>
+                            <from>$ItineraryOnServer/state</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/state</to>
+                        </copy>
+                        <copy>
+                            <from>$ItineraryOnServer/id</from>
+                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/id</to>
+                        </copy>
+                    </assign>
+                    <reply name="CancelledItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryOut"/>
+                </sequence>
+            </while>
+        </if>
     </sequence>
 </process>

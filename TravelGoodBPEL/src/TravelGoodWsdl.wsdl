@@ -8,7 +8,7 @@
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
             <xsd:import schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
             <xsd:import schemaLocation="TravelGoodElements.xsd" namespace="http://xml.netbeans.org/schema/TravelGoodElements"/>
-            <xsd:import schemaLocation="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/NiceViewElements"/>
+            <xsd:import schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/NiceViewElements"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
                     <xsd:element name="flightRequest" type="ns0:getFlightRequestType"></xsd:element>
@@ -114,18 +114,6 @@
     <message name="addHotelToItineraryResponse">
         <part name="itinerary2" element="tns:TGItineraryElement"/>
     </message>
-    <message name="removeFlightRequest">
-        <part name="flightToRemove1" element="tns:TGRemoveFlightRequestElement"/>
-    </message>
-    <message name="removeFlightResponse">
-        <part name="itinerary3" element="ns2:ItineraryElement"/>
-    </message>
-    <message name="removeHotelRequest">
-        <part name="hotelToRemove2" element="tns:TGRemoveHotelRequestElement"/>
-    </message>
-    <message name="removeHotelResponse">
-        <part name="itinerary4" element="ns2:ItineraryElement"/>
-    </message>
     <message name="getItineraryRequest">
         <part name="itineraryId3" element="tns:ItineraryIdElement"/>
     </message>
@@ -163,14 +151,6 @@
         <operation name="addHotelToItinerary">
             <input name="input4" message="tns:addHotelToItineraryRequest"/>
             <output name="output6" message="tns:addHotelToItineraryResponse"/>
-        </operation>
-        <operation name="removeFlight">
-            <input name="input7" message="tns:removeFlightRequest"/>
-            <output name="output7" message="tns:removeFlightResponse"/>
-        </operation>
-        <operation name="removeHotel">
-            <input name="input8" message="tns:removeHotelRequest"/>
-            <output name="output8" message="tns:removeHotelResponse"/>
         </operation>
         <operation name="getItinerary">
             <input name="input9" message="tns:getItineraryRequest"/>
@@ -240,24 +220,6 @@
                 <soap:body use="literal" namespace="http://travelgood.web.dk"/>
             </output>
         </operation>
-        <operation name="removeFlight">
-            <soap:operation/>
-            <input name="input7">
-                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
-            </input>
-            <output name="output7">
-                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
-            </output>
-        </operation>
-        <operation name="removeHotel">
-            <soap:operation/>
-            <input name="input8">
-                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
-            </input>
-            <output name="output8">
-                <soap:body use="literal" namespace="http://travelgood.web.dk"/>
-            </output>
-        </operation>
         <operation name="getItinerary">
             <soap:operation/>
             <input name="input9">
@@ -303,12 +265,6 @@ A partner link type characterizes the conversational relationship between two se
     </vprop:propertyAlias>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:bookItineraryRequest" part="itineraryId1"/>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:cancelItineraryRequest" part="itineraryId2"/>
-    <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:removeFlightRequest" part="flightToRemove1">
-        <vprop:query>itineraryId</vprop:query>
-    </vprop:propertyAlias>
-    <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:removeHotelRequest" part="hotelToRemove2">
-        <vprop:query>itineraryId</vprop:query>
-    </vprop:propertyAlias>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:getItineraryRequest" part="itineraryId3"/>
     <vprop:propertyAlias propertyName="tns:itineraryId" messageType="tns:InitiateItineraryRequest" part="init1"> 
         <vprop:query>itineraryId</vprop:query>
