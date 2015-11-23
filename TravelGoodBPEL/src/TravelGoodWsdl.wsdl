@@ -8,7 +8,7 @@
             <xsd:import schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" namespace="http://fastmoney.imm.dtu.dk"/>
             <xsd:import schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/LameDuckElements"/>
             <xsd:import schemaLocation="TravelGoodElements.xsd" namespace="http://xml.netbeans.org/schema/TravelGoodElements"/>
-            <xsd:import schemaLocation="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/NiceViewElements"/>
+            <xsd:import schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" namespace="http://xml.netbeans.org/schema/NiceViewElements"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
                     <xsd:element name="flightRequest" type="ns0:getFlightRequestType"></xsd:element>
