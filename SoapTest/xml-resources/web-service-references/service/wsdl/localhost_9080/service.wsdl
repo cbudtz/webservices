@@ -53,7 +53,7 @@
             </xsd:simpleType>
             <xsd:element name="ItineraryIdElement" type="tns:ItineraryType"/>
             <xsd:element name="cancelItineraryElement" type="tns:ItineraryType"/>
-            <xsd:element name="bookItineraryElement" type="tns:ItineraryType"/>
+            <xsd:element name="bookItineraryElement" type="tns:BookItineraryRequestType"/>
             <xsd:complexType name="InitiateItineraryType">
                 <xsd:sequence>
                     <xsd:element name="itinerary" type="tns:TGItineraryType"/>
@@ -70,6 +70,12 @@
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="TGItineraryElement" type="tns:TGItineraryType"/>
+            <xsd:complexType name="BookItineraryRequestType">
+                <xsd:sequence>
+                    <xsd:element name="itineraryId" type="tns:ItineraryType"/>
+                    <xsd:element name="creditcard" type="ns0:CreditCardInfoType"/>
+                </xsd:sequence>
+            </xsd:complexType>
         </xsd:schema>
   </types>
   <message name="getFlightsResponse">
@@ -121,7 +127,7 @@
     </part>
   </message>
   <message name="bookItineraryRequest">
-    <part element="tns:bookItineraryElement" name="itineraryId1">
+    <part element="tns:bookItineraryElement" name="request10">
     </part>
   </message>
   <message name="bookItineraryFault">
@@ -294,7 +300,9 @@ A partner link type characterizes the conversational relationship between two se
     <vprop:propertyAlias messageType="tns:addHotelToItineraryRequest" part="input4" propertyName="tns:itineraryId">
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
-    <vprop:propertyAlias messageType="tns:bookItineraryRequest" part="itineraryId1" propertyName="tns:itineraryId"/>
+    <vprop:propertyAlias messageType="tns:bookItineraryRequest" part="request10" propertyName="tns:itineraryId">
+        <vprop:query>itineraryId</vprop:query>
+    </vprop:propertyAlias>
     <vprop:propertyAlias messageType="tns:cancelItineraryRequest" part="itineraryId2" propertyName="tns:itineraryId"/>
     <vprop:propertyAlias messageType="tns:getItineraryRequest" part="itineraryId3" propertyName="tns:itineraryId"/>
     <vprop:propertyAlias messageType="tns:InitiateItineraryRequest" part="init1" propertyName="tns:itineraryId"> 
