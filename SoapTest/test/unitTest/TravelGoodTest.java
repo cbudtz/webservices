@@ -8,14 +8,20 @@ package unitTest;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeFactory;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.*;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.*;
 import org.netbeans.xml.schema.niceviewelements.*;
+import org.netbeans.xml.schema.travelgoodelements.ItineraryType;
 
 /**
  *
@@ -23,11 +29,28 @@ import org.netbeans.xml.schema.niceviewelements.*;
  */
 public class TravelGoodTest {
 
-    DatatypeFactory df = new DatatypeFactoryImpl();
     TravelGoodWsdlService service = new TravelGoodWsdlService();
-    TravelGoodWsdlPortType port;
-    private static int sessionId;
-    public static Boolean setupFinished = false;
+    DatatypeFactory df = new DatatypeFactoryImpl();
+  
+    static TravelGoodWsdlPortType port;
+    private final static int sessionId = 3;
+    public static boolean setupFinished = false;
+    
+//    @BeforeClass
+//    public static void init(){
+//        
+//            TravelGoodWsdlService service = new TravelGoodWsdlService();
+//            port = service.getTravelGoodWsdlPortTypeBindingPort();
+//             InitiateItineraryType init = new InitiateItineraryType();
+//            TGItineraryType itinerary = new TGItineraryType();
+//            itinerary.setFlights(new FlightInfoListType());
+//            itinerary.setHotels(new HotelInformationListType());
+//            init.setItinerary(itinerary);
+//            init.setItineraryId(sessionId);
+//            port.initiateItinerary(init);
+//        
+//          
+//    }
 
     @Before
     public void setUp() {
@@ -35,7 +58,6 @@ public class TravelGoodTest {
 
         if (!setupFinished) {
             setupFinished = true;
-            sessionId = 3;
             // setup the itinerary on the server. .
             InitiateItineraryType init = new InitiateItineraryType();
             TGItineraryType itinerary = new TGItineraryType();
@@ -45,7 +67,7 @@ public class TravelGoodTest {
             init.setItineraryId(sessionId);
             System.out.println("init method");
             // pass the information to the server
-            //port.initiateItinerary(init);
+            port.initiateItinerary(init);
         }
     }
 

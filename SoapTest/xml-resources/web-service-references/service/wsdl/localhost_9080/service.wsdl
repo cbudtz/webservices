@@ -4,8 +4,8 @@
     <xsd:schema xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
             <xsd:import namespace="http://fastmoney.imm.dtu.dk" schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://82.211.209.179:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
                     <xsd:element name="flightRequest" type="ns0:getFlightRequestType"/>
@@ -76,10 +76,6 @@
     <part element="ns0:FlightInfoListElement" name="output1">
     </part>
   </message>
-  <message name="removeFlightRequest">
-    <part element="tns:TGRemoveFlightRequestElement" name="flightToRemove1">
-    </part>
-  </message>
   <message name="addFlightToItineraryRequest">
     <part element="tns:TGAddFlightToItineraryElement" name="input3">
     </part>
@@ -90,10 +86,6 @@
   </message>
   <message name="bookItineraryResponse">
     <part element="ns2:ItineraryElement" name="bookedItinerary1">
-    </part>
-  </message>
-  <message name="removeHotelResponse">
-    <part element="ns2:ItineraryElement" name="itinerary4">
     </part>
   </message>
   <message name="getHotelsRequest">
@@ -128,10 +120,6 @@
     <part element="tns:TGItineraryElement" name="itinerary2">
     </part>
   </message>
-  <message name="removeHotelRequest">
-    <part element="tns:TGRemoveHotelRequestElement" name="hotelToRemove2">
-    </part>
-  </message>
   <message name="bookItineraryRequest">
     <part element="tns:bookItineraryElement" name="itineraryId1">
     </part>
@@ -142,10 +130,6 @@
   </message>
   <message name="getItineraryResponse">
     <part element="tns:TGItineraryElement" name="itinerary5">
-    </part>
-  </message>
-  <message name="removeFlightResponse">
-    <part element="ns2:ItineraryElement" name="itinerary3">
     </part>
   </message>
   <message name="getFlightsRequest">
@@ -193,18 +177,6 @@
       <input message="tns:addHotelToItineraryRequest" name="input4">
     </input>
       <output message="tns:addHotelToItineraryResponse" name="output6">
-    </output>
-    </operation>
-    <operation name="removeFlight">
-      <input message="tns:removeFlightRequest" name="input7">
-    </input>
-      <output message="tns:removeFlightResponse" name="output7">
-    </output>
-    </operation>
-    <operation name="removeHotel">
-      <input message="tns:removeHotelRequest" name="input8">
-    </input>
-      <output message="tns:removeHotelResponse" name="output8">
     </output>
     </operation>
     <operation name="getItinerary">
@@ -279,24 +251,6 @@
         <soap:body namespace="http://travelgood.web.dk" use="literal"/>
       </output>
     </operation>
-    <operation name="removeFlight">
-      <soap:operation/>
-      <input name="input7">
-        <soap:body namespace="http://travelgood.web.dk" use="literal"/>
-      </input>
-      <output name="output7">
-        <soap:body namespace="http://travelgood.web.dk" use="literal"/>
-      </output>
-    </operation>
-    <operation name="removeHotel">
-      <soap:operation/>
-      <input name="input8">
-        <soap:body namespace="http://travelgood.web.dk" use="literal"/>
-      </input>
-      <output name="output8">
-        <soap:body namespace="http://travelgood.web.dk" use="literal"/>
-      </output>
-    </operation>
     <operation name="getItinerary">
       <soap:operation/>
       <input name="input9">
@@ -318,7 +272,7 @@
   </binding>
   <service name="TravelGoodWsdlService">
     <port binding="tns:TravelGoodWsdlPortTypeBinding" name="TravelGoodWsdlPortTypeBindingPort">
-      <soap:address location="http://82.211.209.179:9080/service"/>
+      <soap:address location="http://Runi-Laptop:9080/service"/>
     </port>
   </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">
@@ -342,12 +296,6 @@ A partner link type characterizes the conversational relationship between two se
     </vprop:propertyAlias>
     <vprop:propertyAlias messageType="tns:bookItineraryRequest" part="itineraryId1" propertyName="tns:itineraryId"/>
     <vprop:propertyAlias messageType="tns:cancelItineraryRequest" part="itineraryId2" propertyName="tns:itineraryId"/>
-    <vprop:propertyAlias messageType="tns:removeFlightRequest" part="flightToRemove1" propertyName="tns:itineraryId">
-        <vprop:query>itineraryId</vprop:query>
-    </vprop:propertyAlias>
-    <vprop:propertyAlias messageType="tns:removeHotelRequest" part="hotelToRemove2" propertyName="tns:itineraryId">
-        <vprop:query>itineraryId</vprop:query>
-    </vprop:propertyAlias>
     <vprop:propertyAlias messageType="tns:getItineraryRequest" part="itineraryId3" propertyName="tns:itineraryId"/>
     <vprop:propertyAlias messageType="tns:InitiateItineraryRequest" part="init1" propertyName="tns:itineraryId"> 
         <vprop:query>itineraryId</vprop:query>
