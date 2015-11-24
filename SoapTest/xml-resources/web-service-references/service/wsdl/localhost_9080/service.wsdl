@@ -4,7 +4,7 @@
     <xsd:schema xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
             <xsd:import namespace="http://fastmoney.imm.dtu.dk" schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://82.211.221.163:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
@@ -65,7 +65,7 @@
                 <xsd:sequence>
                     <xsd:element name="flights" type="ns0:FlightInfoListType"/>
                     <xsd:element name="hotels" type="ns4:HotelInformationListType"/>
-                    <xsd:element name="state" type="ns2:ItineraryStateType"/>
+                    <xsd:element name="state" type="xsd:int"/>
                     <xsd:element name="id" type="xsd:int"/>
                 </xsd:sequence>
             </xsd:complexType>
@@ -91,7 +91,7 @@
     </part>
   </message>
   <message name="bookItineraryResponse">
-    <part element="ns2:ItineraryElement" name="bookedItinerary1">
+    <part element="tns:TGItineraryElement" name="bookedItinerary1">
     </part>
   </message>
   <message name="getHotelsRequest">
@@ -278,7 +278,7 @@
   </binding>
   <service name="TravelGoodWsdlService">
     <port binding="tns:TravelGoodWsdlPortTypeBinding" name="TravelGoodWsdlPortTypeBindingPort">
-      <soap:address location="http://Runi-Laptop:9080/service"/>
+      <soap:address location="http://82.211.221.163:9080/service"/>
     </port>
   </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">
