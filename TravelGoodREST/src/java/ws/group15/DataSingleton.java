@@ -33,12 +33,12 @@ public class DataSingleton {
     }
     
     //POST in itineraries
-    public String createItinerary(){
+    public Itinerary createItinerary(){
         String itineraryID = UUID.randomUUID().toString();
         Itinerary it = new Itinerary();
         it.id = itineraryID;
         itineraries.put(itineraryID, it);
-        return itineraryID;   
+        return it;   
     }
     
     //GET on itineraries/{itId}
