@@ -21,4 +21,8 @@ public class Itinerary {
     public CreditCardInfo creditCard;
     public enum BookingState {PLANNING,PAID,CANCELLED,CONFIRMED};
     public BookingState state;
+
+    public Itinerary() {
+    }
+    
 }

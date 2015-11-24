@@ -6,6 +6,7 @@
 package ws.group15;
 
 import java.net.URI;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -20,6 +21,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -44,8 +47,10 @@ public class ItineraryResource {
     public Response getItineraries(){
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
-        Response r = Response.ok(DataSingleton.getInstance().getItineraries())
-                .link(url, POST) //Only allowed next action is to obtain some ID by creating an itinerary
+        List<Itinerary> it = DataSingleton.getInstance().getItineraries();
+        GenericEntity<List<Itinerary>> gen = new GenericEntity<List<Itinerary>>(it){};
+        Response r = Response.ok(gen)
+                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
                 .build();
         return r;
     }
@@ -80,9 +85,11 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/creditcard")
-    public void payWithCreditCard(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, CreditCardInfo card){
+    public Response payWithCreditCard(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, CreditCardInfo card){
         System.out.println(itineraryID);
         System.out.println(userid);
+        Response r = Response.ok().build();
+        return r;
         
     }
     
