@@ -6,4 +6,5 @@
     <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?wsdl=1" uri="src/conf/xml-resources/web-service-references/BankService/wsdl/fastmoney.compute.dtu.dk_8080/BankService.wsdl_1.wsdl"/>
     <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=1" uri="src/conf/xml-resources/web-service-references/BankService/wsdl/fastmoney.compute.dtu.dk_8080/BankService.xsd_1.xsd"/>
     <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" uri="src/conf/xml-resources/web-service-references/BankService/wsdl/fastmoney.compute.dtu.dk_8080/BankService.xsd_2.xsd"/>
+    <nextCatalog catalog="nbproject/private/retriever/catalog.xml"/>
 </catalog>
