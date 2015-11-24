@@ -305,7 +305,5 @@ A partner link type characterizes the conversational relationship between two se
     </vprop:propertyAlias>
     <vprop:propertyAlias messageType="tns:cancelItineraryRequest" part="itineraryId2" propertyName="tns:itineraryId"/>
     <vprop:propertyAlias messageType="tns:getItineraryRequest" part="itineraryId3" propertyName="tns:itineraryId"/>
-    <vprop:propertyAlias messageType="tns:InitiateItineraryRequest" part="init1" propertyName="tns:itineraryId"> 
-        <vprop:query>itineraryId</vprop:query>
-    </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns:InitiateItineraryResponse" part="itineraryId5" propertyName="tns:itineraryId"/>
 </definitions>

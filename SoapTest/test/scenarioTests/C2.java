@@ -75,7 +75,7 @@ public class C2 {
             init.setItineraryId(id);
             System.out.println("init method");
             // pass the information to the server
-            port.initiateItinerary(init);
+            id = port.initiateItinerary(init);
         }
 //        TravelGoodWsdlService service = new TravelGoodWsdlService();
 //        port = service.getTravelGoodWsdlPortTypeBindingPort();
