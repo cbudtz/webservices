@@ -5,6 +5,7 @@
  */
 package ws.group15;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -17,7 +18,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import ws.group15.dto.CreditCardInfo;
 import ws.group15.dto.HotelInformation;
 import ws.group15.dto.Itinerary;
@@ -29,23 +35,45 @@ import ws.group15.dto.Itinerary;
 @Path("itineraries")
 public class ItineraryResource {
     
+    @Context
+    UriInfo uriInfo;
+    
+    //Base request 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Itinerary> getItineraries(){
-        return DataSingleton.getInstance().getItineraries();
+    public Response getItineraries(){
+        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        String url = ub.build().toString();
+        Response r = Response.ok(DataSingleton.getInstance().getItineraries())
+                .link(url, POST) //Only allowed next action is to obtain some ID by creating an itinerary
+                .build();
+        return r;
     }
     
     @POST
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public String createItinerary(){
-        return DataSingleton.getInstance().createItinerary();
+    public Response createItinerary(){
+        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        Itinerary it = DataSingleton.getInstance().createItinerary();
+        URI uri = ub.path(it.id).build();
+        Response r = Response.created(uri)
+                .link(uri, "itineraty resource") //TODO: Figure out what to put in rel...
+                .link(uri.toString()+ "/status/cancel", "status")
+                .link(ub.clone().path("flights").build(), "Flights resource")
+                .link(ub.clone().path("hotels").build(), "Hotel resource")
+                .entity(it)
+                .build();
+        return r;
     }
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}")
-    public Itinerary getItineraryByID(@PathParam("itId") String itID){
-        return DataSingleton.getInstance().getItineraryById(itID);
+    public Response getItineraryByID(@PathParam("itId") String itID){
+        Itinerary i = DataSingleton.getInstance().getItineraryById(itID);
+        if (i == null) return Response.status(Response.Status.BAD_REQUEST).entity("No such Itinerary ID!").build();
+        Response r = Response.ok(i).build();
+        return r;         
     }
     
     
