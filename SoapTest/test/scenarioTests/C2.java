@@ -142,7 +142,7 @@ public class C2 {
         assertEquals("check size of hotels list. should be 2: ", itinerary.getHotels().getHotelInformations().size(), 2);
         
         try {
-            ItineraryType itin = port.bookItinerary(getBookRequest(getCreditcard(cardHolderName, cardNumber, year, month), id));
+            TGItineraryType itin = port.bookItinerary(getBookRequest(getCreditcard(cardHolderName, cardNumber, year, month), id));
 //            int count = 1;
             assertEquals("checking state of itinerary: ", itin.getState(), STATE_CONFIRMED);
 //            for(org.netbeans.xml.schema.travelgoodelements.HotelInformationType hotel : itin.getHotels()){
@@ -158,7 +158,7 @@ public class C2 {
         CreditCardInfoType creditcard = new CreditCardInfoType();
         creditcard.setCardNumber(number);
         creditcard.setHolderName(name);
-        creditcard.setExpirationDate(getDate(year, month, 0, 0, 0));
+        creditcard.setExpirationDate(getDate(year, month, 1, 1, 1));
         return creditcard;
     }
     public BookItineraryRequestType getBookRequest( CreditCardInfoType creditcard, int id){
@@ -208,8 +208,8 @@ public class C2 {
         TGGetHotelsRequestType req = new TGGetHotelsRequestType();
         GetHotelsRequestType type = new GetHotelsRequestType();
         type.setCity(city);
-        type.setArrivalDate(getDate(2015, 1, 1, 1, 1));
-        type.setDepartureDate(null);
+        type.setArrivalDate(getDate(2015, 2, 1, 1, 1));
+        type.setDepartureDate(getDate(2015,1,1,1,1));
         
         req.setRequest(type);
         req.setItineraryId(id);
