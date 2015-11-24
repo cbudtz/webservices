@@ -41,9 +41,9 @@
     <xsd:element name="FlightInfoListElement" type="ns0:FlightInfoListType"></xsd:element>
     <xsd:complexType name="getFlightRequestType">
         <xsd:sequence>
-            <xsd:element name="origin" type="xsd:string"></xsd:element>
-            <xsd:element name="destination" type="xsd:string"></xsd:element>
-            <xsd:element name="flightDate" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="origin" type="xsd:string" minOccurs="0"></xsd:element>
+            <xsd:element name="destination" type="xsd:string" minOccurs="0"></xsd:element>
+            <xsd:element name="flightDate" type="xsd:dateTime" minOccurs="0"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:element name="getFlightRequestElement" type="ns0:getFlightRequestType"></xsd:element>
