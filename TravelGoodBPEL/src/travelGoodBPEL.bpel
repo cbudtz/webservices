@@ -101,8 +101,9 @@
                 <from>''</from>
                 <to>$ItineraryOnServer/hotels</to>
             </copy>
+            <!-- Important that the GUID is assigned before the copy from the itinerary.id is called!!!-->
             <copy>
-                <from>number(sxxf:getGUID())</from>
+                <from>sxxf:getGUID()</from>
                 <to>$ItineraryOnServer/id</to>
             </copy>
             <copy>
