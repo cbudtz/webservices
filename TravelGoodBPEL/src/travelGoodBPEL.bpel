@@ -10,7 +10,7 @@
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
     xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk" xmlns:ns3="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns5="http://xml.netbeans.org/schema/NiceViewElements">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns2="urn://fastmoney.imm.dtu.dk" xmlns:ns3="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" xmlns:ns0="http://xml.netbeans.org/schema/TravelGoodElements" xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements" xmlns:ns5="http://xml.netbeans.org/schema/NiceViewElements" xmlns:sxxf="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/XPathFunctions">
     <import namespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" location="TravelGoodWsdl.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" location="LameDuckWSDLServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" location="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -63,11 +63,7 @@
         <correlationSet name="ItineraryCorrelationSet" properties="ns3:itineraryId"/>
     </correlationSets>
     <sequence name="Sequence1">
-        <receive name="initiateRecieve" createInstance="yes" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryIn">
-            <correlations>
-                <correlation set="ItineraryCorrelationSet" initiate="yes"/>
-            </correlations>
-        </receive>
+        <receive name="initiateRecieve" createInstance="yes" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryIn"></receive>
         <assign name="initiateAssign">
             <copy>
                 <from>2</from>
@@ -86,22 +82,6 @@
                 <to variable="CancelledState"/>
             </copy>
             <copy>
-                <from>$TravelGoodInitiateItineraryIn.init1/itineraryId</from>
-                <to variable="TravelGoodInitiateItineraryOut" part="itineraryId5"/>
-            </copy>
-            <copy>
-                <from>$TravelGoodInitiateItineraryIn.init1/itinerary/flights</from>
-                <to>$ItineraryOnServer/flights</to>
-            </copy>
-            <copy>
-                <from>$TravelGoodInitiateItineraryIn.init1/itinerary/hotels</from>
-                <to>$ItineraryOnServer/hotels</to>
-            </copy>
-            <copy>
-                <from>$TravelGoodInitiateItineraryIn.init1/itineraryId</from>
-                <to>$ItineraryOnServer/id</to>
-            </copy>
-            <copy>
                 <from>1</from>
                 <to variable="Booked"/>
             </copy>
@@ -113,8 +93,28 @@
                 <from variable="PlanningState"/>
                 <to>$ItineraryOnServer/state</to>
             </copy>
+            <copy>
+                <from>''</from>
+                <to>$ItineraryOnServer/flights</to>
+            </copy>
+            <copy>
+                <from>''</from>
+                <to>$ItineraryOnServer/hotels</to>
+            </copy>
+            <copy>
+                <from>number(sxxf:getGUID())</from>
+                <to>$ItineraryOnServer/id</to>
+            </copy>
+            <copy>
+                <from>$ItineraryOnServer/id</from>
+                <to variable="TravelGoodInitiateItineraryOut" part="itineraryId5"/>
+            </copy>
         </assign>
-        <reply name="initiateReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut"/>
+        <reply name="initiateReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut">
+            <correlations>
+                <correlation set="ItineraryCorrelationSet" initiate="yes"/>
+            </correlations>
+        </reply>
         <while name="PlanningPhase">
             <condition>$PlanningState = $ItineraryOnServer/state</condition>
             <pick name="Pick1" createInstance="no">
