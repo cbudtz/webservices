@@ -6,6 +6,7 @@
 package ws.group15.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import ws.group15.dto.Itinerary.BookingState;
 
 /**
  *
@@ -19,6 +20,7 @@ public class HotelInformation {
     public int stayPrice;
     public boolean creditCardGuaranteeRequired;
     public String serviceName;
-    
+    public BookingState state = BookingState.PLANNING;
+     
     
 }

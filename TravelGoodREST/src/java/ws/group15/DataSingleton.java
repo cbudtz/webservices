@@ -5,11 +5,12 @@
  */
 package ws.group15;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
 import ws.group15.dto.Itinerary;
@@ -20,10 +21,10 @@ import ws.group15.dto.Itinerary;
  */
 public class DataSingleton {
     private static DataSingleton instance;
-    private Hashtable<String, Hashtable<String, Itinerary>> userItineraries; //<userId, <itineraryId,Itinea
+    private Hashtable<String, Itinerary> itineraries; //<userId, <itineraryId,Itinea
     
     private DataSingleton(){
-        userItineraries = new Hashtable<>();
+        itineraries = new Hashtable<>();
     }
     
     public static synchronized DataSingleton getInstance(){
@@ -31,33 +32,36 @@ public class DataSingleton {
         return instance;
     }
     
-    public String createNewUser(){
-        String id = UUID.randomUUID().toString();
-        userItineraries.put(id, new Hashtable<String, Itinerary>());
-        return id;
-    }
-    
-    public String createItinerary(String userID){
+    //POST in itineraries
+    public Itinerary createItinerary(){
         String itineraryID = UUID.randomUUID().toString();
-        Hashtable<String, Itinerary> itineraries = userItineraries.get(userID);
-        if (itineraries==null) return null; //UserID was wrong :(
-        // create an empty itinerary
         Itinerary it = new Itinerary();
-        it.flights = new ArrayList<FlightInformation>();
-        it.hotels = new ArrayList<HotelInformation>();
         it.id = itineraryID;
-        it.state= Itinerary.ItineraryState.PLANNING;
         itineraries.put(itineraryID, it);
-        return itineraryID;
-        
+        return it;   
     }
     
-    public Itinerary getItineraryById(String userID, String itineraryID){
-        return userItineraries.get(userID).get(itineraryID);
+    //GET on itineraries/{itId}
+    public Itinerary getItineraryById(String itineraryID){
+        return itineraries.get(itineraryID);
     }
     
-    public List<Itinerary> getItineraries(String userID){
-        return null;
+    //GET on itineraries //Not part of requirements specification! Made for fun and practice
+    public List<Itinerary> getItineraries(){
+        ArrayList<Itinerary> itineraryList = new ArrayList<>();
+        for (Map.Entry<String, Itinerary> entrySet : itineraries.entrySet()) {
+                itineraryList.add(entrySet.getValue());
+            }
+        return itineraryList;
+    }
+    //PUT on flights
+    public void addFlightToItinerary(String itineraryID, FlightInformation flightInfo){
+        itineraries.get(itineraryID).flights.add(flightInfo);
+    }
+    
+    //PUT on hotels
+    public void addHotelToItinerary(String itineraryID, HotelInformation hotelInformation){
+        itineraries.get(itineraryID).hotels.add(hotelInformation);
     }
     
 }

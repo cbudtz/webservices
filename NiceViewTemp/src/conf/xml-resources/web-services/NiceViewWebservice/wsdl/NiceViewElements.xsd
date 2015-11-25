@@ -19,13 +19,14 @@
             <xsd:element name="stayPrice" type="xsd:int"></xsd:element>
             <xsd:element name="creditCardGuaranteeRequired" type="xsd:boolean"></xsd:element>
             <xsd:element name="serviceName" type="xsd:string"></xsd:element>
+            <xsd:element name="state" type="xsd:int"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="GetHotelsRequestType">
         <xsd:sequence>
-            <xsd:element name="city" type="xsd:string"></xsd:element>
-            <xsd:element name="arrivalDate" type="xsd:dateTime"></xsd:element>
-            <xsd:element name="departureDate" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="city" type="xsd:string" minOccurs="0"></xsd:element>
+            <xsd:element name="arrivalDate" type="xsd:dateTime" minOccurs="0"></xsd:element>
+            <xsd:element name="departureDate" type="xsd:dateTime" minOccurs="0"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="HotelInformationListType">

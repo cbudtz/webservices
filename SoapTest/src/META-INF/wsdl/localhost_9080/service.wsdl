@@ -4,7 +4,7 @@
     <xsd:schema xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
             <xsd:import namespace="http://fastmoney.imm.dtu.dk" schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://82.211.221.163:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
@@ -53,7 +53,7 @@
             </xsd:simpleType>
             <xsd:element name="ItineraryIdElement" type="tns:ItineraryType"/>
             <xsd:element name="cancelItineraryElement" type="tns:ItineraryType"/>
-            <xsd:element name="bookItineraryElement" type="tns:ItineraryType"/>
+            <xsd:element name="bookItineraryElement" type="tns:BookItineraryRequestType"/>
             <xsd:complexType name="InitiateItineraryType">
                 <xsd:sequence>
                     <xsd:element name="itinerary" type="tns:TGItineraryType"/>
@@ -65,11 +65,17 @@
                 <xsd:sequence>
                     <xsd:element name="flights" type="ns0:FlightInfoListType"/>
                     <xsd:element name="hotels" type="ns4:HotelInformationListType"/>
-                    <xsd:element name="state" type="ns2:ItineraryStateType"/>
+                    <xsd:element name="state" type="xsd:int"/>
                     <xsd:element name="id" type="xsd:int"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="TGItineraryElement" type="tns:TGItineraryType"/>
+            <xsd:complexType name="BookItineraryRequestType">
+                <xsd:sequence>
+                    <xsd:element name="itineraryId" type="tns:ItineraryType"/>
+                    <xsd:element name="creditcard" type="ns0:CreditCardInfoType"/>
+                </xsd:sequence>
+            </xsd:complexType>
         </xsd:schema>
   </types>
   <message name="getFlightsResponse">
@@ -85,7 +91,7 @@
     </part>
   </message>
   <message name="bookItineraryResponse">
-    <part element="ns2:ItineraryElement" name="bookedItinerary1">
+    <part element="tns:TGItineraryElement" name="bookedItinerary1">
     </part>
   </message>
   <message name="getHotelsRequest">
@@ -121,7 +127,7 @@
     </part>
   </message>
   <message name="bookItineraryRequest">
-    <part element="tns:bookItineraryElement" name="itineraryId1">
+    <part element="tns:bookItineraryElement" name="request10">
     </part>
   </message>
   <message name="bookItineraryFault">
@@ -272,7 +278,7 @@
   </binding>
   <service name="TravelGoodWsdlService">
     <port binding="tns:TravelGoodWsdlPortTypeBinding" name="TravelGoodWsdlPortTypeBindingPort">
-      <soap:address location="http://Runi-Laptop:9080/service"/>
+      <soap:address location="http://82.211.221.163:9080/service"/>
     </port>
   </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">
@@ -294,10 +300,10 @@ A partner link type characterizes the conversational relationship between two se
     <vprop:propertyAlias messageType="tns:addHotelToItineraryRequest" part="input4" propertyName="tns:itineraryId">
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
-    <vprop:propertyAlias messageType="tns:bookItineraryRequest" part="itineraryId1" propertyName="tns:itineraryId"/>
-    <vprop:propertyAlias messageType="tns:cancelItineraryRequest" part="itineraryId2" propertyName="tns:itineraryId"/>
-    <vprop:propertyAlias messageType="tns:getItineraryRequest" part="itineraryId3" propertyName="tns:itineraryId"/>
-    <vprop:propertyAlias messageType="tns:InitiateItineraryRequest" part="init1" propertyName="tns:itineraryId"> 
+    <vprop:propertyAlias messageType="tns:bookItineraryRequest" part="request10" propertyName="tns:itineraryId">
         <vprop:query>itineraryId</vprop:query>
     </vprop:propertyAlias>
+    <vprop:propertyAlias messageType="tns:cancelItineraryRequest" part="itineraryId2" propertyName="tns:itineraryId"/>
+    <vprop:propertyAlias messageType="tns:getItineraryRequest" part="itineraryId3" propertyName="tns:itineraryId"/>
+    <vprop:propertyAlias messageType="tns:InitiateItineraryResponse" part="itineraryId5" propertyName="tns:itineraryId"/>
 </definitions>

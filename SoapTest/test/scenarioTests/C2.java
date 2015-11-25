@@ -24,10 +24,12 @@ import org.netbeans.xml.schema.niceviewelements.HotelInformationListType;
 import org.netbeans.xml.schema.travelgoodelements.ItineraryStateType;
 import static org.junit.Assert.*;
 import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.BookItineraryFault;
+import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.BookItineraryRequestType;
 import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.TGAddFlightToItineraryType;
 import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.TGAddHotelToItineraryType;
 import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.TGGetFlightRequestType;
 import org.netbeans.j2ee.wsdl.travelgoodbpel.src.travelgoodwsdl.TGGetHotelsRequestType;
+import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
 import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
 import org.netbeans.xml.schema.lameduckelements.FlightType;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
@@ -47,35 +49,66 @@ Book the itinerary and ask again for the itinerary. Check that each booking stat
  */
 public class C2 {
     DatatypeFactory df = new DatatypeFactoryImpl();
-    TravelGoodWsdlPortType port;
-    private static int id = 5;
+    static TravelGoodWsdlPortType port;
+    private TravelGoodWsdlService service = new TravelGoodWsdlService();
+    private static int id = 6;
     private static final int STATE_UNCONFIRMED = 0;
     private static final int STATE_CONFIRMED = 2;
+    public String cardHolderName = "Thor-Jensen Claus";
+    public int cardNumber = 50408825;
+    public int year = 9;
+    public int month = 5;
+    public static boolean setupFinished = false;
     
     @Before
     public void setup(){
-        TravelGoodWsdlService service = new TravelGoodWsdlService();
         port = service.getTravelGoodWsdlPortTypeBindingPort();
-        System.out.println("port: " + port);
+
+        if (!setupFinished) {
+            setupFinished = true;
+            // setup the itinerary on the server. .
+            InitiateItineraryType init = new InitiateItineraryType();
+            TGItineraryType itinerary = new TGItineraryType();
+            itinerary.setFlights(new FlightInfoListType());
+            itinerary.setHotels(new HotelInformationListType());
+            init.setItinerary(itinerary);
+            init.setItineraryId(id);
+            System.out.println("init method");
+            // pass the information to the server
+            id = port.initiateItinerary(init);
+        }
+//        TravelGoodWsdlService service = new TravelGoodWsdlService();
+//        port = service.getTravelGoodWsdlPortTypeBindingPort();
+//        System.out.println("port: " + port);
+//                InitiateItineraryType initItin = new InitiateItineraryType();
+//                 TGItineraryType type = new TGItineraryType();
+//        type.setFlights(new FlightInfoListType());
+//        type.setHotels(new HotelInformationListType());
+//        type.setId(id);
+//        type.setState(new ItineraryStateType());
+//        initItin.setItinerary(type);
+//        initItin.setItineraryId(id);
+//        int itinID = port.initiateItinerary(initItin);
+//        assertEquals("should receive id: " + id, id, itinID);
+        
     }
     
     @Test
     public void runTest(){
-        TGItineraryType type = new TGItineraryType();
-        type.setFlights(new FlightInfoListType());
-        type.setHotels(new HotelInformationListType());
-        type.setId(id);
-        type.setState(new ItineraryStateType());
+       
         
         // test initialize itinerary
-        InitiateItineraryType initItin = new InitiateItineraryType();
-        initItin.setItinerary(type);
-        initItin.setItineraryId(id);
-        int itinID = port.initiateItinerary(initItin);
-        assertEquals("should receive id: " + id, id, itinID);
-        
+
         // get a flight
-        FlightInfoListType flights = port.getFlights(getGetFligthRequest("Danmark", "Mallorca", getDate(2016, 6, 15, 12, 0)));
+        TGGetFlightRequestType request = new TGGetFlightRequestType();
+        GetFlightRequestType reqInfo = new GetFlightRequestType();
+        reqInfo.setDestination("hawai");
+        reqInfo.setFlightDate(df.newXMLGregorianCalendar(new BigInteger(String.valueOf(2016)), 1, 1, 1, 1, 1, BigDecimal.ZERO, 1));
+        reqInfo.setOrigin("Danmark");
+        request.setFlightRequest(reqInfo);
+        request.setItineraryId(id);
+//        TGGetFlightRequestType f = getGetFligthRequest("Danmark", "Mallorca", getDate(2016, 6, 15, 12, 0));
+        FlightInfoListType flights = port.getFlights(request);
         assertTrue("expected list to have size > 0", flights.getFlightInfo().size() > 0);
         FlightInformationType flightSelect = flights.getFlightInfo().get(0);
         
@@ -109,17 +142,30 @@ public class C2 {
         assertEquals("check size of hotels list. should be 2: ", itinerary.getHotels().getHotelInformations().size(), 2);
         
         try {
-            ItineraryType itin = port.bookItinerary(id);
+            TGItineraryType itin = port.bookItinerary(getBookRequest(getCreditcard(cardHolderName, cardNumber, year, month), id));
 //            int count = 1;
             assertEquals("checking state of itinerary: ", itin.getState(), STATE_CONFIRMED);
 //            for(org.netbeans.xml.schema.travelgoodelements.HotelInformationType hotel : itin.getHotels()){
-//                assertEquals("check state of hotel: " + (count++), hotel., hotel);
+//                assertEquals("check state of hotel: " + (count++), hotel.ge½, hotel);
 //            }
         } catch (BookItineraryFault ex) {
             fail(ex.getMessage() + "\n" + ex.getFaultInfo());
             Logger.getLogger(C2.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    public CreditCardInfoType getCreditcard(String name, int number, int year, int month){
+        CreditCardInfoType creditcard = new CreditCardInfoType();
+        creditcard.setCardNumber(number);
+        creditcard.setHolderName(name);
+        creditcard.setExpirationDate(getDate(year, month, 1, 1, 1));
+        return creditcard;
+    }
+    public BookItineraryRequestType getBookRequest( CreditCardInfoType creditcard, int id){
+        BookItineraryRequestType req = new BookItineraryRequestType();
+        req.setCreditcard(creditcard);
+        req.setItineraryId(id);
+        return req;
     }
     public TGAddFlightToItineraryType convertAddFlightToItinerary(FlightInformationType flight, int id){
         TGAddFlightToItineraryType newFlight = new TGAddFlightToItineraryType();
@@ -162,8 +208,8 @@ public class C2 {
         TGGetHotelsRequestType req = new TGGetHotelsRequestType();
         GetHotelsRequestType type = new GetHotelsRequestType();
         type.setCity(city);
-        type.setArrivalDate(null);
-        type.setDepartureDate(null);
+        type.setArrivalDate(getDate(2015, 2, 1, 1, 1));
+        type.setDepartureDate(getDate(2015,1,1,1,1));
         
         req.setRequest(type);
         req.setItineraryId(id);
@@ -177,6 +223,7 @@ public class C2 {
         type.setOrigin(origin);
         type.setFlightDate(date);
         req.setFlightRequest(type);
+        req.setItineraryId(id);
         return req;
     }
     

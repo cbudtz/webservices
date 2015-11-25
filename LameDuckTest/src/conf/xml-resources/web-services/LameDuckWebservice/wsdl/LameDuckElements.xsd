@@ -3,7 +3,8 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             targetNamespace="http://xml.netbeans.org/schema/LameDuckElements"
     xmlns:ns0="http://xml.netbeans.org/schema/LameDuckElements"
-    elementFormDefault="qualified">
+    elementFormDefault="qualified" xmlns:ns1="http://types.fastmoney.imm.dtu.dk">
+    <xsd:import namespace="http://types.fastmoney.imm.dtu.dk"/>
     <xsd:complexType name="FlightType">
         <xsd:sequence>
             <xsd:element name="originAirport" type="xsd:string"></xsd:element>
@@ -19,6 +20,7 @@
             <xsd:element name="flightPrice" type="xsd:int"></xsd:element>
             <xsd:element name="serviceName" type="xsd:string"></xsd:element>
             <xsd:element name="flight" type="ns0:FlightType"></xsd:element>
+            <xsd:element name="state" type="xsd:int"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="CreditCardInfoType">
@@ -39,9 +41,9 @@
     <xsd:element name="FlightInfoListElement" type="ns0:FlightInfoListType"></xsd:element>
     <xsd:complexType name="getFlightRequestType">
         <xsd:sequence>
-            <xsd:element name="origin" type="xsd:string"></xsd:element>
-            <xsd:element name="destination" type="xsd:string"></xsd:element>
-            <xsd:element name="flightDate" type="xsd:dateTime"></xsd:element>
+            <xsd:element name="origin" type="xsd:string" minOccurs="0"></xsd:element>
+            <xsd:element name="destination" type="xsd:string" minOccurs="0"></xsd:element>
+            <xsd:element name="flightDate" type="xsd:dateTime" minOccurs="0"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:element name="getFlightRequestElement" type="ns0:getFlightRequestType"></xsd:element>

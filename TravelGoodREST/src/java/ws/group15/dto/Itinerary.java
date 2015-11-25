@@ -5,6 +5,7 @@
  */
 package ws.group15.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -15,8 +16,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="itinerary")
 public class Itinerary {
     public String id;
-    public List<FlightInformation> flights;
-    public List<HotelInformation> hotels;
-    public enum ItineraryState {PLANNING,PAID,CANCELLED,CONFIRMED};
-    public ItineraryState state;
+    public List<FlightInformation> flights = new ArrayList<>();
+    public List<HotelInformation> hotels = new ArrayList<>();
+    public CreditCardInfo creditCard;
+    public enum BookingState {PLANNING,PAID,CANCELLED,CONFIRMED};
+    public BookingState state;
+
+    public Itinerary() {
+    }
+    
 }

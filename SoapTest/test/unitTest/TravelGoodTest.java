@@ -33,7 +33,7 @@ public class TravelGoodTest {
     DatatypeFactory df = new DatatypeFactoryImpl();
   
     static TravelGoodWsdlPortType port;
-    private final static int sessionId = 3;
+    private final static int sessionId = 5;
     public static boolean setupFinished = false;
     
 //    @BeforeClass
@@ -67,11 +67,11 @@ public class TravelGoodTest {
             init.setItineraryId(sessionId);
             System.out.println("init method");
             // pass the information to the server
-            port.initiateItinerary(init);
+            // port.initiateItinerary(init);
         }
     }
 
-    @Test
+   /* @Test
     public void testGetFlights() {
         TGGetFlightRequestType request = new TGGetFlightRequestType();
         GetFlightRequestType reqInfo = new GetFlightRequestType();
@@ -80,7 +80,7 @@ public class TravelGoodTest {
         reqInfo.setOrigin("Danmark");
         request.setFlightRequest(reqInfo);
         request.setItineraryId(sessionId);
-        port.getFlights(request);
+        FlightInfoListType flights = port.getFlights(request);
     }
 
     @Test
@@ -92,11 +92,11 @@ public class TravelGoodTest {
         flight.setServiceName("Fucking service");
         input.setFlightInfo(flight);
         input.setItineraryId(sessionId);
-        port.addFlightToItinerary(input);
+        TGItineraryType itinerary = port.addFlightToItinerary(input);
     }
 
-    /*@Test
-     public void testGetHotels(){
+    @Test
+     public void testHotels(){
      TGGetHotelsRequestType request = new TGGetHotelsRequestType();
      GetHotelsRequestType reqInfo = new GetHotelsRequestType();
      reqInfo.setArrivalDate(df.newXMLGregorianCalendar(new BigInteger(String.valueOf(2016)), 1, 1, 1, 1, 1, BigDecimal.ZERO, 1));
@@ -104,11 +104,18 @@ public class TravelGoodTest {
      reqInfo.setCity("Havanna");
      request.setItineraryId(sessionId);
      request.setRequest(reqInfo);
-     port.getHotels(request);
-     }*/
-    
+     HotelInformationListType hotels = port.getHotels(request);
+     
+     // try and add the same hotel to the itinerary
+     TGAddHotelToItineraryType addRequest = new TGAddHotelToItineraryType();
+     addRequest.setHotel(hotels.getHotelInformations().get(0));
+     addRequest.setItineraryId(sessionId);
+     TGItineraryType itinerary = port.addHotelToItinerary(addRequest);
+     }
+    */
     @Test
     public void testGetItinerary() {
-        port.getItinerary(sessionId);
+       TGItineraryType itinerary = port.getItinerary(sessionId);
+       // port.cancelItinerary(sessionId);
     }
 }
