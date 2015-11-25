@@ -49,7 +49,7 @@
             </xsd:complexType>
             <xsd:element name="TGRemoveHotelRequestElement" type="tns:TGRemoveHotelRequestType"/>
             <xsd:simpleType name="ItineraryType">
-                <xsd:restriction base="xsd:int"/>
+                <xsd:restriction base="xsd:string"/>
             </xsd:simpleType>
             <xsd:element name="ItineraryIdElement" type="tns:ItineraryType"/>
             <xsd:element name="cancelItineraryElement" type="tns:ItineraryType"/>
@@ -66,7 +66,7 @@
                     <xsd:element name="flights" type="ns0:FlightInfoListType"/>
                     <xsd:element name="hotels" type="ns4:HotelInformationListType"/>
                     <xsd:element name="state" type="xsd:int"/>
-                    <xsd:element name="id" type="xsd:int"/>
+                    <xsd:element name="id" type="tns:ItineraryType"/>
                 </xsd:sequence>
             </xsd:complexType>
             <xsd:element name="TGItineraryElement" type="tns:TGItineraryType"/>
@@ -119,8 +119,6 @@
     </part>
   </message>
   <message name="InitiateItineraryRequest">
-    <part element="tns:InitiateItineraryElement" name="init1">
-    </part>
   </message>
   <message name="addHotelToItineraryResponse">
     <part element="tns:TGItineraryElement" name="itinerary2">

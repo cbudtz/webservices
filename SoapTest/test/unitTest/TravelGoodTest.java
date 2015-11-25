@@ -33,7 +33,7 @@ public class TravelGoodTest {
     DatatypeFactory df = new DatatypeFactoryImpl();
   
     static TravelGoodWsdlPortType port;
-    private final static int sessionId = 5;
+    private final static String sessionId = "testti";
     public static boolean setupFinished = false;
     
 //    @BeforeClass

@@ -51,7 +51,7 @@ public class C2 {
     DatatypeFactory df = new DatatypeFactoryImpl();
     static TravelGoodWsdlPortType port;
     private TravelGoodWsdlService service = new TravelGoodWsdlService();
-    private static int id = 6;
+    private static String id = "lolLigeGyldig";
     private static final int STATE_UNCONFIRMED = 0;
     private static final int STATE_CONFIRMED = 2;
     public String cardHolderName = "Thor-Jensen Claus";
@@ -66,16 +66,10 @@ public class C2 {
 
         if (!setupFinished) {
             setupFinished = true;
-            // setup the itinerary on the server. .
-            InitiateItineraryType init = new InitiateItineraryType();
-            TGItineraryType itinerary = new TGItineraryType();
-            itinerary.setFlights(new FlightInfoListType());
-            itinerary.setHotels(new HotelInformationListType());
-            init.setItinerary(itinerary);
-            init.setItineraryId(id);
             System.out.println("init method");
-            // pass the information to the server
-            id = port.initiateItinerary(init);
+            // Tell the server you want to start a session. 
+            // It returns you a unique ID
+            id = port.initiateItinerary();
         }
 //        TravelGoodWsdlService service = new TravelGoodWsdlService();
 //        port = service.getTravelGoodWsdlPortTypeBindingPort();
@@ -161,13 +155,13 @@ public class C2 {
         creditcard.setExpirationDate(getDate(year, month, 1, 1, 1));
         return creditcard;
     }
-    public BookItineraryRequestType getBookRequest( CreditCardInfoType creditcard, int id){
+    public BookItineraryRequestType getBookRequest( CreditCardInfoType creditcard, String id){
         BookItineraryRequestType req = new BookItineraryRequestType();
         req.setCreditcard(creditcard);
         req.setItineraryId(id);
         return req;
     }
-    public TGAddFlightToItineraryType convertAddFlightToItinerary(FlightInformationType flight, int id){
+    public TGAddFlightToItineraryType convertAddFlightToItinerary(FlightInformationType flight, String id){
         TGAddFlightToItineraryType newFlight = new TGAddFlightToItineraryType();
         org.netbeans.xml.schema.travelgoodelements.FlightInformationType type = new  org.netbeans.xml.schema.travelgoodelements.FlightInformationType();
         type.setBookingNumber(flight.getBookingNumber());
@@ -180,7 +174,7 @@ public class C2 {
         return newFlight;
     }
     
-    private TGAddHotelToItineraryType convertAddHotelToItinerary(HotelInformationType hotel, int id) {
+    private TGAddHotelToItineraryType convertAddHotelToItinerary(HotelInformationType hotel, String id) {
         TGAddHotelToItineraryType newHotel = new TGAddHotelToItineraryType();
 //        org.netbeans.xml.schema.travelgoodelements.HotelInformationType type = new org.netbeans.xml.schema.travelgoodelements.HotelInformationType();
 //        type.setBookingNumber(hotel.getBookingNumber());
@@ -204,7 +198,7 @@ public class C2 {
         return newType;
     }
     
-    public TGGetHotelsRequestType getGetHotelRequest(String city, int id){
+    public TGGetHotelsRequestType getGetHotelRequest(String city, String id){
         TGGetHotelsRequestType req = new TGGetHotelsRequestType();
         GetHotelsRequestType type = new GetHotelsRequestType();
         type.setCity(city);
