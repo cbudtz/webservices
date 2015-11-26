@@ -4,7 +4,7 @@
     <xsd:schema xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
             <xsd:import namespace="http://fastmoney.imm.dtu.dk" schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://82.211.221.163:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://192.168.10.102:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
@@ -78,12 +78,34 @@
             </xsd:complexType>
         </xsd:schema>
   </types>
+  <message name="cancelItineraryRequest">
+    <part element="tns:cancelItineraryElement" name="itineraryId2">
+    </part>
+  </message>
+  <message name="getItineraryRequest">
+    <part element="tns:ItineraryIdElement" name="itineraryId3">
+    </part>
+  </message>
+  <message name="getHotelsResponse">
+    <part element="ns3:HotelInformationListElement" name="output2">
+    </part>
+  </message>
   <message name="getFlightsResponse">
     <part element="ns0:FlightInfoListElement" name="output1">
     </part>
   </message>
-  <message name="addFlightToItineraryRequest">
-    <part element="tns:TGAddFlightToItineraryElement" name="input3">
+  <message name="InitiateItineraryRequest">
+  </message>
+  <message name="bookItineraryFault">
+    <part element="ns2:bookItineraryFaultElement" name="bookFault1">
+    </part>
+  </message>
+  <message name="addFlightToItineraryResponse">
+    <part element="tns:TGItineraryElement" name="itinerary1">
+    </part>
+  </message>
+  <message name="getFlightsRequest">
+    <part element="tns:TGGetFlightRequestElement" name="input1">
     </part>
   </message>
   <message name="addHotelToItineraryRequest">
@@ -94,32 +116,6 @@
     <part element="tns:TGItineraryElement" name="bookedItinerary1">
     </part>
   </message>
-  <message name="getHotelsRequest">
-    <part element="tns:TGGetHotelsRequestElement" name="input2">
-    </part>
-  </message>
-  <message name="getHotelsResponse">
-    <part element="ns3:HotelInformationListElement" name="output2">
-    </part>
-  </message>
-  <message name="getItineraryRequest">
-    <part element="tns:ItineraryIdElement" name="itineraryId3">
-    </part>
-  </message>
-  <message name="cancelItineraryRequest">
-    <part element="tns:cancelItineraryElement" name="itineraryId2">
-    </part>
-  </message>
-  <message name="InitiateItineraryResponse">
-    <part element="tns:ItineraryIdElement" name="itineraryId5">
-    </part>
-  </message>
-  <message name="addFlightToItineraryResponse">
-    <part element="tns:TGItineraryElement" name="itinerary1">
-    </part>
-  </message>
-  <message name="InitiateItineraryRequest">
-  </message>
   <message name="addHotelToItineraryResponse">
     <part element="tns:TGItineraryElement" name="itinerary2">
     </part>
@@ -128,20 +124,24 @@
     <part element="tns:bookItineraryElement" name="request10">
     </part>
   </message>
-  <message name="bookItineraryFault">
-    <part element="ns2:bookItineraryFaultElement" name="bookFault1">
-    </part>
-  </message>
   <message name="getItineraryResponse">
     <part element="tns:TGItineraryElement" name="itinerary5">
     </part>
   </message>
-  <message name="getFlightsRequest">
-    <part element="tns:TGGetFlightRequestElement" name="input1">
-    </part>
-  </message>
   <message name="cancelItineraryResponse">
     <part element="ns0:StringElement" name="status1">
+    </part>
+  </message>
+  <message name="InitiateItineraryResponse">
+    <part element="tns:ItineraryIdElement" name="itineraryId5">
+    </part>
+  </message>
+  <message name="getHotelsRequest">
+    <part element="tns:TGGetHotelsRequestElement" name="input2">
+    </part>
+  </message>
+  <message name="addFlightToItineraryRequest">
+    <part element="tns:TGAddFlightToItineraryElement" name="input3">
     </part>
   </message>
   <portType name="TravelGoodWsdlPortType">
@@ -276,7 +276,7 @@
   </binding>
   <service name="TravelGoodWsdlService">
     <port binding="tns:TravelGoodWsdlPortTypeBinding" name="TravelGoodWsdlPortTypeBindingPort">
-      <soap:address location="http://82.211.221.163:9080/service"/>
+      <soap:address location="http://192.168.10.102:9080/service"/>
     </port>
   </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">

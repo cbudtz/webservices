@@ -4,31 +4,36 @@
 <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="bookFlight">
-<part xmlns:ns1="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfo" element="ns1:BookFlightRequestElement"/>
-</message>
-<message name="bookFlightResponse">
-<part xmlns:ns2="http://xml.netbeans.org/schema/LameDuckElements" name="success" element="ns2:booleanElement"/>
-</message>
-<message name="BookFlightFault">
-<part xmlns:ns3="http://xml.netbeans.org/schema/LameDuckElements" name="fault" element="ns3:StringElement"/>
-</message>
-<message name="getFlights">
-<part xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfo" element="ns4:getFlightRequestElement"/>
-</message>
-<message name="getFlightsResponse">
-<part xmlns:ns5="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfoList" element="ns5:FlightInfoListElement"/>
-</message>
 <message name="cancelFlight">
-<part xmlns:ns6="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfo" element="ns6:CancelFlightRequestElement"/>
+<part xmlns:ns1="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfo" element="ns1:CancelFlightRequestElement"/>
 </message>
 <message name="cancelFlightResponse">
-<part xmlns:ns7="http://xml.netbeans.org/schema/LameDuckElements" name="status" element="ns7:StringElement"/>
+<part xmlns:ns2="http://xml.netbeans.org/schema/LameDuckElements" name="status" element="ns2:StringElement"/>
 </message>
 <message name="CancelFlightFault">
-<part xmlns:ns8="http://xml.netbeans.org/schema/LameDuckElements" name="fault" element="ns8:StringElement"/>
+<part xmlns:ns3="http://xml.netbeans.org/schema/LameDuckElements" name="fault" element="ns3:StringElement"/>
+</message>
+<message name="bookFlight">
+<part xmlns:ns4="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfo" element="ns4:BookFlightRequestElement"/>
+</message>
+<message name="bookFlightResponse">
+<part xmlns:ns5="http://xml.netbeans.org/schema/LameDuckElements" name="success" element="ns5:booleanElement"/>
+</message>
+<message name="BookFlightFault">
+<part xmlns:ns6="http://xml.netbeans.org/schema/LameDuckElements" name="fault" element="ns6:StringElement"/>
+</message>
+<message name="getFlights">
+<part xmlns:ns7="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfo" element="ns7:getFlightRequestElement"/>
+</message>
+<message name="getFlightsResponse">
+<part xmlns:ns8="http://xml.netbeans.org/schema/LameDuckElements" name="flightInfoList" element="ns8:FlightInfoListElement"/>
 </message>
 <portType name="LameDuckPortType">
+<operation name="cancelFlight">
+<input wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/cancelFlightRequest" message="tns:cancelFlight"/>
+<output wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/cancelFlightResponse" message="tns:cancelFlightResponse"/>
+<fault message="tns:CancelFlightFault" name="CancelFlightFault" wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/cancelFlight/Fault/CancelFlightFault"/>
+</operation>
 <operation name="bookFlight">
 <input wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/bookFlightRequest" message="tns:bookFlight"/>
 <output wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/bookFlightResponse" message="tns:bookFlightResponse"/>
@@ -38,14 +43,21 @@
 <input wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/getFlightsRequest" message="tns:getFlights"/>
 <output wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/getFlightsResponse" message="tns:getFlightsResponse"/>
 </operation>
-<operation name="cancelFlight">
-<input wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/cancelFlightRequest" message="tns:cancelFlight"/>
-<output wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/cancelFlightResponse" message="tns:cancelFlightResponse"/>
-<fault message="tns:CancelFlightFault" name="CancelFlightFault" wsam:Action="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL/LameDuckPortType/cancelFlight/Fault/CancelFlightFault"/>
-</operation>
 </portType>
 <binding name="LameDuckPortTypeBindingPortBinding" type="tns:LameDuckPortType">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="cancelFlight">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="CancelFlightFault">
+<soap:fault name="CancelFlightFault" use="literal"/>
+</fault>
+</operation>
 <operation name="bookFlight">
 <soap:operation soapAction=""/>
 <input>
@@ -66,18 +78,6 @@
 <output>
 <soap:body use="literal"/>
 </output>
-</operation>
-<operation name="cancelFlight">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="CancelFlightFault">
-<soap:fault name="CancelFlightFault" use="literal"/>
-</fault>
 </operation>
 </binding>
 <service name="LameDuckWSDLService">
