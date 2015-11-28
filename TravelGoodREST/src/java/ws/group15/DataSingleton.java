@@ -55,6 +55,11 @@ public class DataSingleton {
             }
         return itineraryList;
     }
+    
+    public boolean cancelItinerary(String itineraryID){
+        
+        return true;
+    }
     //PUT on flights
     public void addFlightToItinerary(String itineraryID, FlightInformation flightInfo){
         itineraries.get(itineraryID).flights.add(flightInfo);
@@ -64,11 +69,9 @@ public class DataSingleton {
     public void addHotelToItinerary(String itineraryID, HotelInformation hotelInformation){
         itineraries.get(itineraryID).hotels.add(hotelInformation);
     }
-    
     public List<FlightInformation> getFlights(String origin, String destination, XMLGregorianCalendar departure){
         return null; //TODO implement
     }
-    
     public List<HotelInformation> getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure){
         
         return null; //TODO implement
