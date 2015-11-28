@@ -110,6 +110,7 @@ public class DataSingleton {
             } catch (BookFlightFault ex) {
                 //TODO: something useful with fault;
                 succes = false;
+                it.state = Itinerary.BookingState.CANCELLED;
                 System.out.println("Booking failed");
                 boolean compensationSucces = true; //compensate(it);
                 if (compensationSucces) {
@@ -129,6 +130,7 @@ public class DataSingleton {
                     //TODO something useful with try catch
                     System.out.println("Booking failed");
                     boolean compensationSucces = true; //compensate(it);
+                    it.state= Itinerary.BookingState.CANCELLED;
                     if (compensationSucces) {
                         throw new BookingException("Booking failed - Money refunded");
                     } else {
