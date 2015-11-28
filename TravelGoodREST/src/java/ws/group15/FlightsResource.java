@@ -36,7 +36,9 @@ public class FlightsResource {
     public Response getFlights(@QueryParam("origin") String origin,
             @QueryParam("destination") String destination,
             @QueryParam("departure") String dateString){
+        dateString = dateString.replace("\"", "");
         String[] dateStrings = dateString.split("-");
+        System.out.println(dateStrings[0] + ", " + dateStrings[1] + ", " + dateStrings[2]);
         XMLGregorianCalendar date = getDate(Integer.parseInt(dateStrings[0]), Integer.parseInt(dateStrings[1]), Integer.parseInt(dateStrings[2]), 0, 0);
         List<FlightInformation> flights = DataSingleton.getInstance().getFlights(origin, destination, date);
         GenericEntity<List<FlightInformation>> wrap = new GenericEntity<List<FlightInformation>>(flights){};
