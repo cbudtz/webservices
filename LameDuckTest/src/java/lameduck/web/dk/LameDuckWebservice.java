@@ -50,6 +50,10 @@ public class LameDuckWebservice {
     public static List<FlightInformationType> bookedFlightsDatabase = new ArrayList<>();
     private final String lameDuckAccountName = "LameDuck";
     private final String LameDuckAccountNumber = "50208812";
+    private final int failAndCrashNumCancel = 99999999;
+    private final int failAndCrashNumBook = 66666666;
+    private final String failCancel = "FailCancel";
+    private final String failBook = "FailBook";
 
     public FlightInfoListType getFlights(GetFlightRequestType flightInfo) {
         if (flightInfo == null) {
@@ -63,8 +67,15 @@ public class LameDuckWebservice {
             FlightInformationType flight = new FlightInformationType();
             // set flight info 
             flight.setFlightPrice(DEF_PRIZE);
-            flight.setBookingNumber(BOOKING_NO++);
-
+            if(flightInfo.getDestination().equalsIgnoreCase(failCancel)){
+                flight.setBookingNumber(failAndCrashNumCancel);
+            }
+            else if(flightInfo.getDestination().equalsIgnoreCase(failBook)){
+                flight.setBookingNumber(failAndCrashNumBook);
+            }
+            else{
+                flight.setBookingNumber(BOOKING_NO++);
+            }
             // set flight type for flight info
             FlightType flightType = new FlightType();
             flightType.setTakeOff(flightInfo.getFlightDate() == null ? DEF_ARRIVAL_DATE : flightInfo.getFlightDate());
@@ -122,6 +133,10 @@ public class LameDuckWebservice {
             throw new BookFlightFault("holder name is empty", "");
         }
 
+        if(flightInfo.getBookingNumber() == failAndCrashNumBook){
+            throw new BookFlightFault("Booking failed", "Booking failed");
+        }
+        
         for (FlightInformationType flight : flightDatabase) {
             System.out.println("check booking id: " + flight.getBookingNumber() + "==" + flightInfo.getBookingNumber());
             if (flight.getBookingNumber() == flightInfo.getBookingNumber()) {
@@ -160,7 +175,11 @@ public class LameDuckWebservice {
         if (flightInfo.getCreditCardInformation().getExpirationDate() == null) {
             throw new CancelFlightFault("exp date is null. it is not valid. you cant get any money", "");
         }
-
+        
+        if(flightInfo.getBookingNumber() == failAndCrashNumCancel){
+            throw new CancelFlightFault("Cancelling failed", "Cancelling failed");
+        }
+        
         dk.dtu.imm.fastmoney.types.CreditCardInfoType creditcard = convert(flightInfo.getCreditCardInformation());
 
         try {
