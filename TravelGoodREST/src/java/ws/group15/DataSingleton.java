@@ -14,6 +14,9 @@ import javax.ws.rs.client.Client;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService;
+import org.netbeans.xml.schema.lameduckelements.FlightInfoListType;
+import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
+import org.netbeans.xml.schema.lameduckelements.FlightType;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
@@ -84,12 +87,54 @@ public class DataSingleton {
         flightRequest.setOrigin(origin);
         flightRequest.setDestination(destination);
         flightRequest.setFlightDate(departure);
-        lameDuckPort.getFlights(flightRequest);
-        return null; //TODO implement
+        FlightInfoListType lameResponse = lameDuckPort.getFlights(flightRequest);
+        ArrayList<FlightInformation> flightInfos = new ArrayList<>();
+        for (FlightInformationType type :lameResponse.getFlightInfo()){
+            FlightInformation flightInfo = parseFlightInformationType(type);
+            flightInfos.add(flightInfo);
+        }
+        return flightInfos; //TODO implement
     }
     //Contact NiceView and get som hotels
     public List<HotelInformation> getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure){
         
         return null; //TODO implement
     }
+    
+     private FlightInformation parseFlightInformationType(FlightInformationType type) {
+        FlightInformation flightInformation = new FlightInformation();
+        flightInformation.bookingNumber = type.getBookingNumber();
+        flightInformation.bookingState = parseState(type.getState());
+        flightInformation.flight = parseFlightType(type.getFlight());
+        flightInformation.flightPrice = type.getFlightPrice();
+        flightInformation.serviceName = type.getServiceName();
+        return flightInformation;
+    }
+    
+    private Itinerary.BookingState parseState(int stateInt){
+        switch (stateInt){
+                    case 0:
+                        return Itinerary.BookingState.PLANNING;
+                    case 1:
+                        return Itinerary.BookingState.PAID;
+                    case 2:
+                        return Itinerary.BookingState.CONFIRMED;
+                    case 3:
+                        return Itinerary.BookingState.CANCELLED;  
+            }
+        return Itinerary.BookingState.PLANNING;
+    }
+
+    private Flight parseFlightType(FlightType flightType) {
+        Flight flight = new Flight();
+        flight.setTakeOff(flightType.getTakeOff());
+        flight.setArrival(flightType.getArrival());
+        flight.setCarrier(flightType.getCarrier());
+        flight.setDestAirport(flightType.getDestAirport());
+        flight.setOriginAirport(flightType.getOriginAirport());
+        return flight;
+        //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
 }
