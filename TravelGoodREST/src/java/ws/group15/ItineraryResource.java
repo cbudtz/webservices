@@ -116,7 +116,7 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/flights/finfo")
-    public Response putflights(@PathParam("itId") String itineraryID,@PathParam("Flight") FlightInformation flightinformation){
+    public Response putflights(@PathParam("itId") String itineraryID,FlightInformation flightinformation){
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
         DataSingleton.getInstance().addFlightToItinerary(itineraryID, flightinformation);
@@ -171,7 +171,7 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/hotels")
-    public Response puthotels(@PathParam("itId") String itineraryID, @PathParam("Hotel") HotelInformation hotelinformation){
+    public Response puthotels(@PathParam("itId") String itineraryID,HotelInformation hotelinformation){
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
         DataSingleton.getInstance().addHotelToItinerary(itineraryID, hotelinformation);
