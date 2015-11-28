@@ -57,7 +57,7 @@ public class DataSingleton {
     }
     
     public boolean cancelItinerary(String itineraryID){
-        
+        //TODO lots of magic to cancel itinerary - return true if everyThing went well
         return true;
     }
     //PUT on flights
