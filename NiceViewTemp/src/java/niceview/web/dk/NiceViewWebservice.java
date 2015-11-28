@@ -175,16 +175,16 @@ public class NiceViewWebservice {
         }
         return bank;
     }
+    
     private dk.dtu.imm.fastmoney.types.CreditCardInfoType convert(CreditCardInfoType info){
         dk.dtu.imm.fastmoney.types.CreditCardInfoType newType = new dk.dtu.imm.fastmoney.types.CreditCardInfoType();
         ExpirationDate expDate = new ExpirationDate();
         expDate.setMonth(info.getExpirationDate().getMonth());
-        expDate.setYear(Integer.valueOf(String.valueOf(info.getExpirationDate().getYear()).substring(2, 4)));
+        String yearStr = "00" + String.valueOf(info.getExpirationDate().getYear());
+        expDate.setYear(Integer.valueOf(yearStr.substring(yearStr.length() - 2, yearStr.length())));
         newType.setExpirationDate(expDate);
         newType.setName(info.getHolderName());
         newType.setNumber(String.valueOf(info.getCardNumber()));
         return newType;
     }
-  
-    
 }
