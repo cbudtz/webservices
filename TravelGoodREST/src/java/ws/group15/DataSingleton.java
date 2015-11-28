@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.xml.datatype.XMLGregorianCalendar;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
@@ -54,6 +55,11 @@ public class DataSingleton {
             }
         return itineraryList;
     }
+    
+    public boolean cancelItinerary(String itineraryID){
+        
+        return true;
+    }
     //PUT on flights
     public void addFlightToItinerary(String itineraryID, FlightInformation flightInfo){
         itineraries.get(itineraryID).flights.add(flightInfo);
@@ -63,5 +69,11 @@ public class DataSingleton {
     public void addHotelToItinerary(String itineraryID, HotelInformation hotelInformation){
         itineraries.get(itineraryID).hotels.add(hotelInformation);
     }
-    
+    public List<FlightInformation> getFlights(String origin, String destination, XMLGregorianCalendar departure){
+        return null; //TODO implement
+    }
+    public List<HotelInformation> getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure){
+        
+        return null; //TODO implement
+    }
 }
