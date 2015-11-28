@@ -145,7 +145,24 @@ public class C2 {
         assertEquals("Itenerary was not cancelled - state: " + port.getItinerary(id).getState(), port.getItinerary(id).getState(), STATE_CANCELLED);
         System.out.println("... itinerary id " + port.getItinerary(id).getId() + " succesfully cancelled");
         
-        // TODO
-        // Only 1st and 3rd flight/hotel is cancelled - state of 2nd flight and hote should still be 1 (paid)
+        // Check each flight and hotel if they've been cancelled
+        // Check if bookings are confirmed
+        System.out.println("Checking flight and hotel state...");
+        for(int i = 0; i < flist.getFlightInfo().size(); i++,i++) {
+            System.out.println("... " + (i+1));
+            assertEquals("Flight " + (i+1) + " was not cancelled", it.getFlights().getFlightInfo().get(i).getState(), STATE_CANCELLED);
+            System.out.println("...... flight to " + it.getFlights().getFlightInfo().get(i).getFlight().getDestAirport() + " is cancelled");
+            assertEquals("Hotel " + (i+1) + " was not cofirmed", it.getHotels().getHotelInformations().get(i).getState(), STATE_CANCELLED);
+            System.out.println("...... hotel in " + it.getHotels().getHotelInformations().get(i).getHotelAddress() + " is cancelle");
+        }
+        
+        // Testing flight/hotel 2 seperately
+        System.out.println("... checking 2, should've failed");
+        assertEquals("Flight 2 was cancelled", it.getFlights().getFlightInfo().get(1).getState(), STATE_PAID);
+        System.out.println("... flight 2 is still paid");
+        assertEquals("Hotel 2 was cancelled", it.getHotels().getHotelInformations().get(1).getState(), STATE_PAID);
+        System.out.println("... hotel 2 is still paid");
+        
+        // Success.....
     }
 }

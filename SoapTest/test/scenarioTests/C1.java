@@ -148,5 +148,16 @@ public class C1 {
         System.out.println("Checking state of itinerary " + port.getItinerary(id).getId());
         assertEquals("Itenerary was not cancelled - state: " + port.getItinerary(id).getState(), port.getItinerary(id).getState(), STATE_CANCELLED);
         System.out.println("... itinerary id " + port.getItinerary(id).getId() + " succesfully cancelled");
+        
+        // Check each flight and hotel if they've been cancelled
+        // Check if bookings are confirmed
+        System.out.println("Checking flight and hotel state...");
+        for(int i = 0; i < flist.getFlightInfo().size(); i++) {
+            System.out.println("... " + (i+1));
+            assertEquals("Flight " + (i+1) + " was not cancelled", it.getFlights().getFlightInfo().get(i).getState(), STATE_CANCELLED);
+            System.out.println("...... flight to " + it.getFlights().getFlightInfo().get(i).getFlight().getDestAirport() + " is cancelled");
+            assertEquals("Hotel " + (i+1) + " was not cofirmed", it.getHotels().getHotelInformations().get(i).getState(), STATE_CANCELLED);
+            System.out.println("...... hotel in " + it.getHotels().getHotelInformations().get(i).getHotelAddress() + " is cancelle");
+        }
     }
 }
