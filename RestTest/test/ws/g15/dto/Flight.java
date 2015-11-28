@@ -1,3 +1,5 @@
+package ws.g15.dto;
+
 
 
 
@@ -48,12 +50,12 @@ public class Flight {
     protected String destAirport;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar takeOff;
+    public XMLGregorianCalendar takeOff;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar arrival;
+    public XMLGregorianCalendar arrival;
     @XmlElement(required = true)
-    protected String carrier;
+    public String carrier;
 
     /**
      * Gets the value of the originAirport property.
