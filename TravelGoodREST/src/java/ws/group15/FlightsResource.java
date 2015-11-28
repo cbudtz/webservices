@@ -41,6 +41,7 @@ public class FlightsResource {
         System.out.println(dateStrings[0] + ", " + dateStrings[1] + ", " + dateStrings[2]);
         XMLGregorianCalendar date = getDate(Integer.parseInt(dateStrings[0]), Integer.parseInt(dateStrings[1]), Integer.parseInt(dateStrings[2]), 0, 0);
         List<FlightInformation> flights = DataSingleton.getInstance().getFlights(origin, destination, date);
+        if (flights == null) flights = new ArrayList<FlightInformation>();
         GenericEntity<List<FlightInformation>> wrap = new GenericEntity<List<FlightInformation>>(flights){};
         Response response = Response.ok(wrap)
                 .link("???", "!!!") //TODO: Add lots of allowed links
