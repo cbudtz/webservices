@@ -80,7 +80,6 @@ public class P2 {
         System.out.println("... " + m);
         System.out.println("... fetching current state of itinerary");
         it = port.getItinerary(id);
-        System.out.println("... current state of itinerary is " + port.getItinerary(id).getState());
         assertEquals("... itinerary not cancelled - current state: " + it.getState() + ", expected 3",it.getState(), 3);
     }
 }
