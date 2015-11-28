@@ -324,49 +324,52 @@
                                         </catch>
                                     </faultHandlers>
                                     <compensationHandler>
-                                        <forEach name="ForEachCompensateFlight1" parallel="no" counterName="ForEach1Counter">
-                                            <startCounterValue>1</startCounterValue>
-                                            <finalCounterValue>$successfullFlightsBooked</finalCounterValue>
-                                            <scope name="Scope4">
-                                                <variables>
-                                                    <variable name="BookFlightCompensateCancelFlightOut" messageType="tns:cancelFlightResponse"/>
-                                                    <variable name="BookFlightCompensateCancelFlightIn" messageType="tns:cancelFlight"/>
-                                                </variables>
-                                                <sequence name="Sequence16">
-                                                    <assign name="BookFlightCompensateAssign">
-                                                        <copy>
-                                                            <from>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:bookingNumber
+                                        <sequence name="Sequence19">
+                                            <forEach name="ForEachCompensateFlight1" parallel="no" counterName="ForEach1Counter">
+                                                <startCounterValue>1</startCounterValue>
+                                                    <finalCounterValue>$successfullFlightsBooked</finalCounterValue>
+                                                    <scope name="Scope4">
+                                                        <variables>
+                                                                <variable name="BookFlightCompensateCancelFlightOut" messageType="tns:cancelFlightResponse"/>
+                                                                    <variable name="BookFlightCompensateCancelFlightIn" messageType="tns:cancelFlight"/>
+                                                            </variables>
+                                                            <sequence name="Sequence16">
+                                                                <assign name="BookFlightCompensateAssign">
+                                                                        <copy>
+                                                                                <from>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:bookingNumber
                                                                 <sxed:editor>
-                                                                    <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="from"/>
-                                                                </sxed:editor>
-                                                            </from>
-                                                            <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:bookingNumber</to>
-                                                        </copy>
-                                                        <copy>
-                                                            <from>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:flightPrice
+                                                                                                <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="from"/>
+                                                                                            </sxed:editor>
+                                                                                    </from>
+                                                                                    <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:bookingNumber</to>
+                                                                            </copy>
+                                                                            <copy>
+                                                                                <from>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:flightPrice
                                                                 <sxed:editor>
-                                                                    <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="from"/>
-                                                                </sxed:editor>
-                                                            </from>
-                                                            <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:price</to>
-                                                        </copy>
-                                                        <copy>
-                                                            <from>$TravelGoodBookItineraryIn.request10/creditcard/ns4:cardNumber</from>
-                                                            <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:cardNumber</to>
-                                                        </copy>
-                                                        <copy>
-                                                            <from>$TravelGoodBookItineraryIn.request10/creditcard/ns4:holderName</from>
-                                                            <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:holderName</to>
-                                                        </copy>
-                                                        <copy>
-                                                            <from>$TravelGoodBookItineraryIn.request10/creditcard/ns4:expirationDate</from>
-                                                            <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:expirationDate</to>
-                                                        </copy>
-                                                    </assign>
-                                                    <invoke name="BookFlightCompensateCancelFlight" partnerLink="PartnerLink2" operation="cancelFlight" portType="tns:LameDuckPortType" inputVariable="BookFlightCompensateCancelFlightIn" outputVariable="BookFlightCompensateCancelFlightOut"/>
-                                                </sequence>
-                                            </scope>
-                                        </forEach>
+                                                                                                <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="from"/>
+                                                                                            </sxed:editor>
+                                                                                    </from>
+                                                                                    <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:price</to>
+                                                                            </copy>
+                                                                            <copy>
+                                                                                <from>$TravelGoodBookItineraryIn.request10/creditcard/ns4:cardNumber</from>
+                                                                                    <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:cardNumber</to>
+                                                                            </copy>
+                                                                            <copy>
+                                                                                <from>$TravelGoodBookItineraryIn.request10/creditcard/ns4:holderName</from>
+                                                                                    <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:holderName</to>
+                                                                            </copy>
+                                                                            <copy>
+                                                                                <from>$TravelGoodBookItineraryIn.request10/creditcard/ns4:expirationDate</from>
+                                                                                    <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:expirationDate</to>
+                                                                            </copy>
+                                                                    </assign>
+                                                                    <invoke name="BookFlightCompensateCancelFlight" partnerLink="PartnerLink2" operation="cancelFlight" portType="tns:LameDuckPortType" inputVariable="BookFlightCompensateCancelFlightIn" outputVariable="BookFlightCompensateCancelFlightOut"/>
+                                                            </sequence>
+                                                    </scope>
+                                            </forEach>
+                                            <exit name="Exit1"/>
+                                        </sequence>
                                     </compensationHandler>
                                     <sequence name="Sequence9">
                                             <assign name="ForEachFlightAssign1">
@@ -504,6 +507,7 @@
                                                 </sequence>
                                             </scope>
                                         </forEach>
+                                        <exit name="Exit2"/>
                                     </sequence>
                                 </compensationHandler>
                                 <sequence name="Sequence11">
