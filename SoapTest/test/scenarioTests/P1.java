@@ -39,7 +39,7 @@ import org.netbeans.xml.schema.niceviewelements.HotelInformationType;
  * @author Runi
  */
 public class P1 {
-        DatatypeFactory df = new DatatypeFactoryImpl();
+        
     static TravelGoodWsdlPortType port;
     private TravelGoodWsdlService service = new TravelGoodWsdlService();
     private static String id = "lolLigeGyldig";
@@ -71,12 +71,12 @@ public class P1 {
        
         
         // test initialize itinerary
-        TGGetFlightRequestType flight1 = getGetFligthRequest("Danmark", "Hawai", getDate(2016, 6, 15, 12, 30));
-        TGGetFlightRequestType flight2 = getGetFligthRequest("Faroe Island", "Hawai", getDate(2016, 6, 15, 12, 30));
-        TGGetFlightRequestType flight3 = getGetFligthRequest("US and A", "Hawai", getDate(2016, 6, 15, 12, 30));
+        TGGetFlightRequestType flight1 = Conv.getGetFligthRequest("Danmark", "Hawai", Conv.getDate(2016, 6, 15, 12, 30), id);
+        TGGetFlightRequestType flight2 = Conv.getGetFligthRequest("Faroe Island", "Hawai", Conv.getDate(2016, 6, 15, 12, 30), id);
+        TGGetFlightRequestType flight3 = Conv.getGetFligthRequest("US and A", "Hawai", Conv.getDate(2016, 6, 15, 12, 30), id);
         
-        TGGetHotelsRequestType hotel1 = getGetHotelRequest("Hawaii", id);
-        TGGetHotelsRequestType hotel2 = getGetHotelRequest("Tel Vviv", id);
+        TGGetHotelsRequestType hotel1 = Conv.getGetHotelRequest("Hawaii", id);
+        TGGetHotelsRequestType hotel2 = Conv.getGetHotelRequest("Tel Vviv", id);
         
         // get a flight
         FlightInfoListType flights = port.getFlights(flight1);
@@ -85,7 +85,7 @@ public class P1 {
         
         // add first flight
         TGItineraryType itinerary = null;
-        itinerary = port.addFlightToItinerary(convertAddFlightToItinerary(flightSelect, id));
+        itinerary = port.addFlightToItinerary(Conv.convertAddFlightToItinerary(flightSelect, id));
         assertEquals("add first flight to itinerary failed: ", itinerary.getState(), STATE_UNCONFIRMED);
         assertTrue("check size of flights list. should be 1: ", itinerary.getFlights().getFlightInfo().size() <= 1);
         
@@ -95,33 +95,33 @@ public class P1 {
         HotelInformationType hotelSelect = hotels.getHotelInformations().get(0);
         
         // add first hotel
-        itinerary = port.addHotelToItinerary(convertAddHotelToItinerary(hotelSelect, id));
+        itinerary = port.addHotelToItinerary(Conv.convertAddHotelToItinerary(hotelSelect, id));
         assertEquals("add first hotel to itinerary failed: ", STATE_UNCONFIRMED, itinerary.getState());
         assertTrue("check size of hotels list. should be at least 1: ", itinerary.getHotels().getHotelInformations().size() > 0);
            
         // add second flight
         flights = port.getFlights(flight2);
         flightSelect = flights.getFlightInfo().get(flights.getFlightInfo().size()-1);
-        itinerary = port.addFlightToItinerary(convertAddFlightToItinerary(flightSelect, id));
+        itinerary = port.addFlightToItinerary(Conv.convertAddFlightToItinerary(flightSelect, id));
         assertEquals("add second flight to itinerary failed: ", STATE_UNCONFIRMED, itinerary.getState());
         assertTrue("check size of hotels list. should be at least 1: ", itinerary.getFlights().getFlightInfo().size() > 0);
 
         // add third flight
         flights = port.getFlights(flight3);
         flightSelect = flights.getFlightInfo().get(flights.getFlightInfo().size()-1);
-        itinerary = port.addFlightToItinerary(convertAddFlightToItinerary(flightSelect, id));
+        itinerary = port.addFlightToItinerary(Conv.convertAddFlightToItinerary(flightSelect, id));
         assertEquals("add third flight to itinerary failed: ", itinerary.getState(), STATE_UNCONFIRMED);
         assertTrue("check size of hotels list. should be at least 1: ", itinerary.getFlights().getFlightInfo().size() > 0);
         
         // add second hotel
         hotels = port.getHotels(hotel2);
         hotelSelect = hotels.getHotelInformations().get(hotels.getHotelInformations().size()-1);
-        itinerary = port.addHotelToItinerary(convertAddHotelToItinerary(hotelSelect, id));
+        itinerary = port.addHotelToItinerary(Conv.convertAddHotelToItinerary(hotelSelect, id));
         assertEquals("add first hotel to itinerary failed: ", itinerary.getState(), STATE_UNCONFIRMED);
         assertTrue("check size of hotels list. should be at least 1: ", itinerary.getHotels().getHotelInformations().size() > 0);
         
         try {
-            TGItineraryType itin = port.bookItinerary(getBookRequest(getCreditcard(cardHolderName, cardNumber, year, month), id));
+            TGItineraryType itin = port.bookItinerary(Conv.getBookRequest(Conv.getCreditcard(cardHolderName, cardNumber, year, month), id));
 //            int count = 1;
             assertEquals("checking state of itinerary: ", STATE_CONFIRMED, itin.getState());
 //            for(org.netbeans.xml.schema.travelgoodelements.HotelInformationType hotel : itin.getHotels()){
@@ -133,80 +133,5 @@ public class P1 {
         }
         
     }
-    public CreditCardInfoType getCreditcard(String name, int number, int year, int month){
-        CreditCardInfoType creditcard = new CreditCardInfoType();
-        creditcard.setCardNumber(number);
-        creditcard.setHolderName(name);
-        creditcard.setExpirationDate(getDate(year, month, 1, 1, 1));
-        return creditcard;
-    }
-    public BookItineraryRequestType getBookRequest( CreditCardInfoType creditcard, String id){
-        BookItineraryRequestType req = new BookItineraryRequestType();
-        req.setCreditcard(creditcard);
-        req.setItineraryId(id);
-        return req;
-    }
-    public TGAddFlightToItineraryType convertAddFlightToItinerary(FlightInformationType flight, String id){
-        TGAddFlightToItineraryType newFlight = new TGAddFlightToItineraryType();
-        org.netbeans.xml.schema.travelgoodelements.FlightInformationType type = new  org.netbeans.xml.schema.travelgoodelements.FlightInformationType();
-        type.setBookingNumber(flight.getBookingNumber());
-        type.setFlight(convertFlightType(flight));
-        type.setFlightPrice(flight.getFlightPrice());
-        type.setServiceName(flight.getServiceName());
-        newFlight.setFlightInfo(flight);
-        newFlight.setItineraryId(id);
-        
-        return newFlight;
-    }
-    
-    private TGAddHotelToItineraryType convertAddHotelToItinerary(HotelInformationType hotel, String id) {
-        TGAddHotelToItineraryType newHotel = new TGAddHotelToItineraryType();
-//        org.netbeans.xml.schema.travelgoodelements.HotelInformationType type = new org.netbeans.xml.schema.travelgoodelements.HotelInformationType();
-//        type.setBookingNumber(hotel.getBookingNumber());
-//        type.setCreditCardGuaranteeRequired(hotel.isCreditCardGuaranteeRequired());
-//        type.setHotelAddress(hotel.getHotelAddress());
-//        type.setHotelName(hotel.getHotelName());
-//        type.setServiceName(hotel.getServiceName());
-//        type.setTotalPrice(hotel.getStayPrice());
-        newHotel.setHotel(hotel);
-        newHotel.setItineraryId(id);
-        return newHotel;
-    }
-    
-    public org.netbeans.xml.schema.travelgoodelements.FlightType convertFlightType(FlightInformationType flight){
-        org.netbeans.xml.schema.travelgoodelements.FlightType newType = new org.netbeans.xml.schema.travelgoodelements.FlightType();
-        newType.setArrival(flight.getFlight().getArrival());
-        newType.setCarrier(flight.getServiceName());
-        newType.setDestAirport(flight.getFlight().getDestAirport());
-        newType.setOriginAirport(flight.getFlight().getOriginAirport());
-        newType.setTakeOff(flight.getFlight().getTakeOff());
-        return newType;
-    }
-    
-    public TGGetHotelsRequestType getGetHotelRequest(String city, String id){
-        TGGetHotelsRequestType req = new TGGetHotelsRequestType();
-        GetHotelsRequestType type = new GetHotelsRequestType();
-        type.setCity(city);
-        type.setArrivalDate(getDate(2015, 2, 1, 1, 1));
-        type.setDepartureDate(getDate(2015,1,1,1,1));
-        
-        req.setRequest(type);
-        req.setItineraryId(id);
-        return req;
-    }
-    
-    public TGGetFlightRequestType getGetFligthRequest(String dest, String origin, XMLGregorianCalendar date){
-        TGGetFlightRequestType req = new TGGetFlightRequestType();
-        GetFlightRequestType type = new GetFlightRequestType();
-        type.setDestination(dest);
-        type.setOrigin(origin);
-        type.setFlightDate(date);
-        req.setFlightRequest(type);
-        req.setItineraryId(id);
-        return req;
-    }
-    
-        private  XMLGregorianCalendar getDate(int year, int month, int day, int hour, int minute ){
-        return df.newXMLGregorianCalendar(new BigInteger(String.valueOf(year)), month, day, hour, minute, hour, BigDecimal.ZERO, minute);
-    }
+ 
 }
