@@ -8,6 +8,7 @@ package ws.group15;
 import java.net.URI;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -28,6 +29,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import ws.group15.dto.CreditCardInfo;
+import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
 import ws.group15.dto.Itinerary;
 
@@ -85,9 +87,8 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/creditcard")
-    public Response payWithCreditCard(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, CreditCardInfo card){
+    public Response payWithCreditCard(@PathParam("itId") int itineraryID,CreditCardInfo card){
         System.out.println(itineraryID);
-        System.out.println(userid);
         Response r = Response.ok().build();
         return r;
         
@@ -96,43 +97,55 @@ public class ItineraryResource {
     @PUT
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/putflights")
-    public void putflights(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid){
+    public void putflights(@PathParam("itId") int itineraryID){
         System.out.println(itineraryID);
-        System.out.println(userid);
+        
         }
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/{FNUM}/flights/")
-    public void getflights(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
-        System.out.println(itineraryID);
-        System.out.println(userid);
-        System.out.println(Fnum);
-        }
+    public Response getflights(@PathParam("itId") int itineraryID, @PathParam("FNUM") int Fnum){
+        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        String url = ub.build().toString();
+        Itinerary itinerary = DataSingleton.getInstance().getItineraryById(String.format("%d",itineraryID));
+        List<FlightInformation> flights = itinerary.flights;
+        GenericEntity<List<FlightInformation>> gen = new GenericEntity<List<FlightInformation>>(flights){};
+        Response r = Response.ok(gen)
+                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+                .build();
+        return r;
+        
+    
+ }
     
     @DELETE
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/{FNUM}/flights/")
-    public void deleteflights(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
+    public void deleteflights(@PathParam("itId") int itineraryID, @PathParam("FNUM") int Fnum){
         System.out.println(itineraryID);
-        System.out.println(userid);
         System.out.println(Fnum);
         }
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/{FNUM}/hotels/")
-    public void gethotels(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
-        System.out.println(itineraryID);
-        System.out.println(userid);
-        System.out.println(Fnum);
+    public Response gethotels(@PathParam("itId") int itineraryID, @PathParam("FNUM") int Fnum){
+        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        String url = ub.build().toString();
+        Itinerary itinerary = DataSingleton.getInstance().getItineraryById(String.format("%d",itineraryID));
+        List<HotelInformation> hotels = itinerary.hotels;
+        GenericEntity<List<HotelInformation>> gen = new GenericEntity<List<HotelInformation>>(hotels){};
+        Response r = Response.ok(gen)
+                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+                .build();
+        return r;
         }
-    
+
     @DELETE
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/{FNUM}/hotels/")
-    public void deletehotels(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
+    public void deletehotels(@PathParam("itId") int itineraryID, @PathParam("FNUM") int Fnum){
         System.out.println(itineraryID);
-        System.out.println(userid);
         System.out.println(Fnum);
         }
     
@@ -141,9 +154,9 @@ public class ItineraryResource {
     @PUT
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/puthotels")
-    public void puthotels(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid){
+    public void puthotels(@PathParam("itId") int itineraryID){
         System.out.println(itineraryID);
-        System.out.println(userid);
+       
         }
     
     
