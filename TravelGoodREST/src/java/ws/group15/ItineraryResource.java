@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import ws.group15.dto.CreditCardInfo;
+import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
 import ws.group15.dto.Itinerary;
 
@@ -57,8 +58,8 @@ public class ItineraryResource {
         GenericEntity<List<Itinerary>> gen = new GenericEntity<List<Itinerary>>(it){};
         Response r = Response.ok(gen)
                 .link(url, baseUri + "index.html#POSTItinerary")//Create new itinerary
-                .link(flightsURI, baseUri + "index.html#GETflights") //Get flights
-                .link(hotelsURI, baseUri + "index.html#GEThotels") // Get hotels
+                .link(flightsURI, baseUri + "index.html#GETflights") //Get available flights remember query params
+                .link(hotelsURI, baseUri + "index.html#GEThotels") // Get available hotels remember query params
                 .build();
         return r;
     }
@@ -70,22 +71,27 @@ public class ItineraryResource {
         Itinerary it = DataSingleton.getInstance().createItinerary();
         URI uri = ub.path(it.id).build();
         Response r = Response.created(uri)
-                .link(uri, baseUri + "/index.html#getItinerary") //TODO: Figure out what to put in rel...
-                .link(uri.toString()+ "/status/cancel", "status")
-                .link(ub.clone().path("flights").build(), "Flights resource")
-                .link(ub.clone().path("hotels").build(), "Hotel resource")
+                .link(uri, baseUri + "/index.html#getItinerary") //Get itinerary
+                .link(uri.toString() + "/status" , baseUri + "index.html#GETitineraryStatus")  //Get status of Itinerary
+                .link(uri.toString()+ "/status/cancel", baseUri + "index.html#PUTitineraryCancel") //PUT to cancel itinerary
+                .link(uri.toString() + "/flights", baseUri + "index.html#PUTitineraryFlights") //PUT to add flight to itinerary
+                .link(uri.toString() + "/hotels" , baseUri + "index.html#PUTitineraryHotels") //PUT to add hotel to itinerary
+                .link(webresourceUrl + "flights", baseUri + "index.html#GETflights") // GET to get availableflights
+                .link(webresourceUrl + "hotels", baseUri + "index.html#GEThotels") // GET to get availableflights
                 .entity(it)
                 .build();
         return r;
     }
-    
+    //Get specific Itinerary
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}")
     public Response getItineraryByID(@PathParam("itId") String itID){
         Itinerary i = DataSingleton.getInstance().getItineraryById(itID);
         if (i == null) return Response.status(Response.Status.BAD_REQUEST).entity("No such Itinerary ID!").build();
-        Response r = Response.ok(i).build();
+        Response r = Response.ok(i)
+                    .link(itID, itID)                                              
+                .build();
         return r;         
     }
     
@@ -93,9 +99,8 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/creditcard")
-    public Response payWithCreditCard(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, CreditCardInfo card){
+    public Response payWithCreditCard(@PathParam("itId") int itineraryID, CreditCardInfo card){
         System.out.println(itineraryID);
-        System.out.println(userid);
         Response r = Response.ok().build();
         return r;
         
@@ -104,17 +109,22 @@ public class ItineraryResource {
     @PUT
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/putflights")
-    public void putflights(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid){
+    public void putflights(@PathParam("itId") int itineraryID){
         System.out.println(itineraryID);
-        System.out.println(userid);
         }
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("{itId}/{FNUM}/flights/")
-    public void getflights(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
-        System.out.println(itineraryID);
-        System.out.println(userid);
-        System.out.println(Fnum);
+    @Path("{itId}/flights/")
+    public Response getflights(@PathParam("itId") int itineraryID){
+        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        String url = ub.build().toString();
+        Itinerary itinerary = DataSingleton.getInstance().getItineraryById(String.format("%d",itineraryID));
+        List<FlightInformation> flights = itinerary.flights;
+        GenericEntity<List<FlightInformation>> gen = new GenericEntity<List<FlightInformation>>(flights){};
+        Response r = Response.ok(gen)
+                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+                .build();
+        return r;
         }
     
     @DELETE
@@ -128,11 +138,17 @@ public class ItineraryResource {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("{itId}/{FNUM}/hotels/")
-    public void gethotels(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
-        System.out.println(itineraryID);
-        System.out.println(userid);
-        System.out.println(Fnum);
+    @Path("{itId}/hotels/")
+    public Response gethotels(@PathParam("itId") int itineraryID){
+         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+        String url = ub.build().toString();
+        Itinerary itinerary = DataSingleton.getInstance().getItineraryById(String.format("%d",itineraryID));
+        List<HotelInformation> hotels = itinerary.hotels;
+        GenericEntity<List<HotelInformation>> gen = new GenericEntity<List<HotelInformation>>(hotels){};
+        Response r = Response.ok(gen)
+                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+                .build();
+        return r;
         }
     
     @DELETE
@@ -154,6 +170,8 @@ public class ItineraryResource {
         System.out.println(userid);
         }
     
-    
+    private Response.ResponseBuilder addPlanningLinks(Response.ResponseBuilder responseBuilder){
+        return responseBuilder;
+    }
     
 }
