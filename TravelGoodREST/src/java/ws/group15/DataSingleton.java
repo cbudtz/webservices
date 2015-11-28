@@ -27,6 +27,9 @@ import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
 import org.netbeans.xml.schema.lameduckelements.FlightType;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
 import org.netbeans.xml.schema.niceviewelements.BookHotelRequestType;
+import org.netbeans.xml.schema.niceviewelements.GetHotelsRequestType;
+import org.netbeans.xml.schema.niceviewelements.HotelInformationListType;
+import org.netbeans.xml.schema.niceviewelements.HotelInformationType;
 import ws.group15.dto.CreditCardInfo;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
@@ -180,8 +183,35 @@ public class DataSingleton {
 
     //Contact NiceView and get som hotels
     public List<HotelInformation> getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
-
-        return null; //TODO implement
+         GetHotelsRequestType request = new GetHotelsRequestType();
+         request.setArrivalDate(arrival);
+         request.setCity(city);
+         request.setDepartureDate(departure);
+         HotelInformationListType res = niceViewPort.getHotels(request);
+         List<HotelInformation> list = new ArrayList<>();
+         for(HotelInformationType hotel : res.getHotelInformations()){
+             HotelInformation h = new HotelInformation();
+             h.bookingNumber = hotel.getBookingNumber();
+             h.creditCardGuaranteeRequired = hotel.isCreditCardGuaranteeRequired();
+             h.hotelAddress = hotel.getHotelAddress();
+             h.hotelName = hotel.getHotelName();
+             h.serviceName = hotel.getServiceName();
+             switch (hotel.getState()){
+                 case 0: h.state = Itinerary.BookingState.PLANNING;
+                     break;
+                 case 1: h.state = Itinerary.BookingState.PAID;
+                     break;
+                 case 2: h.state = Itinerary.BookingState.CONFIRMED;
+                     break;
+                 case 3: h.state = Itinerary.BookingState.CANCELLED;
+                     break;
+                 default: h.state = Itinerary.BookingState.PLANNING;
+             }
+             
+             h.stayPrice = hotel.getStayPrice();
+             list.add(h);
+         }
+        return list; 
     }
 
     //Parsers----------------------
