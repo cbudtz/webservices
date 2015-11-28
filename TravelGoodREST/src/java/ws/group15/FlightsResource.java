@@ -10,7 +10,11 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.xml.datatype.XMLGregorianCalendar;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
 /**
@@ -19,25 +23,20 @@ import ws.group15.dto.FlightInformation;
  */
 @Path("flights")
 public class FlightsResource {
-    
- //  @GET
- //  @Produces(MediaType.APPLICATION_XML)
-   // public Wrapper test(){
-  //      return new Wrapper();
-  //  } 
+    //Only allowed action on fligts is GET!
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<FlightInformation> getFlights(){
-        List<FlightInformation> l = new ArrayList<>();
-        FlightInformation f = new FlightInformation();
-        f.bookingNumber=1223;
-        Flight ff = new Flight();
-        ff.setCarrier("TestCarrier");
-        f.flight = ff;
-        l.add(f);
-        l.add(f);
-        return l;
+    public Response getFlights(@QueryParam("origin") String origin,
+            @QueryParam("destination") String destination,
+            @QueryParam("departure") XMLGregorianCalendar date){
+        List<FlightInformation> flights = DataSingleton.getInstance().getFlights(origin, destination, date);
+        GenericEntity<List<FlightInformation>> wrap = new GenericEntity<List<FlightInformation>>(flights){};
+        Response response = Response.ok(wrap)
+                .link("???", "!!!") //TODO: Add lots of allowed links
+                .build();
+        
+        return response;
     } 
  
 }
