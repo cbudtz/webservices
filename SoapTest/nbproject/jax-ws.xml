@@ -3,8 +3,8 @@
   <services/>
   <clients>
     <client name="LameDuckWSDLService">
-      <wsdl-url>http://desktop-0ahhu0k:8080/LameDuckTest/LameDuckWSDLService?wsdl</wsdl-url>
-      <local-wsdl-file>desktop-0ahhu0k_8080/LameDuckTest/LameDuckWSDLService.wsdl</local-wsdl-file>
+      <wsdl-url>http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl</wsdl-url>
+      <local-wsdl-file>localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl</local-wsdl-file>
       <package-name>org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>

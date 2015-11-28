@@ -16,4 +16,6 @@
     <system systemId="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="wsdl/Runi-Laptop_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
     <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" uri="wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" uri="wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" uri="wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl"/>
+    <system systemId="http://krisha:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="wsdl/krisha_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
 </catalog>

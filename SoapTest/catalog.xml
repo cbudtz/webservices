@@ -9,11 +9,13 @@
     <system systemId="http://localhost:8080/NiceViewTest/NiceViewWSDLService?xsd=1" uri="xml-resources/web-service-references/service/wsdl/localhost_8080/NiceViewTest/NiceViewWSDLService.xsd_1.xsd"/>
     <system systemId="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?wsdl" uri="xml-resources/web-service-references/NiceViewWSDLService/wsdl/runi-laptop_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
     <system systemId="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" uri="xml-resources/web-service-references/NiceViewWSDLService/wsdl/runi-laptop_8080/NiceViewTemp/NiceViewWSDLService.xsd_1.xsd"/>
+    <system systemId="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="xml-resources/web-service-references/service/wsdl/Runi-Laptop_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" uri="xml-resources/web-service-references/LameDuckWSDLService/wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl"/>
     <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" uri="xml-resources/web-service-references/NiceViewWSDLService/wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
-    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" uri="xml-resources/web-service-references/service/wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.xsd_1.xsd"/>
     <system systemId="http://localhost:9080/service?wsdl" uri="xml-resources/web-service-references/service/wsdl/localhost_9080/service.wsdl"/>
     <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2" uri="xml-resources/web-service-references/service/wsdl/fastmoney.compute.dtu.dk_8080/BankService.xsd_2.xsd"/>
-    <system systemId="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="xml-resources/web-service-references/service/wsdl/Runi-Laptop_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" uri="xml-resources/web-service-references/service/wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.xsd_1.xsd"/>
+    <system systemId="http://krisha:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd" uri="xml-resources/web-service-references/service/wsdl/krisha_9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
     <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" uri="xml-resources/web-service-references/service/wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.xsd_1.xsd"/>
     <system systemId="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=1" uri="xml-resources/web-service-references/service/wsdl/fastmoney.compute.dtu.dk_8080/BankService.xsd_1.xsd"/>
 </catalog>
