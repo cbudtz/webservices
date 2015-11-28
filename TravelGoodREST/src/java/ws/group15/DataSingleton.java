@@ -93,6 +93,11 @@ public class DataSingleton {
 
     public boolean bookItinerary(String itineraryID) throws BookingException {
         Itinerary it = itineraries.get(itineraryID);
+        if (it.state == Itinerary.BookingState.CONFIRMED || it.state == Itinerary.BookingState.PAID){
+            throw new BookingException("Cannot book Itinerary - already booked");
+        } 
+        if (it.state == Itinerary.BookingState.CANCELLED) 
+            throw new BookingException("Cannot book Itinerary - is canceled");
         if (it == null) {
             throw new BookingException("No such Itinerary!");
         }
