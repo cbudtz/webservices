@@ -8,6 +8,7 @@ package ws.group15;
 import java.net.URI;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -141,13 +142,12 @@ public class ItineraryResource {
                 .build();
         return r;
         }
-    
+
     @DELETE
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/{FNUM}/hotels/")
-    public void deletehotels(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
+    public void deletehotels(@PathParam("itId") int itineraryID, @PathParam("FNUM") int Fnum){
         System.out.println(itineraryID);
-        System.out.println(userid);
         System.out.println(Fnum);
         }
     
@@ -156,9 +156,9 @@ public class ItineraryResource {
     @PUT
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/puthotels")
-    public void puthotels(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid){
+    public void puthotels(@PathParam("itId") int itineraryID){
         System.out.println(itineraryID);
-        System.out.println(userid);
+       
         }
     
     private Response.ResponseBuilder addPlanningLinks(Response.ResponseBuilder responseBuilder){
