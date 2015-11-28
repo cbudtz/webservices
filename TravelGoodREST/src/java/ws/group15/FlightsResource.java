@@ -48,7 +48,7 @@ public class FlightsResource {
                 .build();
         
         return response;
-    } 
+    }
  
     public static  XMLGregorianCalendar getDate(int year, int month, int day, int hour, int minute ){
         return df.newXMLGregorianCalendar(new BigInteger(String.valueOf(year)), month, day, hour, minute, hour, BigDecimal.ZERO, minute);

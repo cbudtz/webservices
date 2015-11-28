@@ -36,6 +36,8 @@ public class HotelsResource {
         h.serviceName="NiceDuck";
         l.add(h);
         return l;
-    } 
+    }
+    
+    
     
 }

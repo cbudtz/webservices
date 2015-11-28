@@ -115,7 +115,7 @@ public class ItineraryResource {
     
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("{itId}/flights/finfo")
+    @Path("{itId}/flights")
     public Response putflights(@PathParam("itId") String itineraryID,FlightInformation flightinformation){
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
