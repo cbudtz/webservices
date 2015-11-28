@@ -20,7 +20,7 @@ public class Itinerary {
     public List<HotelInformation> hotels = new ArrayList<>();
     public CreditCardInfo creditCard;
     public enum BookingState {PLANNING,PAID,CANCELLED,CONFIRMED};
-    public BookingState state;
+    public BookingState state = BookingState.PLANNING;
 
     public Itinerary() {
     }

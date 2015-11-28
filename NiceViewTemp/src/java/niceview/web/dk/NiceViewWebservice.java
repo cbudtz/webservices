@@ -43,6 +43,10 @@ public class NiceViewWebservice {
     private final List<HotelInformationType> bookedHotelsDatabase = new ArrayList<>();
     private final String NiceViewAccountName = "NiceView";
     private final String NiceViewAccountNumber = "50308815";
+    private final int failAndCrashNumCancel = 99999999;
+    private final int failAndCrashNumBook = 66666666;
+    private final String failCancel = "FailCancel";
+    private final String failBook = "FailBook";
 
     
     
@@ -61,8 +65,15 @@ public class NiceViewWebservice {
         hotel.setHotelName(DEF_HOTEL_NAME);
         hotel.setServiceName(DEF_SERVICE_NAME);
         hotel.setStayPrice(DEF_PRIZE);
-        hotel.setBookingNumber(BOOKING_NO++);
-        
+        if(hotel.getHotelAddress().equalsIgnoreCase(failCancel)){
+            hotel.setBookingNumber(failAndCrashNumCancel);
+        }
+        else if(hotel.getHotelAddress().equalsIgnoreCase(failBook)){
+            hotel.setBookingNumber(failAndCrashNumBook);
+        }
+        else{
+            hotel.setBookingNumber(BOOKING_NO++);
+        }
         
         hotelDatabase.add(hotel);
         l.getHotelInformations().add(hotel);
@@ -97,6 +108,9 @@ public class NiceViewWebservice {
         if(hotelRequest.getCreditCardInformation().getHolderName() == null) throw new BookHotelFault("holder name can not be null", new BookHotelFaultType());
         if(hotelRequest.getCreditCardInformation().getHolderName().equals("")) throw new BookHotelFault("holder name is empty", new BookHotelFaultType());
         
+        if(hotelRequest.getBookingNumber() == failAndCrashNumBook){
+            throw new BookHotelFault("Booking failed", new BookHotelFaultType());
+        }
         
         for(HotelInformationType hotel : hotelDatabase){
             if(hotel.getBookingNumber() == hotelRequest.getBookingNumber()){
@@ -139,6 +153,9 @@ public class NiceViewWebservice {
     public String cancelHotel(CancelHotelRequestType hotelRequest) throws CancelHotelFault {
         if(hotelRequest == null) throw new CancelHotelFault("hotelinfo is null. you should not do this. ", new CancelHotelFaultType());
       
+        if(hotelRequest.getBookingNumber() == failAndCrashNumCancel){
+            throw new CancelHotelFault("Cancel error occurred", new CancelHotelFaultType());
+        }
         int bookingNo = hotelRequest.getBookingNumber();
         for(HotelInformationType hotel : bookedHotelsDatabase){
             if(hotel.getBookingNumber() == bookingNo){
