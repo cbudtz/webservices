@@ -14,10 +14,13 @@ import javax.ws.rs.client.Client;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService;
+import org.netbeans.xml.schema.lameduckelements.BookFlightRequestType;
+import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
 import org.netbeans.xml.schema.lameduckelements.FlightInfoListType;
 import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
 import org.netbeans.xml.schema.lameduckelements.FlightType;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
+import ws.group15.dto.CreditCardInfo;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
@@ -68,6 +71,27 @@ public class DataSingleton {
         return itineraryList;
     }
     
+    public boolean setCreditCard(CreditCardInfo creditCard, String itineraryID){
+        Itinerary it = itineraries.get(itineraryID);
+        if (it == null) return false;
+        it.creditCard = creditCard;
+        return true;
+    }
+    
+    public boolean bookItinerary(String itineraryID) throws BookingException{
+        Itinerary it = itineraries.get(itineraryID);
+        if (it ==null) throw new BookingException("No such Itinerary!");
+        if (it.creditCard == null) throw  new BookingException("No creditcard entered");
+        for (FlightInformation flight : it.flights) {
+            BookFlightRequestType req = createRequestFromFlightInfo(flight, flight);
+            
+            
+        }
+        
+        
+        return true;
+    }
+    
     public boolean cancelItinerary(String itineraryID){
         //TODO lots of magic to cancel itinerary - return true if everyThing went well
         return true;
@@ -101,6 +125,7 @@ public class DataSingleton {
         return null; //TODO implement
     }
     
+    //Parsers----------------------
      private FlightInformation parseFlightInformationType(FlightInformationType type) {
         FlightInformation flightInformation = new FlightInformation();
         flightInformation.bookingNumber = type.getBookingNumber();
@@ -134,6 +159,18 @@ public class DataSingleton {
         flight.setOriginAirport(flightType.getOriginAirport());
         return flight;
         //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private BookFlightRequestType createRequestFromFlightInfo(FlightInformation flight, CreditCardInfo creditCard) {
+      BookFlightRequestType request = new BookFlightRequestType();
+       request.setBookingNumber(flight.bookingNumber);
+       request.setCreditcardInfo(parseCreditCardInfo(creditCard));
+    }
+
+    private CreditCardInfoType parseCreditCardInfo(CreditCardInfo creditCard) {
+        CreditCardInfoType creditType = new CreditCardInfoType();
+        creditType.setCardNumber(creditCard.cardNumber);
+        creditType.setExpirationDate(creditCard.expirationDate);
     }
 
    

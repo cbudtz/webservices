@@ -7,6 +7,7 @@ package ws.group15.dto;
 
 import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  *
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CreditCardInfo {
     public int cardNumber;
     public String holderName;
-    public Date expirationDate;
+    public XMLGregorianCalendar expirationDate;
     
    
 }
