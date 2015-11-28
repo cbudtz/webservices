@@ -10,7 +10,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.ws.rs.client.Client;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType;
+import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService;
+import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
@@ -23,10 +27,15 @@ import ws.group15.dto.Itinerary;
 public class DataSingleton {
     private static DataSingleton instance;
     private Hashtable<String, Itinerary> itineraries; //<userId, <itineraryId,Itinea
+    private static LameDuckPortType lameDuckPort;
     
     private DataSingleton(){
         itineraries = new Hashtable<>();
+        LameDuckWSDLService lameDuckService = new LameDuckWSDLService();
+        lameDuckPort = lameDuckService.getLameDuckPortTypeBindingPort();
     }
+    
+    
     
     public static synchronized DataSingleton getInstance(){
         if (instance == null) instance = new DataSingleton();
@@ -71,6 +80,11 @@ public class DataSingleton {
     }
     //Contact lameDuck and get some flights
     public List<FlightInformation> getFlights(String origin, String destination, XMLGregorianCalendar departure){
+        GetFlightRequestType flightRequest = new GetFlightRequestType();
+        flightRequest.setOrigin(origin);
+        flightRequest.setDestination(destination);
+        flightRequest.setFlightDate(departure);
+        lameDuckPort.getFlights(flightRequest);
         return null; //TODO implement
     }
     //Contact NiceView and get som hotels
