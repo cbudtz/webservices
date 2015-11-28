@@ -655,30 +655,34 @@
             <while name="WhileCancelledState">
                 <condition>$CancelledState and $ItineraryOnServer/state</condition>
                 <sequence name="Sequence8">
-                    <receive name="CancelledGetItinerary" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" createInstance="no" variable="TravelGoodCancelledGetItineraryIn">
-                        <correlations>
-                            <correlation set="ItineraryCorrelationSet" initiate="no"/>
-                        </correlations>
-                    </receive>
-                    <assign name="CancelledItineraryAssign">
-                        <copy>
-                            <from>$ItineraryOnServer/flights</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/flights</to>
-                        </copy>
-                        <copy>
-                            <from>$ItineraryOnServer/hotels</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/hotels</to>
-                        </copy>
-                        <copy>
-                            <from>$ItineraryOnServer/state</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/state</to>
-                        </copy>
-                        <copy>
-                            <from>$ItineraryOnServer/id</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/id</to>
-                        </copy>
-                    </assign>
-                    <reply name="CancelledItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryOut"/>
+                    <pick name="Pick3">
+                        <onMessage partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryIn">
+                            <correlations>
+                                <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                            </correlations>
+                            <sequence name="Sequence20">
+                                <assign name="CancelledItineraryAssign">
+                                    <copy>
+                                        <from>$ItineraryOnServer/flights</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/flights</to>
+                                    </copy>
+                                        <copy>
+                                        <from>$ItineraryOnServer/hotels</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/hotels</to>
+                                    </copy>
+                                        <copy>
+                                        <from>$ItineraryOnServer/state</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/state</to>
+                                    </copy>
+                                        <copy>
+                                        <from>$ItineraryOnServer/id</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/id</to>
+                                    </copy>
+                                </assign>
+                                <reply name="CancelledItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryOut"/>
+                            </sequence>
+                        </onMessage>
+                    </pick>
                 </sequence>
             </while>
             <elseif>
