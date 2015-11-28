@@ -127,6 +127,7 @@ public class DataSingleton {
 
     private Flight parseFlightType(FlightType flightType) {
         Flight flight = new Flight();
+        flight.setTakeOff(flightType.getTakeOff());
         flight.setArrival(flightType.getArrival());
         flight.setCarrier(flightType.getCarrier());
         flight.setDestAirport(flightType.getDestAirport());
