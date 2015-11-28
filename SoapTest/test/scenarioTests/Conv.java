@@ -27,6 +27,15 @@ import org.netbeans.xml.schema.niceviewelements.HotelInformationType;
  * @author Runi
  */
 public class Conv {
+    public static int UNCONFIRMED = 0; 
+    public static int CONFIRMED = 1; 
+    public static int CANCELLED = 2; 
+    
+    public static int TGPLANNINGPHASE = 0; 
+    public static int TGCANCELLED = 3; 
+    public static int TGPAIDSTATE = 1; 
+    public static int TGCONFIRMED = 2; 
+    
     private static DatatypeFactory df = new DatatypeFactoryImpl();
        public static CreditCardInfoType getCreditcard(String name, int number, int year, int month){
         CreditCardInfoType creditcard = new CreditCardInfoType();

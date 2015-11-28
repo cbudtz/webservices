@@ -29,6 +29,7 @@ public class P2 {
     private static String id = "lolLigeGyldig";
     private static final int STATE_UNCONFIRMED = 0;
     private static final int STATE_CONFIRMED = 2;
+    private static final int STATE_CANCELLED = 3;
     public String cardHolderName = "Thor-Jensen Claus";
     public int cardNumber = 50408825;
     public int year = 9;
@@ -74,12 +75,12 @@ public class P2 {
         
         // At this point we choose to cancel our planning of the itinerary
         System.out.println("Trying to cancel itinerary...");
-        String s = it.getId();
-        System.out.println("... itinerary id " + s + " is being cancelled");
+        System.out.println("... itinerary id " + it.getId() + " is being cancelled");
         String m = port.cancelItinerary(it.getId());
         System.out.println("... " + m);
         System.out.println("... fetching current state of itinerary");
         it = port.getItinerary(id);
-        assertEquals("... itinerary not cancelled - current state: " + it.getState() + ", expected 3",it.getState(), 3);
+        assertEquals("... itinerary not cancelled!", it.getState(), STATE_CANCELLED);
+        System.out.println("Itinerary state has been succesfully changed to cancelled.");
     }
 }
