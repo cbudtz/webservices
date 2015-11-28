@@ -107,7 +107,7 @@ public class C2 {
             System.out.println("... added flight with carrier " + flist.getFlightInfo().get(i).getFlight().getDestAirport() + " to itinerary");
             it = port.addHotelToItinerary(Conv.convertAddHotelToItinerary(hlist.getHotelInformations().get(0), id));
             assertEquals(STATE_UNCONFIRMED, it.getState());
-            System.out.println("... added hotel, " + hlist.getHotelInformations().get(i).getHotelName() + ", to itinerary");
+            System.out.println("... added hotel, " + hlist.getHotelInformations().get(i).getHotelAddress() + ", to itinerary");
         }
         
         // Try to book and confirm each trip
