@@ -108,7 +108,7 @@ public class C1 {
         for(int i = 0; i < flist.getFlightInfo().size(); i++) {
             it = port.addFlightToItinerary(Conv.convertAddFlightToItinerary(flist.getFlightInfo().get(i), id));
             assertEquals(STATE_UNCONFIRMED, it.getState());
-            System.out.println("... added flight with carrier " + flist.getFlightInfo().get(i).getFlight().getCarrier() + " to itinerary");
+            System.out.println("... added flight with carrier " + flist.getFlightInfo().get(i).getFlight().getDestAirport() + " to itinerary");
             it = port.addHotelToItinerary(Conv.convertAddHotelToItinerary(hlist.getHotelInformations().get(0), id));
             assertEquals(STATE_UNCONFIRMED, it.getState());
             System.out.println("... added hotel, " + hlist.getHotelInformations().get(i).getHotelName() + ", to itinerary");
@@ -130,5 +130,23 @@ public class C1 {
         } catch(BookItineraryFault e) {
             Logger.getLogger(C1.class.getName()).log(Level.SEVERE, null, e);
         }
+        
+        // Check if bookings are confirmed
+        System.out.println("Checking flight and hotel state...");
+        for(int i = 0; i < flist.getFlightInfo().size(); i++) {
+            System.out.println("... " + (i+1));
+            assertEquals("Flight " + (i+1) + " was not confirmed", it.getFlights().getFlightInfo().get(i).getState(), STATE_PAID);
+            System.out.println("...... flight to " + it.getFlights().getFlightInfo().get(i).getFlight().getDestAirport() + " is paid");
+            assertEquals("Hotel " + (i+1) + " was not cofirmed", it.getHotels().getHotelInformations().get(i).getState(), STATE_PAID);
+            System.out.println("...... hotel in " + it.getHotels().getHotelInformations().get(i).getHotelAddress() + " is paid");
+        }
+        
+        // Cancel entire itinerary
+        System.out.println("Cancelling itinerary " + it.getId());
+        String s = port.cancelItinerary(id);
+        System.out.println("... " + s);
+        System.out.println("Checking state of itinerary " + port.getItinerary(id).getId());
+        assertEquals("Itenerary was not cancelled - state: " + port.getItinerary(id).getState(), port.getItinerary(id).getState(), STATE_CANCELLED);
+        System.out.println("... itinerary id " + port.getItinerary(id).getId() + " succesfully cancelled");
     }
 }
