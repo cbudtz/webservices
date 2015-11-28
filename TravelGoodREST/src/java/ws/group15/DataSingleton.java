@@ -69,9 +69,11 @@ public class DataSingleton {
     public void addHotelToItinerary(String itineraryID, HotelInformation hotelInformation){
         itineraries.get(itineraryID).hotels.add(hotelInformation);
     }
+    //Contact lameDuck and get some flights
     public List<FlightInformation> getFlights(String origin, String destination, XMLGregorianCalendar departure){
         return null; //TODO implement
     }
+    //Contact NiceView and get som hotels
     public List<HotelInformation> getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure){
         
         return null; //TODO implement
