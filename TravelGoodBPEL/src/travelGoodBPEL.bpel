@@ -19,18 +19,19 @@
     <import namespace="http://xml.netbeans.org/schema/NiceViewElements" location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" importType="http://www.w3.org/2001/XMLSchema"/>
     <import namespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
-        <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" partnerLinkType="tns:LameDuckLinkType" partnerRole="LameDuckRole"/>
-        <partnerLink name="PartnerLink3" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" partnerLinkType="tns:NiceViewWSDL" partnerRole="NiceViewWSDLPortTypeRole"/>
+        <partnerLink name="PartnerLink4" xmlns:tns="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" partnerLinkType="tns:LameDuckLinkType" partnerRole="LameDuckRole"/>
+        <partnerLink name="PartnerLink5" partnerLinkType="ns6:NiceViewWSDL" partnerRole="NiceViewWSDLPortTypeRole"/>
         <partnerLink name="PartnerLink1" partnerLinkType="ns3:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="Cancelled" type="xs:int"/>
         <variable name="successfullBookedHotels" type="xs:int"/>
         <variable name="successfullFlightsBooked" type="xs:int"/>
         <variable name="FirstDeadLine" type="xs:dateTime"/>
         <variable name="TravelGoodBookItineraryOut" messageType="ns3:bookItineraryResponse"/>
-        <variable name="Booked" type="xs:int"/>
-        <variable name="Available" type="xs:int"/>
-        <variable name="TravelGoodPaidStateCancelItineraryIn" messageType="ns3:cancelItineraryRequest"/>
+        <variable name="Confirmed" type="xs:int"/>
+        <variable name="Unconfirmed" type="xs:int"/>
+        <variable name="TravelGoodPaidCancelItineraryIn" messageType="ns3:cancelItineraryRequest"/>
         <variable name="TravelGoodPaidStateGetItineraryOut" messageType="ns3:getItineraryResponse"/>
         <variable name="TravelGoodPaidStateGetItineraryIn" messageType="ns3:getItineraryRequest"/>
         <variable name="TravelGoodBookItineraryIn" messageType="ns3:bookItineraryRequest"/>
@@ -86,11 +87,11 @@
             </copy>
             <copy>
                 <from>1</from>
-                <to variable="Booked"/>
+                <to variable="Confirmed"/>
             </copy>
             <copy>
                 <from>0</from>
-                <to variable="Available"/>
+                <to variable="Unconfirmed"/>
             </copy>
             <copy>
                 <from variable="PlanningState"/>
@@ -116,6 +117,10 @@
             <copy>
                 <from>sxxf:current-dateTime()</from>
                 <to variable="FirstDeadLine"/>
+            </copy>
+            <copy>
+                <from>2</from>
+                <to variable="Cancelled"/>
             </copy>
         </assign>
         <reply name="initiateReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut">
@@ -145,7 +150,7 @@
                                 <to>$LameDuckGetFlightsIn.flightInfo/ns4:flightDate</to>
                             </copy>
                         </assign>
-                        <invoke name="InvokeGetFlights" partnerLink="PartnerLink2" operation="getFlights" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckGetFlightsIn" outputVariable="LameDuckGetFlightsOut"/>
+                        <invoke name="InvokeGetFlights" partnerLink="PartnerLink4" operation="getFlights" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckGetFlightsIn" outputVariable="LameDuckGetFlightsOut"/>
                         <assign name="GetFlightsAssign2">
                             <copy>
                                 <from>$LameDuckGetFlightsOut.flightInfoList/ns4:flightInfo</from>
@@ -174,7 +179,7 @@
                                 <to>$NiceViewGetHotelsIn.input/ns5:departureDate</to>
                             </copy>
                         </assign>
-                        <invoke name="InvokeGetHotels" partnerLink="PartnerLink3" operation="getHotels" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewGetHotelsIn" outputVariable="NiceViewGetHotelsOut"/>
+                        <invoke name="InvokeGetHotels" partnerLink="PartnerLink5" operation="getHotels" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewGetHotelsIn" outputVariable="NiceViewGetHotelsOut"/>
                         <assign name="GetHotelsAssign2">
                             <copy>
                                 <from>$NiceViewGetHotelsOut.hotels/ns5:hotelInformations</from>
@@ -314,6 +319,7 @@
                                 <finalCounterValue>$NumberOfFlights</finalCounterValue>
                                 <scope name="BookAllFlightsScope">
                                     <variables>
+                                        <variable name="TravelGoodBookFault" messageType="ns3:bookItineraryFault"/>
                                         <variable name="LameDuckBookFlightOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" messageType="tns:bookFlightResponse"/>
                                                 <variable name="LameDuckBookFlightIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" messageType="tns:bookFlight"/>
                                         </variables>
@@ -333,7 +339,12 @@
                                                                 <variable name="BookFlightCompensateCancelFlightOut" messageType="tns:cancelFlightResponse"/>
                                                                     <variable name="BookFlightCompensateCancelFlightIn" messageType="tns:cancelFlight"/>
                                                             </variables>
-                                                            <sequence name="Sequence16">
+                                                        <faultHandlers>
+                                                            <catchAll>
+                                                                <exit name="Exit1"/>
+                                                            </catchAll>
+                                                        </faultHandlers>
+                                                        <sequence name="Sequence16">
                                                                 <assign name="BookFlightCompensateAssign">
                                                                         <copy>
                                                                                 <from>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:bookingNumber
@@ -364,11 +375,31 @@
                                                                                     <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:expirationDate</to>
                                                                             </copy>
                                                                     </assign>
-                                                                    <invoke name="BookFlightCompensateCancelFlight" partnerLink="PartnerLink2" operation="cancelFlight" portType="tns:LameDuckPortType" inputVariable="BookFlightCompensateCancelFlightIn" outputVariable="BookFlightCompensateCancelFlightOut"/>
-                                                            </sequence>
+                                                                    <invoke name="BookFlightCompensateCancelFlight" partnerLink="PartnerLink4" operation="cancelFlight" portType="tns:LameDuckPortType" inputVariable="BookFlightCompensateCancelFlightIn" outputVariable="BookFlightCompensateCancelFlightOut"/>
+                                                            <assign name="BookFlightsCompensateAssign1">
+                                                                <copy>
+                                                                    <from variable="Cancelled"/>
+                                                                    <to>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:state
+                                                                        <sxed:editor>
+                                                                            <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="to"/>
+                                                                        </sxed:editor>
+                                                                    </to>
+                                                                </copy>
+                                                            </assign>
+                                                        </sequence>
                                                     </scope>
                                             </forEach>
-                                            <exit name="Exit1"/>
+                                            <assign name="BookFlightCompensateAssign2">
+                                                <copy>
+                                                    <from variable="CancelledState"/>
+                                                    <to>$ItineraryOnServer/state</to>
+                                                </copy>
+                                                <copy>
+                                                    <from>'Some bookings failed, but all compensations succeeded'</from>
+                                                    <to variable="TravelGoodBookFault" part="bookFault1"/>
+                                                </copy>
+                                            </assign>
+                                            <reply name="BookFlightsCompensateReply" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns3:TravelGoodWsdlPortType" faultName="ns3:fault1" variable="TravelGoodBookFault"/>
                                         </sequence>
                                     </compensationHandler>
                                     <sequence name="Sequence9">
@@ -398,10 +429,10 @@
                                                     <to variable="successfullFlightsBooked"/>
                                                 </copy>
                                             </assign>
-                                                <invoke name="LameDuckBookFlight" partnerLink="PartnerLink2" operation="bookFlight" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckBookFlightIn" outputVariable="LameDuckBookFlightOut"/>
+                                                <invoke name="LameDuckBookFlight" partnerLink="PartnerLink4" operation="bookFlight" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckBookFlightIn" outputVariable="LameDuckBookFlightOut"/>
                                             <assign name="ForEachFlightAssign2">
                                                 <copy>
-                                                    <from variable="Booked"/>
+                                                    <from variable="Confirmed"/>
                                                     <to>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:state
                                                         <sxed:editor>
                                                             <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="to"/>
@@ -430,6 +461,7 @@
                             <finalCounterValue>$NumberOfHotels</finalCounterValue>
                             <scope name="BookAllHotelsScope">
                                 <variables>
+                                    <variable name="TravelGoodBookFault" messageType="ns3:bookItineraryFault"/>
                                     <variable name="NiceViewBookHotelOut" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" messageType="tns:bookHotelResponse"/>
                                     <variable name="NiceViewBookHotelIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" messageType="tns:bookHotelRequest"/>
                                 </variables>
@@ -449,6 +481,11 @@
                                                     <variable name="BookFlightCompensateCancelFlightOut" messageType="tns:cancelFlightResponse"/>
                                                     <variable name="BookFlightCompensateCancelFlightIn" messageType="tns:cancelFlight"/>
                                                 </variables>
+                                                <faultHandlers>
+                                                    <catchAll>
+                                                        <exit name="Exit2"/>
+                                                    </catchAll>
+                                                </faultHandlers>
                                                 <sequence name="Sequence16">
                                                     <assign name="BookFlightCompensateAssign">
                                                         <copy>
@@ -480,7 +517,17 @@
                                                             <to>$BookFlightCompensateCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:expirationDate</to>
                                                         </copy>
                                                     </assign>
-                                                    <invoke name="BookFlightCompensateCancelFlight" partnerLink="PartnerLink2" operation="cancelFlight" portType="tns:LameDuckPortType" inputVariable="BookFlightCompensateCancelFlightIn" outputVariable="BookFlightCompensateCancelFlightOut"/>
+                                                    <invoke name="BookFlightCompensateCancelFlight" partnerLink="PartnerLink4" operation="cancelFlight" portType="tns:LameDuckPortType" inputVariable="BookFlightCompensateCancelFlightIn" outputVariable="BookFlightCompensateCancelFlightOut"/>
+                                                    <assign name="BookFlightsCompensateAssign1">
+                                                        <copy>
+                                                                <from variable="Cancelled"/>
+                                                                    <to>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:state
+                                                                            <sxed:editor>
+                                                                                <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="to"/>
+                                                                            </sxed:editor>
+                                                                    </to>
+                                                            </copy>
+                                                    </assign>
                                                 </sequence>
                                             </scope>
                                         </forEach>
@@ -492,6 +539,11 @@
                                                     <variable name="BookHotelCompensateCancelHotelOut" messageType="ns6:cancelHotelResponse"/>
                                                     <variable name="BookHotelCompensateCancelHotelIn" messageType="ns6:cancelHotelRequest"/>
                                                 </variables>
+                                                <faultHandlers>
+                                                    <catchAll>
+                                                        <exit name="Exit3"/>
+                                                    </catchAll>
+                                                </faultHandlers>
                                                 <sequence name="Sequence18">
                                                     <assign name="BookHotelCompensateAssign">
                                                         <copy>
@@ -503,11 +555,31 @@
                                                             <to>$BookHotelCompensateCancelHotelIn.input/ns5:bookingNumber</to>
                                                         </copy>
                                                     </assign>
-                                                    <invoke name="BookHotelCompensateCancelHotel" partnerLink="PartnerLink3" operation="cancelHotel" portType="ns6:NiceViewWSDLPortType" inputVariable="BookHotelCompensateCancelHotelIn" outputVariable="BookHotelCompensateCancelHotelOut"/>
+                                                    <invoke name="BookHotelCompensateCancelHotel" partnerLink="PartnerLink5" operation="cancelHotel" portType="ns6:NiceViewWSDLPortType" inputVariable="BookHotelCompensateCancelHotelIn" outputVariable="BookHotelCompensateCancelHotelOut"/>
+                                                    <assign name="BookHotelsCompensateAssign1">
+                                                        <copy>
+                                                            <from variable="Cancelled"/>
+                                                            <to>$ItineraryOnServer/hotels/ns5:hotelInformations[$ForEach1Counter]/ns5:state
+                                                                <sxed:editor>
+                                                                    <sxed:predicate path="$ItineraryOnServer/hotels/ns5:hotelInformations[$ForEach1Counter]" source="to"/>
+                                                                </sxed:editor>
+                                                            </to>
+                                                        </copy>
+                                                    </assign>
                                                 </sequence>
                                             </scope>
                                         </forEach>
-                                        <exit name="Exit2"/>
+                                        <assign name="BookHotelsCompensateAssign2">
+                                            <copy>
+                                                <from variable="CancelledState"/>
+                                                <to>$ItineraryOnServer/state</to>
+                                            </copy>
+                                            <copy>
+                                                <from>'Some bookings failed, but compensation was completed successfully'</from>
+                                                <to variable="TravelGoodBookFault" part="bookFault1"/>
+                                            </copy>
+                                        </assign>
+                                        <reply name="BookHotelsCompensateReply" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns3:TravelGoodWsdlPortType" faultName="ns3:fault1" variable="TravelGoodBookFault"/>
                                     </sequence>
                                 </compensationHandler>
                                 <sequence name="Sequence11">
@@ -537,10 +609,10 @@
                                             <to variable="successfullBookedHotels"/>
                                         </copy>
                                     </assign>
-                                    <invoke name="NiceViewBookHotel" partnerLink="PartnerLink3" operation="bookHotel" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewBookHotelIn" outputVariable="NiceViewBookHotelOut"/>
+                                    <invoke name="NiceViewBookHotel" partnerLink="PartnerLink5" operation="bookHotel" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewBookHotelIn" outputVariable="NiceViewBookHotelOut"/>
                                     <assign name="ForEachHotelAssign2">
                                         <copy>
-                                            <from variable="Booked"/>
+                                            <from variable="Confirmed"/>
                                             <to>$ItineraryOnServer/hotels/ns5:hotelInformations[$ForEach1Counter]/ns5:state
                                                 <sxed:editor>
                                                     <sxed:predicate path="$ItineraryOnServer/hotels/ns5:hotelInformations[$ForEach1Counter]" source="to"/>
@@ -583,30 +655,34 @@
             <while name="WhileCancelledState">
                 <condition>$CancelledState and $ItineraryOnServer/state</condition>
                 <sequence name="Sequence8">
-                    <receive name="CancelledGetItinerary" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" createInstance="no" variable="TravelGoodCancelledGetItineraryIn">
-                        <correlations>
-                            <correlation set="ItineraryCorrelationSet" initiate="no"/>
-                        </correlations>
-                    </receive>
-                    <assign name="CancelledItineraryAssign">
-                        <copy>
-                            <from>$ItineraryOnServer/flights</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/flights</to>
-                        </copy>
-                        <copy>
-                            <from>$ItineraryOnServer/hotels</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/hotels</to>
-                        </copy>
-                        <copy>
-                            <from>$ItineraryOnServer/state</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/state</to>
-                        </copy>
-                        <copy>
-                            <from>$ItineraryOnServer/id</from>
-                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/id</to>
-                        </copy>
-                    </assign>
-                    <reply name="CancelledItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryOut"/>
+                    <pick name="Pick3">
+                        <onMessage partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryIn">
+                            <correlations>
+                                <correlation set="ItineraryCorrelationSet" initiate="no"/>
+                            </correlations>
+                            <sequence name="Sequence20">
+                                <assign name="CancelledItineraryAssign">
+                                    <copy>
+                                        <from>$ItineraryOnServer/flights</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/flights</to>
+                                    </copy>
+                                        <copy>
+                                        <from>$ItineraryOnServer/hotels</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/hotels</to>
+                                    </copy>
+                                        <copy>
+                                        <from>$ItineraryOnServer/state</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/state</to>
+                                    </copy>
+                                        <copy>
+                                        <from>$ItineraryOnServer/id</from>
+                                            <to>$TravelGoodCancelledGetItineraryOut.itinerary5/id</to>
+                                    </copy>
+                                </assign>
+                                <reply name="CancelledItineraryReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodCancelledGetItineraryOut"/>
+                            </sequence>
+                        </onMessage>
+                    </pick>
                 </sequence>
             </while>
             <elseif>
@@ -640,7 +716,7 @@
                                 <reply name="TravelGoodPaidStateReply" partnerLink="PartnerLink1" operation="getItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPaidStateGetItineraryOut"/>
                             </sequence>
                         </onMessage>
-                        <onMessage partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPaidStateCancelItineraryIn">
+                        <onMessage partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns3:TravelGoodWsdlPortType" variable="TravelGoodPaidCancelItineraryIn">
                             <correlations>
                                 <correlation set="ItineraryCorrelationSet" initiate="no"/>
                             </correlations>
@@ -684,10 +760,10 @@
                                                     <to>$LameDuckCancelFlightIn.flightInfo/ns4:creditCardInformation/ns4:expirationDate</to>
                                                 </copy>
                                             </assign>
-                                            <invoke name="LameDuckPaidStateCancelFlight" partnerLink="PartnerLink2" operation="cancelFlight" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckCancelFlightIn" outputVariable="LameDuckCancelFlightOut"/>
+                                            <invoke name="LameDuckPaidStateCancelFlight" partnerLink="PartnerLink4" operation="cancelFlight" xmlns:tns="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" portType="tns:LameDuckPortType" inputVariable="LameDuckCancelFlightIn" outputVariable="LameDuckCancelFlightOut"/>
                                             <assign name="PaidStateCancelFlightAssign2">
                                                 <copy>
-                                                    <from variable="Available"/>
+                                                    <from variable="Unconfirmed"/>
                                                     <to>$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]/ns4:state
                                                         <sxed:editor>
                                                             <sxed:predicate path="$ItineraryOnServer/flights/ns4:flightInfo[$ForEach1Counter]" source="to"/>
@@ -717,10 +793,10 @@
                                                     <to>$NiceViewPaidStateCancelHotelIn.input/ns5:bookingNumber</to>
                                                 </copy>
                                             </assign>
-                                            <invoke name="NiceViewPaidStateCancelHotel" partnerLink="PartnerLink3" operation="cancelHotel" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewPaidStateCancelHotelIn" outputVariable="NiceViewPaidStateCancelHotelOut"/>
+                                            <invoke name="NiceViewPaidStateCancelHotel" partnerLink="PartnerLink5" operation="cancelHotel" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" portType="tns:NiceViewWSDLPortType" inputVariable="NiceViewPaidStateCancelHotelIn" outputVariable="NiceViewPaidStateCancelHotelOut"/>
                                             <assign name="PaidStateCancelHotelAssign2">
                                                 <copy>
-                                                    <from variable="Available"/>
+                                                    <from variable="Unconfirmed"/>
                                                     <to>$ItineraryOnServer/hotels/ns5:hotelInformations[$ForEach2Counter]/ns5:state
                                                         <sxed:editor>
                                                             <sxed:predicate path="$ItineraryOnServer/hotels/ns5:hotelInformations[$ForEach2Counter]" source="to"/>
