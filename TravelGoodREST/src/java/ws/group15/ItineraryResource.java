@@ -127,15 +127,6 @@ public class ItineraryResource {
         return r;
         }
     
-    @DELETE
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("{itId}/{FNUM}/flights/")
-    public void deleteflights(@PathParam("itId") int itineraryID,@PathParam("UserId") int userid, @PathParam("FNUM") int Fnum){
-        System.out.println(itineraryID);
-        System.out.println(userid);
-        System.out.println(Fnum);
-        }
-    
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/hotels/")
