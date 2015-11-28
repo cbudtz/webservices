@@ -10,16 +10,23 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.client.Client;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.BookFlightFault;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService;
+import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.BookHotelFault;
+import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.NiceViewWSDLPortType;
+import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.NiceViewWSDLService;
 import org.netbeans.xml.schema.lameduckelements.BookFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
 import org.netbeans.xml.schema.lameduckelements.FlightInfoListType;
 import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
 import org.netbeans.xml.schema.lameduckelements.FlightType;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
+import org.netbeans.xml.schema.niceviewelements.BookHotelRequestType;
 import ws.group15.dto.CreditCardInfo;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
@@ -34,11 +41,14 @@ public class DataSingleton {
     private static DataSingleton instance;
     private Hashtable<String, Itinerary> itineraries; //<userId, <itineraryId,Itinea
     private static LameDuckPortType lameDuckPort;
+    private static NiceViewWSDLPortType niceViewPort;
     
     private DataSingleton(){
         itineraries = new Hashtable<>();
         LameDuckWSDLService lameDuckService = new LameDuckWSDLService();
         lameDuckPort = lameDuckService.getLameDuckPortTypeBindingPort();
+        NiceViewWSDLService niceViewService = new NiceViewWSDLService();
+        niceViewPort = niceViewService.getNiceViewWSDLPortTypeBindingPort();
     }
     
     
@@ -82,10 +92,25 @@ public class DataSingleton {
         Itinerary it = itineraries.get(itineraryID);
         if (it ==null) throw new BookingException("No such Itinerary!");
         if (it.creditCard == null) throw  new BookingException("No creditcard entered");
+        //try to book flights!
         for (FlightInformation flight : it.flights) {
-            BookFlightRequestType req = createRequestFromFlightInfo(flight, flight);
-            
-            
+            BookFlightRequestType req = createRequestFromFlightInfo(flight, it.creditCard);
+            try {
+                lameDuckPort.bookFlight(req);
+            } catch (BookFlightFault ex) {
+               //TODO: something useful with fault;
+                System.out.println("Booking failed");
+            }            
+        }
+        for (HotelInformation hotel : it.hotels){
+            BookHotelRequestType req = createRequestFromHotelInfo(hotel, it.creditCard);
+            try {
+                niceViewPort.bookHotel(req);
+            } catch (BookHotelFault ex) {
+                //TODO something useful with try catch
+                System.out.println("Booking failed");
+                
+            }
         }
         
         
@@ -164,13 +189,28 @@ public class DataSingleton {
     private BookFlightRequestType createRequestFromFlightInfo(FlightInformation flight, CreditCardInfo creditCard) {
       BookFlightRequestType request = new BookFlightRequestType();
        request.setBookingNumber(flight.bookingNumber);
-       request.setCreditcardInfo(parseCreditCardInfo(creditCard));
+       request.setCreditcardInfo(parseFlightCreditCardInfo(creditCard));
+       return request;
     }
 
-    private CreditCardInfoType parseCreditCardInfo(CreditCardInfo creditCard) {
+    private CreditCardInfoType parseFlightCreditCardInfo(CreditCardInfo creditCard) {
         CreditCardInfoType creditType = new CreditCardInfoType();
         creditType.setCardNumber(creditCard.cardNumber);
         creditType.setExpirationDate(creditCard.expirationDate);
+        creditType.setHolderName(creditCard.holderName);
+        return creditType;
+    }
+
+    private BookHotelRequestType createRequestFromHotelInfo(HotelInformation hotel, CreditCardInfo creditCard) {
+        BookHotelRequestType hotelReqType = new BookHotelRequestType();
+        hotelReqType.setBookingNumber(hotel.bookingNumber);
+        hotelReqType.setCreditCardInformation(parseHotelCreditCardInfo(creditCard));
+        return hotelReqType;
+    }
+
+    private org.netbeans.xml.schema.niceviewelements.CreditCardInfoType parseHotelCreditCardInfo(CreditCardInfo creditCard) {
+        org.netbeans.xml.schema.niceviewelements.CreditCardInfoType hotelCreditCard = new org.netbeans.xml.schema.niceviewelements.CreditCardInfoType();
+        return hotelCreditCard;
     }
 
    
