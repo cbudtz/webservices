@@ -16,6 +16,7 @@ public class LinkBuilder {
     public static final String webresourceUrl = baseUri + "webresources/";
     public static final String hotelResource = webresourceUrl + "hotels";
     public static final String flightsResource = webresourceUrl + "flights";
+    public static final String itineraryResource = webresourceUrl + "itineraries";
     
     public static Response.ResponseBuilder addCreateLink(Response.ResponseBuilder r) {
         return r.link(baseUri, webresourceUrl);
@@ -26,13 +27,13 @@ public class LinkBuilder {
      * @param r ResponseBuilder object which needs to have links applied to it
      * @return ResponseBuilder object with links for planning state
      */
-    public static Response.ResponseBuilder addAllPlanningLinks(Response.ResponseBuilder r) {
+    public static Response.ResponseBuilder addAllPlanningLinks(Response.ResponseBuilder r, String resourceId) {
         return r.link(hotelResource, baseUri + "index.html#GEThotels")
                 .link(flightsResource, baseUri + "index.html#GETflights")
-                .link(hotelResource, baseUri + "index.html#PUTitineraryHotels")
-                .link(flightsResource, baseUri + "index.html#PUTitineraryFlights")
-                .link(webresourceUrl, baseUri + "index.html#getItinerary")
-                .link(webresourceUrl + "state", baseUri + "index.html#putState");
+                .link(itineraryResource + "/" + resourceId + "/hotels", baseUri + "index.html#PUTitineraryHotels")
+                .link(itineraryResource + "/" + resourceId + "/flights", baseUri + "index.html#PUTitineraryFlights")
+                .link(itineraryResource + "/" + resourceId , baseUri + "index.html#getItinerary")
+                .link(itineraryResource + "/" + resourceId + "/state", baseUri + "index.html#putState");
     }
     
     /**
@@ -42,8 +43,8 @@ public class LinkBuilder {
      * @return ResponseBuilder object with links for planning state
      */
     public static Response.ResponseBuilder addPaidLinks(Response.ResponseBuilder r, String resourceId) {
-        return r.link(webresourceUrl + resourceId + "/state", baseUri + "index.html#putState")
-                .link(webresourceUrl + resourceId, baseUri + "index.html#getItinerary");
+        return r.link(itineraryResource + "/" + resourceId + "/state", baseUri + "index.html#putState")
+                .link(itineraryResource + "/" + resourceId , baseUri + "index.html#getItinerary");
     }
     
     /**
@@ -53,7 +54,7 @@ public class LinkBuilder {
      * @return 
      */
     public static Response.ResponseBuilder addConfirmedLinks(Response.ResponseBuilder r, String resourceId) {
-        return r.link(webresourceUrl + resourceId, baseUri + "index.html#getItinerary");
+        return r.link(itineraryResource + "/" + resourceId , baseUri + "index.html#getItinerary");
     }
     
     /**
@@ -63,6 +64,6 @@ public class LinkBuilder {
      * @return ResponseBuilder object with links for canceled state
      */
     public static Response.ResponseBuilder addCanceledLinks(Response.ResponseBuilder r, String resourceId) {
-        return r.link(webresourceUrl + resourceId, baseUri);
+        return r.link(itineraryResource + "/" + resourceId , baseUri + "index.html#getItinerary");
     }
 }
