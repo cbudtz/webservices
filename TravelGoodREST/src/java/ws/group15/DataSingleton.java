@@ -195,30 +195,8 @@ public class DataSingleton {
         HotelInformationListType res = niceViewPort.getHotels(request);
         List<HotelInformation> list = new ArrayList<>();
         for (HotelInformationType hotel : res.getHotelInformations()) {
-            HotelInformation h = new HotelInformation();
-            h.bookingNumber = hotel.getBookingNumber();
-            h.creditCardGuaranteeRequired = hotel.isCreditCardGuaranteeRequired();
-            h.hotelAddress = hotel.getHotelAddress();
-            h.hotelName = hotel.getHotelName();
-            h.serviceName = hotel.getServiceName();
-            switch (hotel.getState()) {
-                case 0:
-                    h.state = Itinerary.BookingState.PLANNING;
-                    break;
-                case 1:
-                    h.state = Itinerary.BookingState.PAID;
-                    break;
-                case 2:
-                    h.state = Itinerary.BookingState.CONFIRMED;
-                    break;
-                case 3:
-                    h.state = Itinerary.BookingState.CANCELLED;
-                    break;
-                default:
-                    h.state = Itinerary.BookingState.PLANNING;
-            }
-
-            h.stayPrice = hotel.getStayPrice();
+            HotelInformation h = parseHotelInformationTypeToHotelinformation(hotel);
+//                    
             list.add(h);
         }
         return list;
@@ -329,6 +307,18 @@ public class DataSingleton {
         CancelHotelRequestType req = new CancelHotelRequestType();
         req.setBookingNumber(hotel.bookingNumber);
         return req;
+    }
+
+    private HotelInformation parseHotelInformationTypeToHotelinformation(HotelInformationType hotel) {
+        HotelInformation h = new HotelInformation();
+            h.bookingNumber = hotel.getBookingNumber();
+            h.creditCardGuaranteeRequired = hotel.isCreditCardGuaranteeRequired();
+            h.hotelAddress = hotel.getHotelAddress();
+            h.hotelName = hotel.getHotelName();
+            h.serviceName = hotel.getServiceName();
+            h.state = parseState(hotel.getState());
+            h.stayPrice = hotel.getStayPrice();
+            return h;
     }
 
 }
