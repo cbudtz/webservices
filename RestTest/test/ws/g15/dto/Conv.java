@@ -21,11 +21,6 @@ import javax.ws.rs.core.Response;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import static org.junit.Assert.assertEquals;
-import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
-import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
-import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
-import org.netbeans.xml.schema.niceviewelements.GetHotelsRequestType;
-import org.netbeans.xml.schema.niceviewelements.HotelInformationType;
 import ws.g15.dto.CreditCardInfo;
 import ws.g15.dto.FlightInformation;
 
