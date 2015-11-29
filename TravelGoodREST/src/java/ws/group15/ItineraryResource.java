@@ -217,7 +217,8 @@ public class ItineraryResource {
 
         }
 
-        Response r = Response.ok(state)
+        Response r = Response.status(Response.Status.METHOD_NOT_ALLOWED)
+                .entity("Not allowed - only Cancelled and Paid may be pushed")
                 .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
                 .build();
         return r;
