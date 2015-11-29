@@ -5,6 +5,7 @@
  */
 package ws.group15;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -12,21 +13,24 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ws.rs.client.Client;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.BookFlightFault;
+import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.CancelFlightFault;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckPortType;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.LameDuckWSDLService;
 import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.BookHotelFault;
+import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.CancelHotelFault;
 import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.NiceViewWSDLPortType;
 import org.netbeans.j2ee.wsdl.niceviewtest.dk.niceviewwsdl.NiceViewWSDLService;
 import org.netbeans.xml.schema.lameduckelements.BookFlightRequestType;
+import org.netbeans.xml.schema.lameduckelements.CancelFlightRequestType;
 import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
 import org.netbeans.xml.schema.lameduckelements.FlightInfoListType;
 import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
 import org.netbeans.xml.schema.lameduckelements.FlightType;
 import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
 import org.netbeans.xml.schema.niceviewelements.BookHotelRequestType;
+import org.netbeans.xml.schema.niceviewelements.CancelHotelRequestType;
 import org.netbeans.xml.schema.niceviewelements.GetHotelsRequestType;
 import org.netbeans.xml.schema.niceviewelements.HotelInformationListType;
 import org.netbeans.xml.schema.niceviewelements.HotelInformationType;
@@ -96,11 +100,12 @@ public class DataSingleton {
 
     public boolean bookItinerary(String itineraryID) throws BookingException {
         Itinerary it = itineraries.get(itineraryID);
-        if (it.state == Itinerary.BookingState.CONFIRMED || it.state == Itinerary.BookingState.PAID){
+        if (it.state == Itinerary.BookingState.CONFIRMED || it.state == Itinerary.BookingState.PAID) {
             throw new BookingException("Cannot book Itinerary - already booked");
-        } 
-        if (it.state == Itinerary.BookingState.CANCELLED) 
+        }
+        if (it.state == Itinerary.BookingState.CANCELLED) {
             throw new BookingException("Cannot book Itinerary - is canceled");
+        }
         if (it == null) {
             throw new BookingException("No such Itinerary!");
         }
@@ -120,7 +125,7 @@ public class DataSingleton {
                 succes = false;
                 it.state = Itinerary.BookingState.CANCELLED;
                 System.out.println("Booking failed");
-                boolean compensationSucces = true; //compensate(it);
+                boolean compensationSucces = compensate(it);
                 if (compensationSucces) {
                     throw new BookingException("Booking failed - Money refunded");
                 } else {
@@ -137,8 +142,8 @@ public class DataSingleton {
                 } catch (BookHotelFault ex) {
                     //TODO something useful with try catch
                     System.out.println("Booking failed");
-                    boolean compensationSucces = true; //compensate(it);
-                    it.state= Itinerary.BookingState.CANCELLED;
+                    boolean compensationSucces = compensate(it);
+                    it.state = Itinerary.BookingState.CANCELLED;
                     if (compensationSucces) {
                         throw new BookingException("Booking failed - Money refunded");
                     } else {
@@ -183,35 +188,69 @@ public class DataSingleton {
 
     //Contact NiceView and get som hotels
     public List<HotelInformation> getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
-         GetHotelsRequestType request = new GetHotelsRequestType();
-         request.setArrivalDate(arrival);
-         request.setCity(city);
-         request.setDepartureDate(departure);
-         HotelInformationListType res = niceViewPort.getHotels(request);
-         List<HotelInformation> list = new ArrayList<>();
-         for(HotelInformationType hotel : res.getHotelInformations()){
-             HotelInformation h = new HotelInformation();
-             h.bookingNumber = hotel.getBookingNumber();
-             h.creditCardGuaranteeRequired = hotel.isCreditCardGuaranteeRequired();
-             h.hotelAddress = hotel.getHotelAddress();
-             h.hotelName = hotel.getHotelName();
-             h.serviceName = hotel.getServiceName();
-             switch (hotel.getState()){
-                 case 0: h.state = Itinerary.BookingState.PLANNING;
-                     break;
-                 case 1: h.state = Itinerary.BookingState.PAID;
-                     break;
-                 case 2: h.state = Itinerary.BookingState.CONFIRMED;
-                     break;
-                 case 3: h.state = Itinerary.BookingState.CANCELLED;
-                     break;
-                 default: h.state = Itinerary.BookingState.PLANNING;
-             }
-             
-             h.stayPrice = hotel.getStayPrice();
-             list.add(h);
-         }
-        return list; 
+        GetHotelsRequestType request = new GetHotelsRequestType();
+        request.setArrivalDate(arrival);
+        request.setCity(city);
+        request.setDepartureDate(departure);
+        HotelInformationListType res = niceViewPort.getHotels(request);
+        List<HotelInformation> list = new ArrayList<>();
+        for (HotelInformationType hotel : res.getHotelInformations()) {
+            HotelInformation h = new HotelInformation();
+            h.bookingNumber = hotel.getBookingNumber();
+            h.creditCardGuaranteeRequired = hotel.isCreditCardGuaranteeRequired();
+            h.hotelAddress = hotel.getHotelAddress();
+            h.hotelName = hotel.getHotelName();
+            h.serviceName = hotel.getServiceName();
+            switch (hotel.getState()) {
+                case 0:
+                    h.state = Itinerary.BookingState.PLANNING;
+                    break;
+                case 1:
+                    h.state = Itinerary.BookingState.PAID;
+                    break;
+                case 2:
+                    h.state = Itinerary.BookingState.CONFIRMED;
+                    break;
+                case 3:
+                    h.state = Itinerary.BookingState.CANCELLED;
+                    break;
+                default:
+                    h.state = Itinerary.BookingState.PLANNING;
+            }
+
+            h.stayPrice = hotel.getStayPrice();
+            list.add(h);
+        }
+        return list;
+    }
+
+    private boolean compensate(Itinerary it) {
+        boolean compensationSucces = true;
+        //cancel flights
+        for (FlightInformation flight : it.flights) {
+            if (flight.bookingState == Itinerary.BookingState.PAID) {
+                try {
+                    lameDuckPort.cancelFlight(parseFlightInformationToCancelRequest(flight, it.creditCard));
+                } catch (CancelFlightFault ex) {
+                   compensationSucces = false;
+                    System.out.println("cancelation of flight: " + flight.bookingNumber + "failed"); //Not part of requirements
+                }
+            }
+        }
+        for (HotelInformation hotel : it.hotels) {
+            if(hotel.state == Itinerary.BookingState.PAID){
+                try {
+                    niceViewPort.cancelHotel(parseHotelInformationToCancelRequest(hotel));
+                } catch (CancelHotelFault ex) {
+                    compensationSucces = false;
+                    System.out.println("cancelation of hotel: " + hotel.bookingNumber + "failed");
+                }
+            }
+        }
+
+         //cancel hotels
+        
+        return compensationSucces;
     }
 
     //Parsers----------------------
@@ -275,6 +314,21 @@ public class DataSingleton {
     private org.netbeans.xml.schema.niceviewelements.CreditCardInfoType parseHotelCreditCardInfo(CreditCardInfo creditCard) {
         org.netbeans.xml.schema.niceviewelements.CreditCardInfoType hotelCreditCard = new org.netbeans.xml.schema.niceviewelements.CreditCardInfoType();
         return hotelCreditCard;
+    }
+
+    private CancelFlightRequestType parseFlightInformationToCancelRequest(FlightInformation flight, CreditCardInfo creditCard) {
+        CancelFlightRequestType req = new CancelFlightRequestType();
+        req.setBookingNumber(flight.bookingNumber);
+        req.setPrice(flight.flightPrice);
+        req.setCreditCardInformation(parseFlightCreditCardInfo(creditCard));
+        return req;
+        
+    }
+
+    private CancelHotelRequestType parseHotelInformationToCancelRequest(HotelInformation hotel) {
+        CancelHotelRequestType req = new CancelHotelRequestType();
+        req.setBookingNumber(hotel.bookingNumber);
+        return req;
     }
 
 }
