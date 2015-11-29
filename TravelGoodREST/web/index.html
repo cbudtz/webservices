@@ -11,7 +11,20 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div id="headline">TODO write content</div>
-        <div id="getItinerary"></div>
+        <div id="headline"><H2>REST api description</H2></div>
+        <div id="itineraries"><H3>Description of itineraries resource</H3></div>
+        <div id="getItinerary">-> Invoke GET on itineraries resource to get a list of itineraries <BR>
+            <I>Not part of original requirements</I></div>
+        <div id="createItinerary">->Invoke POST on itineraries to instantiate a new itinerary. Returns Itinerary object and resource location</div>
+        <div id="getItineraryByID">->Invoke GET on itineraries/{itineraryID} to get the Itinerary object with the same ID</div>
+        <div id="putCreditCard">->Invoke PUT on itineraries/{itineraryID}/creditcard with an object of type CreditCardInfo to set creditcard for itinerary({</div>
+        <div id="putFlights">-> Invoke PUT on itineraries/{itineraryID}/flights with a FlightInformation object to add a flight to the itinerary</div>
+        <div id="putHotels">-> Invoke PUT on itineraries/{itineraryID}/hotels with a HotelInformation object to add a hotel to the itinerary</div>
+        <div id="putState">->Invoke PUT on itinerarues/{itineraryID}/state with a String "PAID" to pay for Itinerary or "CANCELED" to cancel itinerary</div>
+        <div id="flights"><h3>Description of flights resource</h3></div>
+        <div id="getFlights">->Invoke GET on flights with parameters: String origin, String origin, String date on the form "yyyy-mm-dd" to get a list of FlightInformation</div>
+        <div id="hotels"><h3>Description of flights resource</h3></div>
+        <div id="getHotels">->Invoke GET on hotels with parameters: String city, String arrival, String departure on the form "yyyy-mm-dd" to get a list of FlightInformation</div>
+        
     </body>
 </html>
