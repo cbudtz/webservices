@@ -244,20 +244,26 @@ public class DataSingleton {
             if (flight.bookingState == Itinerary.BookingState.PAID) {
                 try {
                     lameDuckPort.cancelFlight(parseFlightInformationToCancelRequest(flight, it.creditCard));
+                    flight.bookingState = Itinerary.BookingState.CANCELLED;
                 } catch (CancelFlightFault ex) {
                    compensationSucces = false;
                     System.out.println("cancelation of flight: " + flight.bookingNumber + "failed"); //Not part of requirements
                 }
+            }else{
+                flight.bookingState = Itinerary.BookingState.CANCELLED;
             }
         }
         for (HotelInformation hotel : it.hotels) {
             if(hotel.state == Itinerary.BookingState.PAID){
                 try {
                     niceViewPort.cancelHotel(parseHotelInformationToCancelRequest(hotel));
+                    hotel.state = Itinerary.BookingState.CANCELLED;
                 } catch (CancelHotelFault ex) {
                     compensationSucces = false;
                     System.out.println("cancelation of hotel: " + hotel.bookingNumber + "failed");
                 }
+            }else{
+                hotel.state = Itinerary.BookingState.CANCELLED;
             }
         }
 
