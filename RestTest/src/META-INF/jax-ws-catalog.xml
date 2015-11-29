@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" uri="wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.wsdl"/>
+    <system systemId="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1" uri="wsdl/localhost_8080/LameDuckTest/LameDuckWSDLService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" uri="wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.wsdl"/>
+    <system systemId="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1" uri="wsdl/localhost_8080/NiceViewTemp/NiceViewWSDLService.xsd_1.xsd"/>
+</catalog>
