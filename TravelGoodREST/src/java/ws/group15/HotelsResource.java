@@ -40,7 +40,7 @@ public class HotelsResource {
         XMLGregorianCalendar arrival = parseDate(arrivalString);
         XMLGregorianCalendar departure = parseDate(departureString);
         GenericEntity<List<HotelInformation>> wrap = new GenericEntity<List<HotelInformation>>(DataSingleton.getInstance().getHotels(city, arrival, departure)){};
-        Response r = addCreateLink(Response.ok(wrap)).build();
+        Response r = addCreateLinks(Response.ok(wrap)).build();
         return r;
     } 
 

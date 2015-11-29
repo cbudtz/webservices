@@ -44,9 +44,8 @@ public class FlightsResource {
         List<FlightInformation> flights = DataSingleton.getInstance().getFlights(origin, destination, date);
         if (flights == null) flights = new ArrayList<FlightInformation>();
         GenericEntity<List<FlightInformation>> wrap = new GenericEntity<List<FlightInformation>>(flights){};
-        Response response = addCreateLink(Response.ok(wrap))
-                .build();
-        
+        Response response = addCreateLinks(Response.ok(wrap))
+                .build();        
         return response;
     }
  

@@ -18,8 +18,11 @@ public class LinkBuilder {
     public static final String flightsResource = webresourceUrl + "flights";
     public static final String itineraryResource = webresourceUrl + "itineraries";
     
-    public static Response.ResponseBuilder addCreateLink(Response.ResponseBuilder r) {
-        return r.link(baseUri, webresourceUrl);
+    public static Response.ResponseBuilder addCreateLinks(Response.ResponseBuilder r) {
+        return r.link(itineraryResource, baseUri + "index.html#createItinerary")
+                .link(flightsResource, baseUri + "index.html#getFlights")
+                .link(hotelResource, baseUri + "index.html#getHotels")
+                ;
     }
     
     /**
