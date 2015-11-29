@@ -195,18 +195,22 @@ public class ItineraryResource {
         boolean succes;
         switch (state) {
             case CANCELLED:
-                succes = DataSingleton.getInstance().cancelItinerary(itineraryID);
+                if(DataSingleton.getInstance().cancelItinerary(itineraryID)){
                 return Response.ok(state)
                         .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
                         .build();
-
+                } else {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("cannot cancel Itinerary - wrong state")
+                            .build();
+                }
             case PAID: 
                 try {
                     succes = DataSingleton.getInstance().bookItinerary(itineraryID);
                     return Response.ok().build(); //TODO add allowed links!!
                 } catch (BookingException ex) {
                     return Response.status(Response.Status.BAD_REQUEST)
-                            .header("Error", ex.getMessage())
+                            .entity("cannot pay Itinerary - wrong state!")
                             .build();
                 }
             
