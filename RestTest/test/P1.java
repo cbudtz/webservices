@@ -36,7 +36,7 @@ public class P1 {
     //assertEquals, assertTrue, . . . – in particular, that the booking status for each item is unconfirmed.
     //Book the itinerary and ask again for the itinerary. Check that each booking status is now confirmed
 
-   
+   @Test
    public void runTest() {
        
        // get flights

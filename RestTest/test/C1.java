@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-import java.awt.print.Book;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 import static ws.g15.dto.Conv.*;
 import ws.g15.dto.FlightInformation;
 import ws.g15.dto.HotelInformation;
@@ -28,7 +27,7 @@ public class C1 {
     public C1() {
     }
 
-    
+    @Test
     public void runTest(){
                 
         // init itinerary

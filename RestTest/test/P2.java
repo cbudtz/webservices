@@ -26,6 +26,7 @@ public class P2 {
 
     static Client client = ClientBuilder.newClient();
 
+    @Test
     public void runTest() {
         // initialize itinerary
         WebTarget target = client.target(resourceItinerary);

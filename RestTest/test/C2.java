@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import java.awt.print.Book;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -29,7 +28,7 @@ public class C2 {
     public C2() {
     }
 
-    
+    @Test
     public void runTest(){
                 
         // init itinerary

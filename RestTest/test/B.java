@@ -45,6 +45,7 @@ public class B {
     public B() {
     }
 
+    @Test
     public void runTest() {
         // init itinerary
         WebTarget target = client.target(resourceItinerary);
