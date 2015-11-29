@@ -123,7 +123,7 @@ public class P1 {
         try {
             TGItineraryType itin = port.bookItinerary(Conv.getBookRequest(Conv.getCreditcard(cardHolderName, cardNumber, year, month), id));
 //            int count = 1;
-            assertEquals("checking state of itinerary: ", STATE_CONFIRMED, itin.getState());
+            assertEquals("checking state of itinerary: ", Conv.TGPAIDSTATE, itin.getState());
 //            for(org.netbeans.xml.schema.travelgoodelements.HotelInformationType hotel : itin.getHotels()){
 //                assertEquals("check state of hotel: " + (count++), hotel.ge½, hotel);
 //            }
