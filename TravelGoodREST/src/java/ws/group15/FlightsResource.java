@@ -22,6 +22,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
+import static ws.group15.LinkBuilder.*;
 /**
  *
  * @author Christian
@@ -43,8 +44,7 @@ public class FlightsResource {
         List<FlightInformation> flights = DataSingleton.getInstance().getFlights(origin, destination, date);
         if (flights == null) flights = new ArrayList<FlightInformation>();
         GenericEntity<List<FlightInformation>> wrap = new GenericEntity<List<FlightInformation>>(flights){};
-        Response response = Response.ok(wrap)
-                .link("???", "!!!") //TODO: Add lots of allowed links
+        Response response = addCreateLink(Response.ok(wrap))
                 .build();
         
         return response;
