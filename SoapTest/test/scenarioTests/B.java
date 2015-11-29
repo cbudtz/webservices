@@ -61,7 +61,8 @@ public class B {
         TGItineraryType itinerary;
         
         TGGetFlightRequestType flightRequest = Conv.getGetFligthRequest("Ålborg", "Odense", Conv.getDate(2016, 6, 15, 12, 30), id);
-        TGGetHotelsRequestType hotelRequest = Conv.getGetHotelRequest("Ålborg", id);
+        // the hotel returned from the call will crash the booking
+        TGGetHotelsRequestType hotelRequest = Conv.getGetHotelRequest("failBook", id);
         TGGetHotelsRequestType hotelRequest2 = Conv.getGetHotelRequest("Odense", id);
         
         // get a flight to book
@@ -85,31 +86,33 @@ public class B {
         // add this hotel to the itinerary
         addHotelRequest = Conv.convertAddHotelToItinerary(hotels.getHotelInformations().get(0), id);
         
-        port.addHotelToItinerary(addHotelRequest);
+        itinerary = port.addHotelToItinerary(addHotelRequest);
         
         // do the asertions now, and then book the itinerary
         
         // check the status of the itinerary
-        itinerary = port.getItinerary(id);
-        
+        System.out.println("Checking states of the flights and hotels....");
         Assert.assertEquals(Conv.TGPLANNINGPHASE, itinerary.getState());
         Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getFlights().getFlightInfo().get(0).getState());
-        Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getFlights().getFlightInfo().get(1).getState());
         Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getHotels().getHotelInformations().get(0).getState());
+        Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getHotels().getHotelInformations().get(1).getState());
+        
         
         // now book the itinerary, the booking should fail so figure out a way to do that. 
         try {
+            System.out.println("Try to book the itinerary......");
             port.bookItinerary(Conv.getBookRequest(Conv.getCreditcard(cardHolderName, cardNumber, year, month), id));
             fail("the booking did not throw a fault, so the test was faulty");
         } catch (BookItineraryFault ex) {
             // the booking failed which is nice. 
         }
         
+        System.out.println("Check that the states of the itinerary are correct after the fail....");
         // try the assertions again, to check that states have been updated
         Assert.assertEquals(Conv.TGCANCELLED, itinerary.getState());
         Assert.assertEquals(Conv.CANCELLED, itinerary.getFlights().getFlightInfo().get(0).getState());
-        Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getFlights().getFlightInfo().get(1).getState());
         Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getHotels().getHotelInformations().get(0).getState());
+        Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getHotels().getHotelInformations().get(1).getState());
         
     }
 }

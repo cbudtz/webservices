@@ -33,24 +33,8 @@ public class TravelGoodTest {
     DatatypeFactory df = new DatatypeFactoryImpl();
   
     static TravelGoodWsdlPortType port;
-    private final static String sessionId = "testti";
+    private static String sessionId;
     public static boolean setupFinished = false;
-    
-//    @BeforeClass
-//    public static void init(){
-//        
-//            TravelGoodWsdlService service = new TravelGoodWsdlService();
-//            port = service.getTravelGoodWsdlPortTypeBindingPort();
-//             InitiateItineraryType init = new InitiateItineraryType();
-//            TGItineraryType itinerary = new TGItineraryType();
-//            itinerary.setFlights(new FlightInfoListType());
-//            itinerary.setHotels(new HotelInformationListType());
-//            init.setItinerary(itinerary);
-//            init.setItineraryId(sessionId);
-//            port.initiateItinerary(init);
-//        
-//          
-//    }
 
     @Before
     public void setUp() {
@@ -58,16 +42,8 @@ public class TravelGoodTest {
 
         if (!setupFinished) {
             setupFinished = true;
-            // setup the itinerary on the server. .
-            InitiateItineraryType init = new InitiateItineraryType();
-            TGItineraryType itinerary = new TGItineraryType();
-            itinerary.setFlights(new FlightInfoListType());
-            itinerary.setHotels(new HotelInformationListType());
-            init.setItinerary(itinerary);
-            init.setItineraryId(sessionId);
-            System.out.println("init method");
-            // pass the information to the server
-            // port.initiateItinerary(init);
+            sessionId = port.initiateItinerary();
+            //sessionId = "127.0.0.1:71bd450d:1514f3f186c:-7f34";
         }
     }
 
@@ -117,5 +93,6 @@ public class TravelGoodTest {
     public void testGetItinerary() {
        TGItineraryType itinerary = port.getItinerary(sessionId);
        // port.cancelItinerary(sessionId);
+       //port.cancelItinerary(sessionId);
     }
 }
