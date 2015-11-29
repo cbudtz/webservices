@@ -110,13 +110,12 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/creditcard")
-    public Response payWithCreditCard(@PathParam("itId") String itineraryID, CreditCardInfo card) {
-        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-        String url = ub.build().toString();
-
-        System.out.println(itineraryID);
-        Response r = Response.ok().build();
-        return r;
+    public Response putCreditCard(@PathParam("itId") String itineraryID, CreditCardInfo card) {
+        if (DataSingleton.getInstance().setCreditCard(card, itineraryID)){
+        return Response.ok().build(); //ADD allowed links
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build(); //add allowed links and meaningful message
+        }
 
     }
 
