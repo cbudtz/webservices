@@ -213,9 +213,7 @@ public class ItineraryResource {
                             .entity("cannot pay Itinerary - wrong state!")
                             .build();
                 }
-            
-
-        }
+            }
 
         Response r = Response.status(Response.Status.METHOD_NOT_ALLOWED)
                 .entity("Not allowed - only Cancelled and Paid may be pushed")
