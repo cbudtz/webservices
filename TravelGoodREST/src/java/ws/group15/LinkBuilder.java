@@ -26,7 +26,7 @@ public class LinkBuilder {
      * @param r ResponseBuilder object which needs to have links applied to it
      * @return ResponseBuilder object with links for planning state
      */
-    public static Response.ResponseBuilder getAllPlanningLinks(Response.ResponseBuilder r) {
+    public static Response.ResponseBuilder addAllPlanningLinks(Response.ResponseBuilder r) {
         return r.link(hotelResource, baseUri + "index.html#GEThotels")
                 .link(flightsResource, baseUri + "index.html#GETflights")
                 .link(hotelResource, baseUri + "index.html#PUTitineraryHotels")
@@ -41,7 +41,7 @@ public class LinkBuilder {
      * @param resourceId Itinerary id
      * @return ResponseBuilder object with links for planning state
      */
-    public static Response.ResponseBuilder getPaidLinks(Response.ResponseBuilder r, String resourceId) {
+    public static Response.ResponseBuilder addPaidLinks(Response.ResponseBuilder r, String resourceId) {
         return r.link(webresourceUrl + resourceId + "/state", baseUri + "index.html#putState")
                 .link(webresourceUrl + resourceId, baseUri + "index.html#getItinerary");
     }
@@ -52,7 +52,7 @@ public class LinkBuilder {
      * @param resourceId
      * @return 
      */
-    public static Response.ResponseBuilder getConfirmedLinks(Response.ResponseBuilder r, String resourceId) {
+    public static Response.ResponseBuilder addConfirmedLinks(Response.ResponseBuilder r, String resourceId) {
         return r.link(webresourceUrl + resourceId, baseUri + "index.html#getItinerary");
     }
     
@@ -62,7 +62,7 @@ public class LinkBuilder {
      * @param resourceId Itinerary id
      * @return ResponseBuilder object with links for canceled state
      */
-    public static Response.ResponseBuilder getCanceledLinks(Response.ResponseBuilder r, String resourceId) {
+    public static Response.ResponseBuilder addCanceledLinks(Response.ResponseBuilder r, String resourceId) {
         return r.link(webresourceUrl + resourceId, baseUri);
     }
 }
