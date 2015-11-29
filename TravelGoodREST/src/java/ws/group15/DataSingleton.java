@@ -261,7 +261,7 @@ public class DataSingleton {
             }
         }
 
-         //cancel hotels
+        it.state = Itinerary.BookingState.CANCELLED;
         
         return compensationSucces;
     }
