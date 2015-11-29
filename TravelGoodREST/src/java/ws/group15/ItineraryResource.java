@@ -224,8 +224,4 @@ public class ItineraryResource {
          //check all things including terrorists attacks 
     }
 
-    private Response.ResponseBuilder addPlanningLinks(Response.ResponseBuilder responseBuilder) {
-        return responseBuilder;
-    }
-
 }
