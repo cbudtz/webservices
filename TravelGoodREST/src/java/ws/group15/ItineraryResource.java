@@ -189,12 +189,12 @@ public class ItineraryResource {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/state")
-    public Response putstate(@PathParam("itId") String itineraryID, Itinerary.BookingState state) {
+    public Response putstate(@PathParam("itId") String itineraryID, String state) {
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
         boolean succes;
         switch (state) {
-            case CANCELLED:
+            case "CANCELLED":
                 if(DataSingleton.getInstance().cancelItinerary(itineraryID)){
                 return Response.ok(state)
                         .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
@@ -204,7 +204,7 @@ public class ItineraryResource {
                             .entity("cannot cancel Itinerary - wrong state")
                             .build();
                 }
-            case PAID: 
+            case "PAID": 
                 try {
                     succes = DataSingleton.getInstance().bookItinerary(itineraryID);
                     return Response.ok().build(); //TODO add allowed links!!

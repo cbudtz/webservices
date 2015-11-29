@@ -137,11 +137,16 @@ public class DataSingleton {
             for (HotelInformation hotel : it.hotels) {
                 BookHotelRequestType req = createRequestFromHotelInfo(hotel, it.creditCard);
                 try {
+                    System.out.println("request: " + req.getBookingNumber() + ";" 
+                            + req.getCreditCardInformation().getHolderName()
+                            + req.getCreditCardInformation().getCardNumber()
+                            + req.getCreditCardInformation().getExpirationDate());
                     niceViewPort.bookHotel(req);
                     hotel.state = Itinerary.BookingState.PAID;
                 } catch (BookHotelFault ex) {
+                    
                     //TODO something useful with try catch
-                    System.out.println("Booking failed");
+                    System.out.println("Booking failed" + ex.getMessage());
                     boolean compensationSucces = compensate(it);
                     it.state = Itinerary.BookingState.CANCELLED;
                     if (compensationSucces) {
@@ -152,11 +157,29 @@ public class DataSingleton {
                 }
             }
         }
-
+        it.state = Itinerary.BookingState.PAID;
         return true;
     }
 
     public boolean cancelItinerary(String itineraryID) {
+        Itinerary itin = getItineraryById(itineraryID);
+        switch(itin.state){
+            case CANCELLED:
+            case PLANNING:
+                itin.state = Itinerary.BookingState.CANCELLED;
+                break;
+            case CONFIRMED:
+                return false;
+            case PAID:
+               if(compensate(itin)){
+                   itin.state = Itinerary.BookingState.CANCELLED;
+                   return true;
+               }else{
+                   
+                   return false;
+               }
+                
+        }
         //TODO lots of magic to cancel itinerary - return true if everyThing went well
         return true;
     }
@@ -291,6 +314,9 @@ public class DataSingleton {
 
     private org.netbeans.xml.schema.niceviewelements.CreditCardInfoType parseHotelCreditCardInfo(CreditCardInfo creditCard) {
         org.netbeans.xml.schema.niceviewelements.CreditCardInfoType hotelCreditCard = new org.netbeans.xml.schema.niceviewelements.CreditCardInfoType();
+        hotelCreditCard.setCardNumber(creditCard.cardNumber);
+        hotelCreditCard.setExpirationDate(creditCard.expirationDate);
+        hotelCreditCard.setHolderName(creditCard.holderName);
         return hotelCreditCard;
     }
 
