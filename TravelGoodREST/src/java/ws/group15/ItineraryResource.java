@@ -34,6 +34,7 @@ import ws.group15.dto.CreditCardInfo;
 import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
 import ws.group15.dto.Itinerary;
+import static ws.group15.LinkBuilder.*;
 
 /**
  *
@@ -61,10 +62,7 @@ public class ItineraryResource {
         List<Itinerary> it = DataSingleton.getInstance().getItineraries();
         GenericEntity<List<Itinerary>> gen = new GenericEntity<List<Itinerary>>(it) {
         };
-        Response r = Response.ok(gen)
-                .link(url, baseUri + "index.html#POSTItinerary")//Create new itinerary
-                .link(flightsURI, baseUri + "index.html#GETflights") //Get available flights remember query params
-                .link(hotelsURI, baseUri + "index.html#GEThotels") // Get available hotels remember query params
+        Response r = addCreateLinks(Response.ok(gen))                
                 .build();
         return r;
     }
@@ -77,14 +75,7 @@ public class ItineraryResource {
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         Itinerary it = DataSingleton.getInstance().createItinerary();
         URI uri = ub.path(it.id).build();
-        Response r = Response.created(uri)
-                .link(uri, baseUri + "/index.html#getItinerary") //Get itinerary
-                .link(uri.toString() + "/status", baseUri + "index.html#GETitineraryStatus") //Get status of Itinerary
-                .link(uri.toString() + "/status/cancel", baseUri + "index.html#PUTitineraryCancel") //PUT to cancel itinerary
-                .link(uri.toString() + "/flights", baseUri + "index.html#PUTitineraryFlights") //PUT to add flight to itinerary
-                .link(uri.toString() + "/hotels", baseUri + "index.html#PUTitineraryHotels") //PUT to add hotel to itinerary
-                .link(webresourceUrl + "flights", baseUri + "index.html#GETflights") // GET to get availableflights
-                .link(webresourceUrl + "hotels", baseUri + "index.html#GEThotels") // GET to get availableflights
+        Response r = addAllPlanningLinks(Response.created(uri), it.id)                
                 .entity(it)
                 .build();
         return r;
@@ -96,12 +87,11 @@ public class ItineraryResource {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}")
     public Response getItineraryByID(@PathParam("itId") String itID) {
-        Itinerary i = DataSingleton.getInstance().getItineraryById(itID);
-        if (i == null) {
+        Itinerary itin = DataSingleton.getInstance().getItineraryById(itID);
+        if (itin == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("No such Itinerary ID!").build();
         }
-        Response r = Response.ok(i)
-                .link(itID, itID) //Add links                                          
+        Response r = addAllPlanningLinks(Response.ok(itin), itin.id)                                                        
                 .build();
         return r;
 
@@ -114,7 +104,9 @@ public class ItineraryResource {
         if (DataSingleton.getInstance().setCreditCard(card, itineraryID)){
         return Response.ok().build(); //ADD allowed links
         } else {
-            return Response.status(Response.Status.BAD_REQUEST).build(); //add allowed links and meaningful message
+            return addAllPlanningLinks(Response.status(Response.Status.BAD_REQUEST), itineraryID)
+                    
+                    .build(); //add allowed links and meaningful message
         }
 
     }
@@ -126,13 +118,12 @@ public class ItineraryResource {
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
         DataSingleton.getInstance().addFlightToItinerary(itineraryID, flightinformation);
-        Response r = Response.ok()
-                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+        Response r = addAllPlanningLinks(Response.ok(), itineraryID)               
                 .build();
         return r;
     }
 
-    //Receive Finfo to datasingleton
+    //Deprecated - not part of requirements
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/flights/")
@@ -143,12 +134,11 @@ public class ItineraryResource {
         List<FlightInformation> flights = itinerary.flights;
         GenericEntity<List<FlightInformation>> gen = new GenericEntity<List<FlightInformation>>(flights) {
         };
-        Response r = Response.ok(gen)
-                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+        Response r = addAllPlanningLinks(Response.ok(gen), itinerary.id)               
                 .build();
         return r;
     }
-
+//Deprecated - not part of requirements
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("{itId}/hotels/")
@@ -159,8 +149,7 @@ public class ItineraryResource {
         List<HotelInformation> hotels = itinerary.hotels;
         GenericEntity<List<HotelInformation>> gen = new GenericEntity<List<HotelInformation>>(hotels) {
         };
-        Response r = Response.ok(gen)
-                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+        Response r = addAllPlanningLinks(Response.ok(gen), itinerary.id)              
                 .build();
         return r;
     }
@@ -179,8 +168,7 @@ public class ItineraryResource {
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         String url = ub.build().toString();
         DataSingleton.getInstance().addHotelToItinerary(itineraryID, hotelinformation);
-        Response r = Response.ok()
-                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+        Response r = addAllPlanningLinks(Response.ok(), itineraryID)               
                 .build();
         return r;
 
@@ -196,28 +184,27 @@ public class ItineraryResource {
         switch (state) {
             case "CANCELLED":
                 if(DataSingleton.getInstance().cancelItinerary(itineraryID)){
-                return Response.ok(state)
-                        .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
+                return addCanceledLinks(Response.ok(state), itineraryID)
                         .build();
                 } else {
-                    return Response.status(Response.Status.BAD_REQUEST)
+                    return addAllPlanningLinks(Response.status(Response.Status.BAD_REQUEST), itineraryID)
                             .entity("cannot cancel Itinerary - wrong state")
                             .build();
                 }
             case "PAID": 
                 try {
                     succes = DataSingleton.getInstance().bookItinerary(itineraryID);
-                    return Response.ok().build(); //TODO add allowed links!!
+                    return addPaidLinks(Response.ok(), itineraryID)
+                            .build(); //TODO add allowed links!!
                 } catch (BookingException ex) {
-                    return Response.status(Response.Status.BAD_REQUEST)
+                    return addAllPlanningLinks(Response.status(Response.Status.BAD_REQUEST), itineraryID)
                             .entity("cannot pay Itinerary - wrong state!")
                             .build();
                 }
             }
 
-        Response r = Response.status(Response.Status.METHOD_NOT_ALLOWED)
+        Response r = addAllPlanningLinks(Response.status(Response.Status.METHOD_NOT_ALLOWED), itineraryID)
                 .entity("Not allowed - only Cancelled and Paid may be pushed")
-                .link(url, POST)//Only allowed next action is to obtain some ID by creating an itinerary
                 .build();
         return r;
 
