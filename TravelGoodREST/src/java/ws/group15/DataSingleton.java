@@ -5,14 +5,17 @@
  */
 package ws.group15;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.BookFlightFault;
 import org.netbeans.j2ee.wsdl.lameduck.wsdl.lameduckwsdl.CancelFlightFault;
@@ -163,14 +166,23 @@ public class DataSingleton {
 
     public boolean cancelItinerary(String itineraryID) {
         Itinerary itin = getItineraryById(itineraryID);
+        boolean canCancel = checkIfCancellationTimeIsExceeded(itin);
         switch(itin.state){
             case CANCELLED:
             case PLANNING:
+                if (!canCancel) {
+                    itin.state = Itinerary.BookingState.CONFIRMED;
+                    return false;
+                }
                 itin.state = Itinerary.BookingState.CANCELLED;
                 break;
             case CONFIRMED:
                 return false;
             case PAID:
+                if (!canCancel) {
+                    itin.state = Itinerary.BookingState.CONFIRMED;
+                    return false;
+                }
                if(compensate(itin)){
                    itin.state = Itinerary.BookingState.CANCELLED;
                    return true;
@@ -345,6 +357,21 @@ public class DataSingleton {
             h.state = parseState(hotel.getState());
             h.stayPrice = hotel.getStayPrice();
             return h;
+    }
+
+    private boolean checkIfCancellationTimeIsExceeded(Itinerary itin) {
+        boolean canCancel = true;
+        for (FlightInformation Flightinfo : itin.flights) {
+            XMLGregorianCalendar deadline = Flightinfo.flight.getTakeOff();
+            deadline.setDay(deadline.getDay()-1);
+            XMLGregorianCalendar now = new XMLGregorianCalendarImpl(new GregorianCalendar());
+            if (now.compare(deadline) == DatatypeConstants.GREATER){
+                //Deadline passed :(
+                canCancel = false;
+            }
+        }
+
+        return canCancel;
     }
 
 }
