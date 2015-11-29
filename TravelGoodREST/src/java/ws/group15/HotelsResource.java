@@ -14,12 +14,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import ws.group15.dto.Flight;
 import ws.group15.dto.FlightInformation;
 import ws.group15.dto.HotelInformation;
+import static ws.group15.LinkBuilder.*;
 
 /**
  *
@@ -31,12 +34,14 @@ public class HotelsResource {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<HotelInformation> getHotels(@QueryParam("city") String city,
+    public Response getHotels(@QueryParam("city") String city,
             @QueryParam("arrival") String arrivalString,
             @QueryParam("departure") String departureString){
         XMLGregorianCalendar arrival = parseDate(arrivalString);
         XMLGregorianCalendar departure = parseDate(departureString);
-        return DataSingleton.getInstance().getHotels(city, arrival, departure);
+        GenericEntity<List<HotelInformation>> wrap = new GenericEntity<List<HotelInformation>>(DataSingleton.getInstance().getHotels(city, arrival, departure)){};
+        Response r = addCreateLink(Response.ok(wrap)).build();
+        return r;
     } 
 
     private XMLGregorianCalendar parseDate(String dateString) {
