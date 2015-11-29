@@ -466,9 +466,9 @@
                                     <variable name="NiceViewBookHotelIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" messageType="tns:bookHotelRequest"/>
                                 </variables>
                                 <faultHandlers>
-                                    <catch faultName="ns6:fault1">
+                                    <catchAll>
                                         <compensate name="Compensate2"/>
-                                    </catch>
+                                    </catchAll>
                                 </faultHandlers>
                                 <compensationHandler>
                                     <sequence name="Sequence17">
