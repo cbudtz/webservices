@@ -746,6 +746,15 @@
                         </elseif>
                     </if>
                 </onMessage>
+                <onAlarm>
+                    <for>'P1Y3M4DT2H4M3.0S'</for>
+                    <assign name="Assign1">
+                        <copy>
+                            <from variable="ConfirmedState"/>
+                            <to>$ItineraryOnServer/state</to>
+                        </copy>
+                    </assign>
+                </onAlarm>
             </pick>
         </while>
     </sequence>
