@@ -44,13 +44,11 @@ public class DeadlineFinder {
             }
 
         }
-        if(d != null) d.setDay(d.getDay()-1);
         return d == null ? "" : "P" + d.getYear() + "Y"
                 + d.getMonth() + "M"
                 + d.getDay() + "DT"
                 + d.getHour() + "H"
                 + d.getMinute() + "M"
                 + d.getSecond() + "S";
-//        return "";
     }
 }
