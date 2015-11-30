@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns0="http://xml.netbeans.org/schema/NiceViewElements" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="NiceViewWSDL" targetNamespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL">
     <types>
         <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL">
-            <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
         </xsd:schema>
     </types>
     <message name="getHotelsRequest">
@@ -82,7 +82,7 @@
     </binding>
     <service name="NiceViewWSDLService">
         <port name="NiceViewWSDLPortTypeBindingPort" binding="tns:NiceViewWSDLPortTypeBinding">
-            <soap:address location="http://runi-laptop:8080/NiceViewTemp/NiceViewWSDLService"/>
+            <soap:address location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService"/>
         </port>
     </service>
     <plnk:partnerLinkType name="NiceViewWSDL">
