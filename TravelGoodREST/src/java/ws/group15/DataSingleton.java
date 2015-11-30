@@ -174,7 +174,9 @@ public class DataSingleton {
                     itin.state = Itinerary.BookingState.CONFIRMED;
                     return false;
                 }
+                else if(compensate(itin)){
                 itin.state = Itinerary.BookingState.CANCELLED;
+                }
                 break;
             case CONFIRMED:
                 return false;
