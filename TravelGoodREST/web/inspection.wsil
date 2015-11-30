@@ -4,6 +4,7 @@
     <service>
         <name>TravelGood Itinerary Planning Service</name>
         <abstract>A service that will enable you to plan an itinerary with one or more flight and hotel reservations.</abstract>
+        <description referencedNamespace="http://jersey.java.net/" location="http://localhost:8080/TravelGoodREST/webresources/application.wadl">
     </service>
     <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/services/NiceViewWSIL.wsil">
         <abstract>A service that will enable you to search, book and cancel hotel servations.</abstract>
