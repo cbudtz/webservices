@@ -36,12 +36,12 @@
         <operation name="bookHotel">
             <input name="input2" message="tns:bookHotelRequest"/>
             <output name="output2" message="tns:bookHotelResponse"/>
-            <fault name="fault1" message="tns:bookHotelFault"/>
+            <fault name="bookHotelFault" message="tns:bookHotelFault"/>
         </operation>
         <operation name="cancelHotel">
             <input name="input3" message="tns:cancelHotelRequest"/>
             <output name="output3" message="tns:cancelHotelResponse"/>
-            <fault name="fault1" message="tns:cancelHotelFault"/>
+            <fault name="cancelHotelFault" message="tns:cancelHotelFault"/>
         </operation>
     </portType>
     <binding name="NiceViewWSDLPortTypeBinding" type="tns:NiceViewWSDLPortType">
@@ -63,8 +63,8 @@
             <output name="output2">
                 <soap:body use="literal" namespace="http://niceview.web.dk"/>
             </output>
-            <fault name="fault1">
-                <soap:fault name="fault1" use="literal" namespace="http://niceview.web.dk"/>
+            <fault name="bookHotelFault">
+                <soap:fault name="bookHotelFault" use="literal" namespace="http://niceview.web.dk"/>
             </fault>
         </operation>
         <operation name="cancelHotel">
@@ -75,8 +75,8 @@
             <output name="output3">
                 <soap:body use="literal" namespace="http://niceview.web.dk"/>
             </output>
-            <fault name="fault1">
-                <soap:fault name="fault1" use="literal" namespace="http://niceview.web.dk"/>
+            <fault name="cancelHotelFault">
+                <soap:fault name="cancelHotelFault" use="literal" namespace="http://niceview.web.dk"/>
             </fault>
         </operation>
     </binding>
