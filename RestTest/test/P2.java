@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static ws.g15.dto.Conv.*;
@@ -38,7 +39,8 @@ public class P2 {
         addFlightToItinerary(flights.get(0), itinerary.id);
         
         // cancel itinerary
-        setNewItineraryState(Itinerary.BookingState.CANCELLED, itinerary.id);
+        Response res = setNewItineraryState(Itinerary.BookingState.CANCELLED, itinerary.id);
+        assertEquals("check if cancel went ok.", 200, res.getStatus());
 
         // get itinerary and check if it is cancelled
         itinerary = getItinerary(itinerary.id);

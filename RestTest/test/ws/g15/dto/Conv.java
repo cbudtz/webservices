@@ -112,11 +112,10 @@ public class Conv {
         }
     }
 
-    public static void setNewItineraryState(Itinerary.BookingState state, String itinId){
+    public static Response setNewItineraryState(Itinerary.BookingState state, String itinId){
         WebTarget target = client.target(resourceItinerary + itinId + "/state");
-        Response res = requestPUT(target, state.name());
-//        assertEquals("check status code after trying update state", 200, res.getStatus());
-
+        return requestPUT(target, state.name());
+      
     }
     public static Itinerary getItinerary(String id) {
         // get itinerary
@@ -124,10 +123,11 @@ public class Conv {
         return target.request().accept(APPLICATION_JSON).get(Itinerary.class);
     }
 
-    public static void setCreditcard(CreditCardInfo creditcard, String itinId){
+    public static Response setCreditcard(CreditCardInfo creditcard, String itinId){
         WebTarget target = client.target(resourceItinerary + itinId + "/creditcard");
         Response res = requestPUT(target, creditcard);
         assertEquals("check status code after put creditcard", 200, res.getStatus());
+        return res;
     }
     public static List<FlightInformation> getFlights(String[] vals) {
         WebTarget target = client.target(resourceFlight);
@@ -137,10 +137,11 @@ public class Conv {
 
     }
 
-    public static void addFlightToItinerary(FlightInformation flight, String itinId) {
+    public static Response addFlightToItinerary(FlightInformation flight, String itinId) {
         WebTarget target = client.target(resourceItinerary + itinId + "/flights");
         Response res = requestPUT(target, flight);
         assertEquals("check status code after adding flight", 200, res.getStatus());
+        return res;
     }
 
     public static List<HotelInformation> getHotels(String[] vals) {
@@ -151,9 +152,10 @@ public class Conv {
 
     }
 
-    public static void addHotelToItinerary(HotelInformation hotel, String itinId) {
+    public static Response addHotelToItinerary(HotelInformation hotel, String itinId) {
         WebTarget target = client.target(resourceItinerary + itinId + "/hotels");
         Response res = requestPUT(target, hotel);
         assertEquals("check status code after adding hotel", 200, res.getStatus());
+        return res;
     }
 }
