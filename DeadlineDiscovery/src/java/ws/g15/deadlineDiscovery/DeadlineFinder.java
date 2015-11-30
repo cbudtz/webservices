@@ -23,29 +23,34 @@ import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
 public class DeadlineFinder {
 
     /**
-     * This is a sample web service operation
+     * finds deadline for itinery
+     *
      * @param flights
      * @return deadline as string
      */
-    @WebMethod(operationName="findDeadline")
-    public String findDeadline(@WebParam(name="flights") FlightInfoListType flights) {
+    @WebMethod(operationName = "findDeadline")
+    public String findDeadline(@WebParam(name = "flights") FlightInfoListType flights) {
         XMLGregorianCalendar d = null;
-        for (FlightInformationType Flightinfo : flights.getFlightInfo()) {   
-            XMLGregorianCalendar curDeadline = Flightinfo.getFlight().getTakeOff();
-            curDeadline.setDay(curDeadline.getDay()-1);
-            XMLGregorianCalendar now = new XMLGregorianCalendarImpl(new GregorianCalendar());
-            if (now.compare(d) == DatatypeConstants.LESSER){
-                d = curDeadline;
+        for (FlightInformationType flight : flights.getFlightInfo()) {
+            XMLGregorianCalendar curDeadline = null;
+            try {
+                curDeadline = flight.getFlight().getTakeOff();
+                if (d == null || d.compare(curDeadline) == DatatypeConstants.GREATER) {
+
+                    d = curDeadline;
+                }
+            } catch (NullPointerException e) {
+                System.out.println(e.getStackTrace().toString());
             }
+
         }
-//        'P1Y3M4DT2H4M3.0S'
-        
-        return d == null ? "":  "P" + d.getYear() + "Y"
-                                + d.getMonth() + "M"
-                                + d.getDay() + "DT"
-                                + d.getHour() + "H" 
-                                + d.getMinute() + "M"
-                                + d.getSecond() + "S";
-        
+        if(d != null) d.setDay(d.getDay()-1);
+        return d == null ? "" : "P" + d.getYear() + "Y"
+                + d.getMonth() + "M"
+                + d.getDay() + "DT"
+                + d.getHour() + "H"
+                + d.getMinute() + "M"
+                + d.getSecond() + "S";
+//        return "";
     }
 }
