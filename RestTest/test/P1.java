@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import ws.g15.dto.Itinerary;
@@ -87,7 +88,8 @@ public class P1 {
        setCreditcard(getCreditcard(cardName0, cardNumber0, cardExpYear0, cardExpMonth0), itinerary.id);
        
         // book itinerary
-       setNewItineraryState(Itinerary.BookingState.PAID, itinerary.id);
+       Response res = setNewItineraryState(Itinerary.BookingState.PAID, itinerary.id);
+       assertEquals("check if booking went well", 200, res.getStatus());
        
        // get itinerary and check if all states are PAID
        itinerary = getItinerary(itinerary.id);

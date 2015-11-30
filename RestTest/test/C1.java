@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import static ws.g15.dto.Conv.*;
@@ -50,13 +51,19 @@ public class C1 {
         setCreditcard(getCreditcard(cardName0, cardNumber0, cardExpYear0, cardExpMonth0), itinerary.id);
         
         // book itinerary and then get it
-        setNewItineraryState(Itinerary.BookingState.PAID, itinerary.id);
+        Response res = setNewItineraryState(Itinerary.BookingState.PAID, itinerary.id);
+        assertEquals("check if status is ok", 200, res.getStatus());    
         itinerary = getItinerary(itinerary.id);
+        
         // check if state is PAID for all flights and hotel
         checkItineraryStatus(itinerary, Itinerary.BookingState.PAID);
         assertEquals("check itinerary status", Itinerary.BookingState.PAID, itinerary.state);
         
-        setNewItineraryState(Itinerary.BookingState.CANCELLED, itinerary.id);
+        // cancel booking
+        res = setNewItineraryState(Itinerary.BookingState.CANCELLED, itinerary.id);
+        assertEquals("check if cancel booking was done correctly", 200, res.getStatus());
+        
+        // get itinerary and check if it is cancelled
         itinerary = getItinerary(itinerary.id);
         checkItineraryStatus(itinerary, Itinerary.BookingState.CANCELLED);
         assertEquals("check itinerary status after cancel", Itinerary.BookingState.CANCELLED, itinerary.state);

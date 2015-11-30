@@ -4,10 +4,14 @@
  * and open the template in the editor.
  */
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Link;
+import javax.ws.rs.core.Response;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static ws.g15.dto.Conv.*;
@@ -18,7 +22,8 @@ import ws.g15.dto.HotelInformation;
 
 /**
  *
- * @author Runi (booking fails) Plan an itinerary with three bookings (mixed
+ * @author Runi 
+ * (booking fails) Plan an itinerary with three bookings (mixed
  * flights and hotels). Get the itinerary and make sure that the booking status
  * is unconfirmed for each entry. Then book the itinerary. During booking, the
  * second booking should fail. Get the itinerary and check that the result of
@@ -35,6 +40,7 @@ public class B {
 
     @Test
     public void runTest() {
+        Response res = null;
         // init itinerary
         WebTarget target = client.target(resourceItinerary);
         Itinerary itinerary = requestPOST(target, Itinerary.class, null);
@@ -44,8 +50,13 @@ public class B {
         List<FlightInformation> flights = getFlights(GET_FLIGHT_VALUE0);
 
         // add first flight
-        addFlightToItinerary(flights.get(0), itinerary.id);
-
+        res = addFlightToItinerary(flights.get(0), itinerary.id);
+        Set<Link> links1 = res.getLinks();
+        Iterator<Link> it1 = links1.iterator();
+        while(it1.hasNext()){
+            System.out.println("link: " + it1.next().getUri().getPath());
+        }
+        
         // get itinerary
         itinerary = getItinerary(itinerary.id);
 
@@ -53,19 +64,26 @@ public class B {
         flights = getFlights(GET_FLIGHT_VALUE_FAIL_ON_BOOK);
 
         // add second flight
-        addFlightToItinerary(flights.get(0), itinerary.id);
+        res = addFlightToItinerary(flights.get(0), itinerary.id);
 
         // get hotels
         List<HotelInformation> hotels = getHotels(GET_HOTEL_VALUE0);
 
         // add first hotel
-        addHotelToItinerary(hotels.get(0), itinerary.id);
+        res = addHotelToItinerary(hotels.get(0), itinerary.id);
         
         // set credit card
-        setCreditcard(Conv.getCreditcard(cardName1, cardNumber1, cardExpYear1, cardExpMonth1), itinerary.id);
-
+        res = setCreditcard(Conv.getCreditcard(cardName1, cardNumber1, cardExpYear1, cardExpMonth1), itinerary.id);
+        Set<Link> links = res.getLinks();
+        Iterator<Link> it = links.iterator();
+        while(it.hasNext()){
+            System.out.println("link: " + it.next().toString());
+        }
+        
         // book itinerary
-        setNewItineraryState(Itinerary.BookingState.PAID, itinerary.id);
+        res = setNewItineraryState(Itinerary.BookingState.PAID, itinerary.id);
+        assertEquals("check if booking failed", 400, res.getStatus());
+        System.out.println("response msg: " + res.toString());
         
         // get itinerary
         itinerary = getItinerary(itinerary.id);
@@ -76,10 +94,4 @@ public class B {
         
     }
 
-  
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }
