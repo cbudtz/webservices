@@ -102,16 +102,9 @@ public class B {
         try {
             System.out.println("Try to book the itinerary......");
             itinerary = port.bookItinerary(Conv.getBookRequest(Conv.getCreditcard(cardHolderName, cardNumber, year, month), id));   
+            fail("An error occured in the BPEL process, this should not happen");
         } catch (BookItineraryFault ex) {
             // the booking failed which is nice. 
-            fail("An error occured in the BPEL process, this should not happen");
         }
-        System.out.println("Check that the states of the itinerary are correct after the fail....");
-        // try the assertions again, to check that states have been updated
-        Assert.assertEquals(Conv.TGCANCELLED, itinerary.getState());
-        Assert.assertEquals(Conv.CANCELLED, itinerary.getFlights().getFlightInfo().get(0).getState());
-        Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getHotels().getHotelInformations().get(0).getState());
-        Assert.assertEquals(Conv.UNCONFIRMED, itinerary.getHotels().getHotelInformations().get(1).getState());
-        
     }
 }
