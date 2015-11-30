@@ -4,28 +4,16 @@
  * and open the template in the editor.
  */
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static ws.g15.dto.Conv.*;
-import ws.g15.dto.Itinerary;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static ws.g15.dto.Conv.*;
 import ws.g15.dto.FlightInformation;
 import ws.g15.dto.Itinerary;
-import javax.ws.rs.core.Response;
 import ws.g15.dto.Conv;
-import ws.g15.dto.CreditCardInfo;
 import ws.g15.dto.HotelInformation;
 
 /**
@@ -62,7 +50,7 @@ public class B {
         itinerary = getItinerary(itinerary.id);
 
         // get another flight
-        flights = getFlights(GET_FLIGHT_VALUE3);
+        flights = getFlights(GET_FLIGHT_VALUE_FAIL_ON_BOOK);
 
         // add second flight
         addFlightToItinerary(flights.get(0), itinerary.id);
@@ -82,6 +70,7 @@ public class B {
         // get itinerary
         itinerary = getItinerary(itinerary.id);
 
+        // check that state is cancelled on itinerary and bookings
         assertEquals("check status of itinerary", Itinerary.BookingState.CANCELLED, itinerary.state);
         checkItineraryStatus(itinerary, Itinerary.BookingState.CANCELLED);        
         

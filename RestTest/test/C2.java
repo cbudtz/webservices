@@ -41,7 +41,7 @@ public class C2 {
         addFlightToItinerary(flights.get(0), itinerary.id);
         
         // add second flight
-        flights = getFlights(GET_FLIGHT_VALUE4);
+        flights = getFlights(GET_FLIGHT_VALUE_FAIL_ON_CANCEL);
         addFlightToItinerary(flights.get(0), itinerary.id);
         
         // add first hotel

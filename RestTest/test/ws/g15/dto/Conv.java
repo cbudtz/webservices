@@ -21,17 +21,11 @@ import javax.ws.rs.core.Response;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import static org.junit.Assert.assertEquals;
-import org.netbeans.xml.schema.lameduckelements.CreditCardInfoType;
-import org.netbeans.xml.schema.lameduckelements.FlightInformationType;
-import org.netbeans.xml.schema.lameduckelements.GetFlightRequestType;
-import org.netbeans.xml.schema.niceviewelements.GetHotelsRequestType;
-import org.netbeans.xml.schema.niceviewelements.HotelInformationType;
-import ws.g15.dto.CreditCardInfo;
-import ws.g15.dto.FlightInformation;
 
 /**
  *
  * @author Runi
+ * contains convenience methods for tests. Methods where return type is void. have check for badrequest
  */
 public class Conv {
 
@@ -45,8 +39,8 @@ public class Conv {
     public final static String[] GET_FLIGHT_VALUE0 = new String[]{"denmark", "russia", "2016-06-12"};
     public final static String[] GET_FLIGHT_VALUE1 = new String[]{"Faroe Islands", "US and A", "2016-07-12"};
     public final static String[] GET_FLIGHT_VALUE2 = new String[]{"England", "Langbortistan", "2016-03-12"};
-    public final static String[] GET_FLIGHT_VALUE3 = new String[]{"failbook", "failbook", "2016-03-12"};
-    public final static String[] GET_FLIGHT_VALUE4 = new String[]{"failcancel", "failcancel", "2016-03-12"};
+    public final static String[] GET_FLIGHT_VALUE_FAIL_ON_BOOK = new String[]{"failbook", "failbook", "2016-03-12"};
+    public final static String[] GET_FLIGHT_VALUE_FAIL_ON_CANCEL = new String[]{"failcancel", "failcancel", "2016-03-12"};
     
     public final static String[] GET_HOTEL_PARAM = new String[]{"city", "arrival" ,"departure"};
     public final static String[] GET_HOTEL_VALUE0 = new String[]{"Langbortistan", "2016-12-12", "2018-06-12"};
