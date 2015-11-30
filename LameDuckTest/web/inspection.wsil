@@ -4,7 +4,7 @@
     <service>
         <name>LameDuck Flight Reservation Service</name>
         <abstract>A service that will enable you to search, book and cancel flight reservations.</abstract>
-        <description referencedNamespace="http://schemas.xmlsoap.org/wsdl/" location="http://localhost:8080/LameDuckTest/LameDuckTest?wsdl" />
+        <description referencedNamespace="http://schemas.xmlsoap.org/wsdl/" location="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" />
     </service>
     <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/NiceViewTemp/inspection.wsil">
         <abstract>A service that will enable you to search, book and cancel hotel servations.</abstract>
