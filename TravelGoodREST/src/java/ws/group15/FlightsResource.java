@@ -37,6 +37,9 @@ public class FlightsResource {
     public Response getFlights(@QueryParam("origin") String origin,
             @QueryParam("destination") String destination,
             @QueryParam("departure") String dateString){
+        if (dateString==null || destination==null || origin==null ) 
+            return Response.status(Response.Status.BAD_REQUEST).entity("You must specify search criteria").build(); //Prettyfication - not part of requirements.
+        
         dateString = dateString.replace("\"", "");
         String[] dateStrings = dateString.split("-");
         System.out.println(dateStrings[0] + ", " + dateStrings[1] + ", " + dateStrings[2]);
