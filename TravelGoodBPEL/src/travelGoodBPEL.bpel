@@ -20,6 +20,7 @@
         <partnerLink name="PartnerLink1" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" partnerLinkType="tns:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="CancelSuccessfull" type="xs:boolean"/>
         <variable name="BookItineraryFault" messageType="ns0:bookItineraryFault"/>
         <variable name="NiceViewCancelHotelOut" messageType="ns4:cancelHotelResponse"/>
         <variable name="NiceViewCancelHotelIn" messageType="ns4:cancelHotelRequest"/>
@@ -119,6 +120,10 @@
             <copy>
                 <from>0</from>
                 <to variable="SuccessfullyBookedHotels"/>
+            </copy>
+            <copy>
+                <from>true()</from>
+                <to variable="CancelSuccessfull"/>
             </copy>
         </assign>
         <reply name="TravelGoodInitiateItineraryReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns0:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut">
@@ -631,7 +636,19 @@
                                     <startCounterValue>1</startCounterValue>
                                         <finalCounterValue>$SuccessfullyBookedFlights</finalCounterValue>
                                         <scope name="ForEachFlightCancelScope1">
-                                        <sequence name="Sequence12">
+                                            <faultHandlers>
+                                                <catchAll>
+                                                    <sequence name="Sequence21">
+                                                        <assign name="CancelFlightsFailedAssign1">
+                                                            <copy>
+                                                                <from>false()</from>
+                                                                <to variable="CancelSuccessfull"/>
+                                                            </copy>
+                                                        </assign>
+                                                    </sequence>
+                                                </catchAll>
+                                            </faultHandlers>
+                                            <sequence name="Sequence12">
                                                 <assign name="ForEachFlightCompensateAssign1">
                                                         <copy>
                                                             <from>$TravelGoodBookItineraryIn.request10/creditcard/ns2:cardNumber</from>
@@ -654,7 +671,7 @@
                                                             <to>$LameDuckCancelFlightIn.flightInfo/ns2:price</to>
                                                         </copy>
                                                     </assign>
-                                                    <invoke name="LameDuckCompensateCancelFlight" partnerLink="LameDuckPartnerLink" operation="cancelFlight" portType="ns3:LameDuckPortType" inputVariable="LameDuckCancelFlightIn" outputVariable="LameDuckCancelFlightOut"/>
+                                                    <invoke name="LameDuckCompensateCancelFlight" partnerLink="LameDuckPartnerLink" operation="cancelFlight" portType="ns3:LameDuckPortType" inputVariable="LameDuckCancelFlightIn" outputVariable="LameDuckCancelFlightOut"></invoke>
                                                     <assign name="ForEachFlightCompensateAssign2">
                                                         <copy>
                                                             <from variable="Cancelled"/>
@@ -668,6 +685,18 @@
                                     <startCounterValue>1</startCounterValue>
                                         <finalCounterValue>$SuccessfullyBookedHotels</finalCounterValue>
                                         <scope name="ForEachHotelCancelScope">
+                                            <faultHandlers>
+                                                <catchAll>
+                                                    <sequence name="Sequence22">
+                                                        <assign name="CancelHotelFailAssign1">
+                                                            <copy>
+                                                                <from>false()</from>
+                                                                <to variable="CancelSuccessfull"/>
+                                                            </copy>
+                                                        </assign>
+                                                    </sequence>
+                                                </catchAll>
+                                            </faultHandlers>
                                             <sequence name="Sequence15">
                                                     <assign name="ForEachHotelCompensateAssign1">
                                                             <copy>
@@ -675,7 +704,7 @@
                                                                 <to>$NiceViewCancelHotelIn.input/ns1:bookingNumber</to>
                                                             </copy>
                                                         </assign>
-                                                        <invoke name="NiceViewCompensateCancelHotelInvoke" partnerLink="NiceViewPartnerLink" operation="cancelHotel" portType="ns4:NiceViewWSDLPortType" inputVariable="NiceViewCancelHotelIn" outputVariable="NiceViewCancelHotelOut"/>
+                                                        <invoke name="NiceViewCompensateCancelHotelInvoke" partnerLink="NiceViewPartnerLink" operation="cancelHotel" portType="ns4:NiceViewWSDLPortType" inputVariable="NiceViewCancelHotelIn" outputVariable="NiceViewCancelHotelOut"></invoke>
                                                         <assign name="ForEachHotelCompensateAssign2">
                                                             <copy>
                                                                 <from variable="Cancelled"/>
@@ -685,16 +714,33 @@
                                                 </sequence>
                                         </scope>
                                 </forEach>
-                                <assign name="PaidItineraryCancelCompleteAssign">
-                                    <copy>
-                                        <from>'Successfully cancelled itinerary'</from>
-                                        <to variable="TravelGoodCancelItineraryOut" part="status1"/>
-                                    </copy>
-                                    <copy>
-                                        <from variable="CancelledState"/>
-                                        <to>$ItineraryOnServer/state</to>
-                                    </copy>
-                                </assign>
+                                <if name="If1">
+                                    <condition>$CancelSuccessfull</condition>
+                                    <sequence name="Sequence23">
+                                        <assign name="PaidItineraryCancelCompleteAssign">
+                                            <copy>
+                                                <from>'Successfully cancelled itinerary'</from>
+                                                    <to variable="TravelGoodCancelItineraryOut" part="status1"/>
+                                            </copy>
+                                                <copy>
+                                                <from variable="CancelledState"/>
+                                                    <to>$ItineraryOnServer/state</to>
+                                            </copy>
+                                        </assign>
+                                    </sequence>
+                                    <else>
+                                        <assign name="PaidItitineraryCancelFailedAssign2">
+                                            <copy>
+                                                <from>'Not all cancels succeeded'</from>
+                                                <to variable="TravelGoodCancelItineraryOut" part="status1"/>
+                                            </copy>
+                                            <copy>
+                                                <from variable="CancelledState"/>
+                                                <to>$ItineraryOnServer/state</to>
+                                            </copy>
+                                        </assign>
+                                    </else>
+                                </if>
                                 <reply name="PaidItineraryCancelReply" partnerLink="PartnerLink1" operation="cancelItinerary" portType="ns0:TravelGoodWsdlPortType" variable="TravelGoodCancelItineraryOut"/>
                             </sequence>
                         </elseif>
