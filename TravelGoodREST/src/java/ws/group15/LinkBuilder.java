@@ -31,10 +31,10 @@ public class LinkBuilder {
      * @return ResponseBuilder object with links for planning state
      */
     public static Response.ResponseBuilder addAllPlanningLinks(Response.ResponseBuilder r, String resourceId) {
-        return r.link(hotelResource, baseUri + "index.html#GEThotels")
-                .link(flightsResource, baseUri + "index.html#GETflights")
-                .link(itineraryResource + "/" + resourceId + "/hotels", baseUri + "index.html#PUTitineraryHotels")
-                .link(itineraryResource + "/" + resourceId + "/flights", baseUri + "index.html#PUTitineraryFlights")
+        return r.link(hotelResource, baseUri + "index.html#getHotels")
+                .link(flightsResource, baseUri + "index.html#getFlights")
+                .link(itineraryResource + "/" + resourceId + "/hotels", baseUri + "index.html#putItineraryHotels")
+                .link(itineraryResource + "/" + resourceId + "/flights", baseUri + "index.html#putItineraryFlights")
                 .link(itineraryResource + "/" + resourceId , baseUri + "index.html#getItinerary")
                 .link(itineraryResource + "/" + resourceId + "/state", baseUri + "index.html#putState");
     }
