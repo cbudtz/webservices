@@ -167,29 +167,23 @@ public class DataSingleton {
     public boolean cancelItinerary(String itineraryID) {
         Itinerary itin = getItineraryById(itineraryID);
         boolean canCancel = checkIfCancellationTimeIsExceeded(itin);
+        if (!canCancel){
+            //Cancelation time exeeded - kill itinerary 
+            itineraries.remove(itineraryID);
+            return false;
+        }
         switch(itin.state){
             case CANCELLED:
             case PLANNING:
-                if (!canCancel) {
-                    itin.state = Itinerary.BookingState.CONFIRMED;
-                    return false;
-                }
-                else if(compensate(itin)){
+                
                 itin.state = Itinerary.BookingState.CANCELLED;
-                }
+                if(!compensate(itin)){return false;}
                 break;
             case CONFIRMED:
                 return false;
             case PAID:
-                if (!canCancel) {
-                    itin.state = Itinerary.BookingState.CONFIRMED;
-                    return false;
-                }
-               if(compensate(itin)){
-                   itin.state = Itinerary.BookingState.CANCELLED;
-                   return true;
-               }else{
-                   
+                itin.state = Itinerary.BookingState.CANCELLED;
+               if(!compensate(itin)){
                    return false;
                }
                 
@@ -371,7 +365,6 @@ public class DataSingleton {
         boolean canCancel = true;
         for (FlightInformation Flightinfo : itin.flights) {
             XMLGregorianCalendar deadline = Flightinfo.flight.getTakeOff();
-            deadline.setDay(deadline.getDay()-1);
             XMLGregorianCalendar now = new XMLGregorianCalendarImpl(new GregorianCalendar());
             if (now.compare(deadline) == DatatypeConstants.GREATER){
                 //Deadline passed :(
