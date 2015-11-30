@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inspection xmlns="http://schemas.xmlsoap.org/ws/2001/10/inspection/" xmlns:wsiluddi="http://schemas.xmlsoap.org/ws/2001/10/inspection/uddi/">
+    <abstract>TravelGood Service</abstract>
+    <service>
+        <name>TravelGood Itinerary Planning Service</name>
+        <abstract>A service that will enable you to plan an itinerary with one or more flight and hotel reservations.</abstract>
+    </service>
+    <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/services/NiceViewWSIL.wsil">
+        <abstract>A service that will enable you to search, book and cancel hotel servations.</abstract>
+    </link>
+    <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/services/LameDuckWSIL.wsil">
+        <abstract>A service that will enable you to search, book and cancel flight reservations.</abstract>
+    </link>
+</inspection>

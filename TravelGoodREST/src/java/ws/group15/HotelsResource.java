@@ -37,6 +37,9 @@ public class HotelsResource {
     public Response getHotels(@QueryParam("city") String city,
             @QueryParam("arrival") String arrivalString,
             @QueryParam("departure") String departureString){
+        if (city==null || arrivalString==null || departureString==null ) 
+            return Response.status(Response.Status.BAD_REQUEST).entity("You must specify search criteria").build(); //Prettyfication - not part of requirements.
+        
         XMLGregorianCalendar arrival = parseDate(arrivalString);
         XMLGregorianCalendar departure = parseDate(departureString);
         GenericEntity<List<HotelInformation>> wrap = new GenericEntity<List<HotelInformation>>(DataSingleton.getInstance().getHotels(city, arrival, departure)){};
