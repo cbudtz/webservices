@@ -4,7 +4,7 @@
     <xsd:schema xmlns:ns4="http://xml.netbeans.org/schema/NiceViewElements" targetNamespace="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl">
             <xsd:import namespace="http://fastmoney.imm.dtu.dk" schemaLocation="http://fastmoney.compute.dtu.dk:8080/BankService?xsd=2"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/LameDuckElements" schemaLocation="http://localhost:8080/LameDuckTest/LameDuckWSDLService?xsd=1"/>
-            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://krisha:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
+            <xsd:import namespace="http://xml.netbeans.org/schema/TravelGoodElements" schemaLocation="http://Runi-Laptop:9080/TravelGood-sun-http-binding/TravelGoodBPEL/TravelGoodElements.xsd"/>
             <xsd:import namespace="http://xml.netbeans.org/schema/NiceViewElements" schemaLocation="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?xsd=1"/>
             <xsd:complexType name="TGGetFlightRequestType">
                 <xsd:sequence>
@@ -276,7 +276,7 @@
   </binding>
   <service name="TravelGoodWsdlService">
     <port binding="tns:TravelGoodWsdlPortTypeBinding" name="TravelGoodWsdlPortTypeBindingPort">
-      <soap:address location="http://krisha:9080/service"/>
+      <soap:address location="http://Runi-Laptop:9080/service"/>
     </port>
   </service>
     <plnk:partnerLinkType name="TravelGoodWsdl">
