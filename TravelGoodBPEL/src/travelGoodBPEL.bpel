@@ -23,6 +23,7 @@
         <partnerLink name="PartnerLink1" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" partnerLinkType="tns:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="bookItineraryFault" messageType="ns0:bookItineraryFault"/>
         <variable name="ProcessDeadline" type="xs:string"/>
         <variable name="FindDeadlineOut" xmlns:tns="http://deadlineDiscovery.g15.ws/" messageType="tns:findDeadlineResponse"/>
         <variable name="FindDeadlineIn" xmlns:tns="http://deadlineDiscovery.g15.ws/" messageType="tns:findDeadline"/>
@@ -392,7 +393,13 @@
                                                         <from variable="NumberOfFlights"/>
                                                         <to variable="ForEach1Counter"/>
                                                     </copy>
+                                                    <copy>
+                                                        <from>'Booking failed, terminating '</from>
+                                                        <to variable="BookItineraryFault" part="bookFault1"/>
+                                                    </copy>
                                                 </assign>
+                                                <reply name="Reply1" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns0:TravelGoodWsdlPortType" faultName="ns0:fault1" variable="bookItineraryFault"/>
+                                                <exit name="Exit5"/>
                                             </sequence>
                                         </catch>
                                     </faultHandlers>
@@ -559,8 +566,13 @@
                                                         <from variable="NumberOfHotels"/>
                                                         <to variable="ForEach2Counter"/>
                                                     </copy>
+                                                    <copy>
+                                                        <from>'Booking failed, terminating'</from>
+                                                        <to variable="bookItineraryFault" part="bookFault1"/>
+                                                    </copy>
                                                 </assign>
-                                                <reply name="ForEachHotelCompensateCompleteReply" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns0:TravelGoodWsdlPortType" variable="TravelGoodBookItineraryOut"/>
+                                                <reply name="ForEachHotelCompensateCompleteReply" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns0:TravelGoodWsdlPortType" faultName="ns0:fault1" variable="bookItineraryFault"/>
+                                                <exit name="Exit6"/>
                                             </sequence>
                                         </catchAll>
                                     </faultHandlers>
@@ -777,12 +789,7 @@
                 </onMessage>
                 <onAlarm>
                     <for>$ProcessDeadline</for>
-                    <assign name="Assign1">
-                        <copy>
-                            <from variable="ConfirmedState"/>
-                            <to>$ItineraryOnServer/state</to>
-                        </copy>
-                    </assign>
+                    <exit name="Exit4"/>
                 </onAlarm>
             </pick>
         </while>
