@@ -15,7 +15,7 @@
             <xsd:element maxOccurs="unbounded" minOccurs="0" name="flights" type="tns:FlightInformationType"/>
             <xsd:element maxOccurs="unbounded" minOccurs="0" name="hotels" type="tns:HotelInformationType"/>
             <xsd:element name="state" type="tns:ItineraryStateType"/>
-            <xsd:element name="id" type="xsd:int"/>
+            <xsd:element name="id" type="xsd:string"/>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="FlightType">
