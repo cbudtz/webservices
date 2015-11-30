@@ -14,12 +14,18 @@
     <import namespace="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" location="LameDuckWSDLServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://j2ee.netbeans.org/wsdl/LameDuck/wsdl/LameDuckWSDL" location="http://localhost:8080/LameDuckTest/LameDuckWSDLService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/DeadlineDiscoveryServiceWrapper" location="DeadlineDiscoveryServiceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://deadlineDiscovery.g15.ws/" location="http://localhost:8080/DeadlineDiscovery/DeadlineDiscoveryService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="NiceViewPartnerLink" xmlns:tns="http://j2ee.netbeans.org/wsdl/NiceViewTest/dk/NiceViewWSDL" partnerLinkType="tns:NiceViewWSDL" partnerRole="NiceViewWSDLPortTypeRole"/>
         <partnerLink name="LameDuckPartnerLink" xmlns:tns="http://enterprise.netbeans.org/bpel/LameDuckWSDLServiceWrapper" partnerLinkType="tns:LameDuckLinkType" partnerRole="LameDuckRole"/>
+        <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/DeadlineDiscoveryServiceWrapper" partnerLinkType="tns:DeadlineFinderLinkType" partnerRole="DeadlineFinderRole"/>
         <partnerLink name="PartnerLink1" xmlns:tns="http://j2ee.netbeans.org/wsdl/TravelGoodBPEL/src/TravelGoodWsdl" partnerLinkType="tns:TravelGoodWsdl" myRole="TravelGoodWsdlPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="ProcessDeadline" type="xs:string"/>
+        <variable name="FindDeadlineOut" xmlns:tns="http://deadlineDiscovery.g15.ws/" messageType="tns:findDeadlineResponse"/>
+        <variable name="FindDeadlineIn" xmlns:tns="http://deadlineDiscovery.g15.ws/" messageType="tns:findDeadline"/>
         <variable name="CancelSuccessfull" type="xs:boolean"/>
         <variable name="BookItineraryFault" messageType="ns0:bookItineraryFault"/>
         <variable name="NiceViewCancelHotelOut" messageType="ns4:cancelHotelResponse"/>
@@ -124,6 +130,10 @@
             <copy>
                 <from>true()</from>
                 <to variable="CancelSuccessfull"/>
+            </copy>
+            <copy>
+                <from>'P1Y0M0DT0H0M0.0S'</from>
+                <to variable="ProcessDeadline"/>
             </copy>
         </assign>
         <reply name="TravelGoodInitiateItineraryReply" partnerLink="PartnerLink1" operation="initiateItinerary" portType="ns0:TravelGoodWsdlPortType" variable="TravelGoodInitiateItineraryOut">
@@ -378,6 +388,10 @@
                                                         <from variable="CancelledState"/>
                                                         <to>$ItineraryOnServer/state</to>
                                                     </copy>
+                                                    <copy>
+                                                        <from variable="NumberOfFlights"/>
+                                                        <to variable="ForEach1Counter"/>
+                                                    </copy>
                                                 </assign>
                                             </sequence>
                                         </catch>
@@ -541,6 +555,10 @@
                                                         <from>$ItineraryOnServer/id</from>
                                                         <to>$TravelGoodBookItineraryOut.bookedItinerary1/id</to>
                                                     </copy>
+                                                    <copy>
+                                                        <from variable="NumberOfHotels"/>
+                                                        <to variable="ForEach2Counter"/>
+                                                    </copy>
                                                 </assign>
                                                 <reply name="ForEachHotelCompensateCompleteReply" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns0:TravelGoodWsdlPortType" variable="TravelGoodBookItineraryOut"/>
                                             </sequence>
@@ -604,6 +622,17 @@
                                 <copy>
                                     <from>$ItineraryOnServer/id</from>
                                     <to>$TravelGoodBookItineraryOut.bookedItinerary1/id</to>
+                                </copy>
+                                <copy>
+                                    <from>$ItineraryOnServer/flights</from>
+                                    <to>$FindDeadlineIn.parameters/flights</to>
+                                </copy>
+                            </assign>
+                            <invoke name="FindDeadlineInvoke" partnerLink="PartnerLink2" operation="findDeadline" xmlns:tns="http://deadlineDiscovery.g15.ws/" portType="tns:DeadlineFinder" inputVariable="FindDeadlineIn" outputVariable="FindDeadlineOut"/>
+                            <assign name="FindDeadlineAssign">
+                                <copy>
+                                    <from>$FindDeadlineOut.parameters/return</from>
+                                    <to variable="ProcessDeadline"/>
                                 </copy>
                             </assign>
                             <reply name="TravelGoodBookItineraryReply1" partnerLink="PartnerLink1" operation="bookItinerary" portType="ns0:TravelGoodWsdlPortType" variable="TravelGoodBookItineraryOut"/>
@@ -747,7 +776,7 @@
                     </if>
                 </onMessage>
                 <onAlarm>
-                    <for>'P1Y3M4DT2H4M3.0S'</for>
+                    <for>$ProcessDeadline</for>
                     <assign name="Assign1">
                         <copy>
                             <from variable="ConfirmedState"/>
