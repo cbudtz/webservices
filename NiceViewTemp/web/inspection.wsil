@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inspection xmlns="http://schemas.xmlsoap.org/ws/2001/10/inspection/" xmlns:wsiluddi="http://schemas.xmlsoap.org/ws/2001/10/inspection/uddi/">
+    <abstract>NiceView Web Service</abstract>
+    <service>
+        <name>NiceView Hotel Reservation Service</name>
+        <abstract>A service that will enable you to search, book and cancel hotel reservations.</abstract>
+        <description referencedNamespace="http://schemas.xmlsoap.org/wsdl/" location="http://localhost:8080/NiceViewTemp/NiceViewWSDLService?wsdl" />
+    </service>
+    <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/services/LameDuckWSIL.wsil">
+        <abstract>A service that will enable you to search, book and cancel flight servations.</abstract>
+    </link>
+    <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/services/TravelGoodWSIL.wsil">
+        <abstract>A service that will enable you to plan an itinerary with one or more flight and hotel reservations.</abstract>
+    </link>
+</inspection>
