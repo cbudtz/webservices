@@ -101,12 +101,11 @@ public class B {
         // now book the itinerary, the booking should fail so figure out a way to do that. 
         try {
             System.out.println("Try to book the itinerary......");
-            port.bookItinerary(Conv.getBookRequest(Conv.getCreditcard(cardHolderName, cardNumber, year, month), id));
-            fail("the booking did not throw a fault, so the test was faulty");
+            itinerary = port.bookItinerary(Conv.getBookRequest(Conv.getCreditcard(cardHolderName, cardNumber, year, month), id));   
         } catch (BookItineraryFault ex) {
             // the booking failed which is nice. 
+            fail("An error occured in the BPEL process, this should not happen");
         }
-        
         System.out.println("Check that the states of the itinerary are correct after the fail....");
         // try the assertions again, to check that states have been updated
         Assert.assertEquals(Conv.TGCANCELLED, itinerary.getState());
